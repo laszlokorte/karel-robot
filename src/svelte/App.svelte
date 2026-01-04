@@ -17,9 +17,7 @@
     import Robot from "./Robot.svelte";
 </script>
 
-<h2>Robot</h2>
 <Robot></Robot>
-<div style:height="60vh"></div>
 
 <style>
     @import url("app.css");

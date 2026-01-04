@@ -196,12 +196,6 @@ input[type="text"] {
     visibility: hidden;
 }
 
-.controls {
-    display: flex;
-    margin: 1em 0;
-    gap: 1ex;
-}
-
 .button,
 button {
     border: none;

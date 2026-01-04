@@ -1,5 +1,5 @@
 {
-  "name": "svatom",
+  "name": "@svatom/robot",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Laszlo Korte",

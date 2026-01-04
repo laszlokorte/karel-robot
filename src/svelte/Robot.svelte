@@ -10,713 +10,12 @@
         bindValue,
     } from "./svatom.svelte.js";
     import Split from "./Split.svelte";
+    import * as predefined from "./levels.js";
 
     const {
         autoplaySpeed = atom(5),
-        allLevels = atom([
-            {
-                id: "line",
-                name: "Line",
-                level: {
-                    size: { x: 10, y: 10 },
-                    start: { x: 5, y: 5 },
-                    walls: Array(10 * 10).fill(false),
-                    crystals: Array(10 * 10).fill(false),
-                },
-            },
-            {
-                id: "inf-line",
-                name: "Infinite Line",
-                level: {
-                    size: { x: 10, y: 10 },
-                    start: { x: 5, y: 5 },
-                    walls: Array(10 * 10).fill(false),
-                    crystals: Array(10 * 10).fill(false),
-                },
-            },
-            {
-                id: "error",
-                name: "Errors",
-                level: {
-                    size: { x: 10, y: 10 },
-                    start: { x: 5, y: 5 },
-                    walls: Array(10 * 10).fill(false),
-                    crystals: Array(10 * 10).fill(false),
-                },
-            },
-            {
-                id: "empty",
-                name: "Empty",
-                level: {
-                    size: { x: 10, y: 10 },
-                    start: { x: 5, y: 5 },
-                    walls: Array(10 * 10).fill(false),
-                    crystals: Array(10 * 10).fill(false),
-                },
-            },
-            {
-                id: "bookmarks",
-                name: "Bookmarks",
-                level: {
-                    size: { x: 10, y: 10 },
-                    start: { x: 5, y: 5 },
-                    walls: Array(10 * 10).fill(false),
-                    crystals: Array(10 * 10).fill(false),
-                },
-            },
-            {
-                id: "stack",
-                name: "Stack",
-                level: {
-                    size: { x: 10, y: 10 },
-                    start: { x: 5, y: 5 },
-                    walls: Array(10 * 10).fill(false),
-                    crystals: Array(10 * 10).fill(false),
-                },
-            },
-            {
-                id: "lvl1",
-                name: "Level 1",
-                level: {
-                    size: { x: 10, y: 10 },
-                    start: { x: 3, y: 4 },
-                    walls: Array(10 * 10)
-                        .fill(false)
-                        .map((d, i) =>
-                            i % 17 == 0 ? d : i % 19 == 2 ? true : d,
-                        ),
-                    crystals: Array(10 * 10)
-                        .fill(false)
-                        .map((d, i) => (i % 17 == 0 ? true : d)),
-                },
-            },
-        ]),
-        allCommands = atom([
-            {
-                level: "inf-line",
-                commands: [
-                    {
-                        label: "start",
-                        labelSpace: "",
-                        empty: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpBy",
-                        arg: "3",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpBy",
-                        arg: "-3",
-                        spaces: "",
-                    },
-                    {
-                        empty: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpBy",
-                        arg: "5",
-                        spaces: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpBy",
-                        arg: "-4",
-                        spaces: "",
-                    },
-                    {
-                        empty: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                    {
-                        op: "pick",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpBy",
-                        arg: "3",
-                        spaces: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpBy",
-                        arg: "-4",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpTo",
-                        arg: "@start",
-                        spaces: "",
-                    },
-                    {
-                        empty: "",
-                    },
-                ],
-            },
-            {
-                level: "line",
-                commands: [
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpTo",
-                        arg: "@foo",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpBy",
-                        arg: "-3",
-                        spaces: "",
-                    },
-                    {
-                        empty: "",
-                    },
-                    {
-                        label: "foo",
-                        labelSpace: "",
-                        empty: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpTo",
-                        arg: "@bar",
-                        spaces: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpBy",
-                        arg: "-4",
-                        spaces: "",
-                    },
-                    {
-                        empty: "",
-                    },
-                    {
-                        label: "bar",
-                        labelSpace: "",
-                        empty: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                    {
-                        op: "pick",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpBy",
-                        arg: "3",
-                        spaces: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpBy",
-                        arg: "-4",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                    {
-                        op: "halt",
-                        spaces: "",
-                    },
-                    {
-                        empty: "",
-                    },
-                ],
-            },
-            {
-                level: "error",
-                commands: [
-                    {
-                        op: "turnLeft",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                ],
-            },
-            {
-                level: "bookmarks",
-                commands: [
-                    {
-                        op: "bookmark",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmark",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmark",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmark",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmark",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmark",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmark",
-                        spaces: "",
-                    },
-                    {
-                        op: "return",
-                        spaces: "",
-                    },
-                    {
-                        op: "halt",
-                        spaces: "",
-                    },
-                ],
-            },
-            {
-                level: "stack",
-                commands: [
-                    {
-                        op: "bookmarkAndJump",
-                        arg: "@walkToWall",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnLeft",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmarkAndJump",
-                        arg: "@walkToWall",
-                        spaces: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnLeft",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmarkAndJump",
-                        arg: "@walkToWall",
-                        spaces: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnLeft",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmarkAndJump",
-                        arg: "@walkToWall",
-                        spaces: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnLeft",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmarkAndJump",
-                        arg: "@walkToWall",
-                        spaces: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmarkAndJump",
-                        arg: "@walkToWall",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnRight",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmarkAndJump",
-                        arg: "@walkToWall",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnRight",
-                        spaces: "",
-                    },
-                    {
-                        op: "bookmarkAndJump",
-                        arg: "@walkToWall",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnRight",
-                        spaces: "",
-                    },
-                    {
-                        op: "halt",
-                        spaces: "",
-                    },
-                    {
-                        empty: "",
-                    },
-                    {
-                        empty: "",
-                    },
-                    {
-                        label: "walkToWall",
-                        labelSpace: "",
-                        empty: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpBy",
-                        arg: "3",
-                        spaces: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpTo",
-                        arg: "@walkToWall",
-                        spaces: "",
-                    },
-                    {
-                        op: "return",
-                        spaces: "",
-                    },
-                ],
-            },
-            {
-                level: "lvl1",
-                commands: [
-                    {
-                        label: "start",
-                        labelSpace: "",
-                        empty: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpBy",
-                        arg: "3",
-                        spaces: "",
-                        numericArg: 3,
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpTo",
-                        arg: "@start",
-                        spaces: "",
-                        numericArg: 0,
-                    },
-                    {
-                        empty: "",
-                    },
-                    {
-                        label: "turn",
-                        labelSpace: "",
-                        empty: "",
-                    },
-                    {
-                        op: "turnLeft",
-                        spaces: "",
-                    },
-                    {
-                        label: "step",
-                        labelSpace: "",
-                        empty: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpTo",
-                        arg: "@turn",
-                        spaces: "",
-                        numericArg: 6,
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkWallLeft",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpBy",
-                        arg: "2",
-                        spaces: "",
-                        numericArg: 2,
-                    },
-                    {
-                        op: "turnRight",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkBeeper",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifNotJumpTo",
-                        arg: "@step",
-                        spaces: "",
-                        numericArg: 8,
-                    },
-                    {
-                        op: "pick",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpTo",
-                        arg: "@step",
-                        spaces: "",
-                        numericArg: 8,
-                    },
-                    {
-                        empty: "",
-                    },
-                ],
-            },
-            {
-                level: "empty",
-                commands: [
-                    {
-                        op: "jumpTo",
-                        arg: "@begin",
-                        spaces: "",
-                    },
-                    {
-                        label: "turn",
-                        labelSpace: "",
-                        empty: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                    {
-                        empty: "",
-                    },
-                    {
-                        label: "begin",
-                        labelSpace: "",
-                        empty: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpTo",
-                        arg: "@turn",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkBeeper",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifNotJumpBy",
-                        arg: "15",
-                        spaces: "",
-                    },
-                    {
-                        op: "pick",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnLeft",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkWallAhead",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifNotJumpBy",
-                        arg: "2",
-                        spaces: "",
-                    },
-                    {
-                        op: "halt",
-                        spaces: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkBeeper",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpBy",
-                        arg: "-5",
-                        spaces: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnAround",
-                        spaces: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "checkBeeper",
-                        spaces: "",
-                    },
-                    {
-                        op: "ifYesJumpBy",
-                        arg: "-2",
-                        spaces: "",
-                    },
-                    {
-                        op: "turnLeft",
-                        spaces: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpTo",
-                        arg: "@begin",
-                        spaces: "",
-                    },
-                    {
-                        op: "drop",
-                        spaces: "",
-                    },
-                    {
-                        op: "forward",
-                        spaces: "",
-                    },
-                    {
-                        op: "jumpTo",
-                        arg: "@begin",
-                        spaces: "",
-                    },
-                ],
-            },
-        ]),
+        allLevels = atom(predefined.levels),
+        allCommands = atom(predefined.solutions),
         world = atom({
             dirty: false,
             started: false,
@@ -743,6 +42,7 @@
     } = $props();
     const resolution = 32;
 
+    const goal = atom(false);
     const levelKey = atom("lvl1");
     const currentCommands = $derived(
         view(
@@ -761,7 +61,7 @@
                         let i = 0;
                         for (let c of cmds) {
                             if (c.label) {
-                                if (labelMap[c.label]) {
+                                if (labelMap[c.label] !== undefined) {
                                     labelMap[c.label] = -1;
                                 } else {
                                     labelMap[c.label] = i;
@@ -788,7 +88,13 @@
                                                 ...c,
                                                 numericArg: labelMap[label],
                                             };
-                                        } else {
+                                        } else if (labelMap[label] === -1) {
+                                            return {
+                                                ...c,
+                                                error: `Label is defined multiple times`,
+                                            };
+                                        }
+                                        {
                                             return {
                                                 ...c,
                                                 error: `Unknown label @${label}`,
@@ -894,6 +200,7 @@
 
     const command = L.iso(
         (cmd) =>
+            (cmd.indentSpaces || "") +
             (cmd.label ? `${cmd.label}:${cmd.labelSpace || ""}` : "") +
             (cmd.invalid
                 ? `${cmd.invalid}${cmd.comment || ""}`
@@ -902,7 +209,7 @@
                   : `${cmd.op || ""}${cmd.arg !== undefined ? ` ${cmd.arg}` : ""}${cmd.spaces || ""}${cmd.comment || ""}`),
         R.pipe(
             R.match(
-                /(?:(?<label>[a-zA-Z]+):(?<labelSpace>\s*))?((?:(?<op>[a-zA-Z]+)(?: (?<arg>(?:@[a-zA-Z]*|[\+\-]?\d+)))?)(?<spaces>\s*)|(?<empty>\s*)|(?<invalid>[^#]+))(?<comment>#.*)?$/,
+                /(?<indentSpaces>\s*)(?:(?<label>[a-zA-Z]+):(?<labelSpace>\s*))?((?:(?<op>[a-zA-Z]+)(?: (?<arg>(?:@[a-zA-Z]*|[\+\-]?\d+)))?)(?<spaces>\s*)|(?<empty>\s*)|(?<invalid>[^#]+))(?<comment>#.*)?$/,
             ),
             R.prop("groups"),
         ),
@@ -1672,564 +979,614 @@
     }
 </script>
 
-<div class="controls">
-    <label>
-        Level: <select
-            bind:value={levelKey.value}
-            onchange={(evt) => reloadLevel(false)}
-        >
-            {#each allLevels.value as l, li (l.id)}
-                <option value={l.id} selected={levelKey.value === l.id}
-                    >{l.name}</option
+<div class="container">
+    <div class="controls">
+        <h1>Caroline The Robot (<abbr title="Work in Progress">WIP</abbr>)</h1>
+        <div class="button-row">
+            <label>
+                Level: <select
+                    bind:value={levelKey.value}
+                    onchange={(evt) => reloadLevel(false)}
                 >
-            {/each}
-        </select>
-    </label>
+                    {#each allLevels.value as l, li (l.id)}
+                        <option value={l.id} selected={levelKey.value === l.id}
+                            >{l.name}</option
+                        >
+                    {/each}
+                </select>
+            </label>
 
-    <button
-        onclick={(evt) => {
-            reloadLevel(false);
-        }}>Reload</button
-    >
-    <label>
-        Speed:
-        <input
-            type="range"
-            bind:value={autoplaySpeed.value}
-            min="1"
-            max="50"
-            step="1"
-        />
-    </label>
-</div>
-<div
-    style="display: none; grid-template-columns: 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
->
-    <div
-        style="display: grid; grid-template-rows: 1fr auto; box-sizing: border-box; "
-    >
-        <textarea
-            style="font-family: monospace; align-self: stretch; resize: none;  box-sizing: border-box; width: auto; overflow: auto;
-            white-space: pre;
-            "
-            use:bindValue={currentLevelText}
-        ></textarea>
-        <div
-            style="background-color: #fee; align-items: center;gap: 1em;overflow: auto;"
-            style:display={levelError.value ? "flex" : "none"}
-        >
             <button
-                onclick={() => {
-                    update((t) => {
-                        const lines = t.trim().split("\n");
-                        const maxWidth = lines[0].length;
-                        return lines
-                            .map((l, _i, all) => {
-                                return (
-                                    l + Array(maxWidth).fill(".").join("")
-                                ).slice(0, maxWidth);
-                            })
-                            .join("\n");
-                    }, currentLevelText);
-                }}>auto fix</button
+                class="level-button"
+                onclick={(evt) => {
+                    reloadLevel(false);
+                }}>Reload</button
             >
-
-            {levelError.value}
         </div>
     </div>
-    <textarea
-        style="overflow: auto; height: 10em; font-family: monospace;"
-        readonly={true}>{json.value}</textarea
+    <div
+        style="display: none; grid-template-columns: 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
     >
-</div>
-
-<div class="robot-container">
-    <Split
-        content={atom([
-            { size: 30, content: "x" },
-            { size: 30, content: "y" },
-        ])}
-    >
-        {#snippet children(i)}
-            {#if i == 1}
-                <div
-                    style="display: grid; grid-template-rows: auto 1fr; background-color: #333; max-height: 100%; align-self: stretch; overflow-y: auto;"
+        <div
+            style="display: grid; grid-template-rows: 1fr auto; box-sizing: border-box; "
+        >
+            <textarea
+                style="font-family: monospace; align-self: stretch; resize: none;  box-sizing: border-box; width: auto; overflow: auto;
+            white-space: pre;
+            "
+                use:bindValue={currentLevelText}
+            ></textarea>
+            <div
+                style="background-color: #fee; align-items: center;gap: 1em;overflow: auto;"
+                style:display={levelError.value ? "flex" : "none"}
+            >
+                <button
+                    onclick={() => {
+                        update((t) => {
+                            const lines = t.trim().split("\n");
+                            const maxWidth = lines[0].length;
+                            return lines
+                                .map((l, _i, all) => {
+                                    return (
+                                        l + Array(maxWidth).fill(".").join("")
+                                    ).slice(0, maxWidth);
+                                })
+                                .join("\n");
+                        }, currentLevelText);
+                    }}>auto fix</button
                 >
-                    <div class="toolbar">
-                        <div class="toggle-buttons">
-                            <button
-                                type="button"
-                                class={{
-                                    "toggle-button": true,
-                                    active: !running.value,
-                                }}
-                                onclick={beginEdit}
-                                disabled={!running.value}
-                                >Edit
-                            </button>
-                            <button
-                                type="button"
-                                class={{
-                                    "toggle-button": true,
-                                    error: commandErrorCount.value > 0,
-                                    active: running.value,
-                                }}
-                                onclick={beginExecute}
-                                disabled={!currentCommands.value.length ||
-                                    commandErrorCount.value > 0 ||
-                                    running.value}>Run</button
-                            >
-                        </div>
-                        {#if running.value}
-                            <div class="button-row">
+
+                {levelError.value}
+            </div>
+        </div>
+        <textarea
+            style="overflow: auto; height: 10em; font-family: monospace;"
+            readonly={true}>{json.value}</textarea
+        >
+    </div>
+
+    <div class="robot-container">
+        <Split
+            content={atom([
+                { size: 30, content: "x" },
+                { size: 30, content: "y" },
+            ])}
+        >
+            {#snippet children(i)}
+                {#if i == 1}
+                    <div class="editor">
+                        <div class="toolbar">
+                            <div class="toggle-buttons">
                                 <button
-                                    class="flow-button"
                                     type="button"
-                                    onclick={resetExecution}
-                                    >Reset
-                                </button>
-                                <button
-                                    class="flow-button"
-                                    type="button"
-                                    onclick={executeLine}
-                                    disabled={executionError.value ||
-                                        halted.value ||
-                                        commandErrorCount.value > 0 ||
-                                        autoplay.value}
-                                    >Step
-                                </button>
-                                <button
-                                    class="flow-button"
-                                    type="button"
-                                    disabled={!currentCommands.value.length ||
-                                        executionError.value ||
-                                        halted.value ||
-                                        autoplay.value}
-                                    onclick={startExecution}
-                                    >Play
-                                </button>
-                                <button
-                                    class="flow-button"
-                                    type="button"
-                                    disabled={!currentCommands.value.length ||
-                                        executionError.value ||
-                                        halted.value ||
-                                        !autoplay.value}
-                                    onclick={pauseExecution}
-                                    >Pause
-                                </button>
-                            </div>
-                        {:else if commandErrorCount.value > 0}
-                            <div class="error-summary">
-                                {commandErrorCount.value}
-                                {commandErrorCount.value > 1
-                                    ? "Errors"
-                                    : "Error"}
-                            </div>
-                        {/if}
-                    </div>
-                    <label
-                        class={{
-                            "line-numbered": true,
-                            disabled: running.value,
-                        }}
-                    >
-                        <div class="line-numbers">
-                            {#each { length: lines.value.length } as _, l (l)}
-                                {@const c = currentCommands.value[l] ?? {}}
-                                <span
                                     class={{
-                                        "line-number": true,
-                                        active: program.value.next == l,
-                                        error:
-                                            executionErrorLine.value == l ||
-                                            !!c.error,
-                                        halted: halted.value,
-                                        targetted:
-                                            allJumpTargets.value.includes(l),
+                                        "toggle-button": true,
+                                        active: false,
                                     }}
+                                    onclick={beginGoal}
+                                    disabled={!running.value}
+                                    >Goal
+                                </button>
+                                <button
+                                    type="button"
+                                    class={{
+                                        "toggle-button": true,
+                                        active: !running.value,
+                                    }}
+                                    onclick={beginEdit}
+                                    disabled={!running.value}
+                                    >Edit
+                                </button>
+                                <button
+                                    type="button"
+                                    class={{
+                                        "toggle-button": true,
+                                        error: commandErrorCount.value > 0,
+                                        active: running.value,
+                                    }}
+                                    onclick={beginExecute}
+                                    disabled={!currentCommands.value.length ||
+                                        commandErrorCount.value > 0 ||
+                                        running.value}>Run</button
                                 >
-                                    {l}
-                                </span>
-                            {/each}
+                            </div>
+                            {#if running.value}
+                                <div class="button-row">
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        onclick={resetExecution}
+                                        >Reset
+                                    </button>
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        onclick={executeLine}
+                                        disabled={executionError.value ||
+                                            halted.value ||
+                                            commandErrorCount.value > 0 ||
+                                            autoplay.value}
+                                        >Step
+                                    </button>
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        disabled={!currentCommands.value
+                                            .length ||
+                                            executionError.value ||
+                                            halted.value ||
+                                            autoplay.value}
+                                        onclick={startExecution}
+                                        >Play
+                                    </button>
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        disabled={!currentCommands.value
+                                            .length ||
+                                            executionError.value ||
+                                            halted.value ||
+                                            !autoplay.value}
+                                        onclick={pauseExecution}
+                                        >Pause
+                                    </button>
+                                </div>
+
+                                <label class="slider">
+                                    <div>
+                                        Playback Speed:
+                                        <output
+                                            >{autoplaySpeed.value}&times;</output
+                                        >
+                                    </div>
+                                    <input
+                                        type="range"
+                                        bind:value={autoplaySpeed.value}
+                                        min="1"
+                                        max="50"
+                                        step="1"
+                                    />
+                                </label>
+                            {:else if commandErrorCount.value > 0}
+                                <div class="error-summary">
+                                    {commandErrorCount.value}
+                                    {commandErrorCount.value > 1
+                                        ? "Errors"
+                                        : "Error"}
+                                </div>
+                            {/if}
                         </div>
-                        <div class="overlay">
-                            <div
-                                class={{
-                                    faded: running.value,
-                                    "overlay-layer": true,
-                                    "overlay-annotations": true,
-                                }}
-                            >
-                                {#each currentCommands.value as l}
+                        <label
+                            class={{
+                                "line-numbered": true,
+                                disabled: running.value,
+                            }}
+                        >
+                            <div class="line-numbers">
+                                {#each { length: lines.value.length } as _, l (l)}
+                                    {@const c = currentCommands.value[l] ?? {}}
                                     <span
                                         class={{
-                                            annotation: true,
-                                            invalid:
-                                                l.empty !== "" &&
-                                                (!!l.invalid || !!l.error),
+                                            "line-number": true,
+                                            active: program.value.next == l,
+                                            error:
+                                                executionErrorLine.value == l ||
+                                                !!c.error,
+                                            halted: halted.value,
+                                            targetted:
+                                                allJumpTargets.value.includes(
+                                                    l,
+                                                ),
                                         }}
-                                        >{#if l.label}<span
-                                                class={{ label: true }}
-                                                >{l.label}:</span
-                                            >{l.labelSpace}
-                                        {/if}{#if l.empty !== undefined}
-                                            <span class="empty">{l.empty}</span
-                                            ><span class="comment"
-                                                >{l.comment}</span
-                                            ><span>{" "}</span>
-                                        {:else if l.invalid}<span
-                                                class="invalid"
-                                                >{l.invalid || " "}</span
-                                            ><span class="comment"
-                                                >{l.comment || ""}</span
-                                            >
-                                        {:else}
-                                            <span
-                                                class={{
-                                                    "annotation-body": true,
-                                                    empty: !!l.empty,
-                                                    valid: !l.error,
-                                                    invalid: l.error,
-                                                }}>{l.op || " "}</span
-                                            >{#if l.arg !== undefined}
-                                                <span class="spaces">{" "}</span
-                                                ><span
-                                                    class={{
-                                                        "annotation-body": true,
-                                                        label: true,
-                                                        empty: !!l.empty,
-                                                        valid: !l.error,
-                                                        invalid: l.error,
-                                                    }}
-                                                    >{l.arg}<span
-                                                        class={{
-                                                            "annotation-extra": true,
-                                                            hidden:
-                                                                l.arg ==
-                                                                l.numericArg,
-                                                        }}
-                                                        >&nbsp;(#{l.numericArg})
-                                                    </span>
-                                                </span>
-                                            {/if}<span class="spaces"
-                                                >{l.spaces || ""}</span
-                                            ><span class="comment"
-                                                >{l.comment || ""}</span
-                                            ><span>{" "}</span>
-                                        {/if}
+                                    >
+                                        {l}
                                     </span>
                                 {/each}
                             </div>
-                            <div
-                                style="z-index: 100; pointer-events: none;"
-                                class={{
-                                    "overlay-layer": true,
-                                    "overlay-annotations": true,
-                                    "annoatation-right": true,
-                                }}
-                            >
-                                {#each currentCommands.value as l, li}
+                            <div class="overlay">
+                                <div
+                                    class={{
+                                        faded: running.value,
+                                        "overlay-layer": true,
+                                        "overlay-annotations": true,
+                                    }}
+                                >
+                                    {#each currentCommands.value as l}
+                                        <span
+                                            class={{
+                                                annotation: true,
+                                                invalid:
+                                                    l.empty !== "" &&
+                                                    (!!l.invalid || !!l.error),
+                                            }}
+                                            >{l.indentSpaces ||
+                                                ""}{#if l.label}<span
+                                                    class={{ label: true }}
+                                                    >{l.label}:</span
+                                                >{l.labelSpace}
+                                            {/if}{#if l.empty !== undefined}
+                                                <span class="empty"
+                                                    >{l.empty}</span
+                                                ><span class="comment"
+                                                    >{l.comment}</span
+                                                ><span>{" "}</span>
+                                            {:else if l.invalid}<span
+                                                    class="invalid"
+                                                    >{l.invalid || " "}</span
+                                                ><span class="comment"
+                                                    >{l.comment || ""}</span
+                                                >
+                                            {:else}
+                                                <span
+                                                    class={{
+                                                        "annotation-body": true,
+                                                        empty: !!l.empty,
+                                                        valid: !l.error,
+                                                        invalid: l.error,
+                                                    }}>{l.op || " "}</span
+                                                >{#if l.arg !== undefined}
+                                                    <span class="spaces"
+                                                        >{" "}</span
+                                                    ><span
+                                                        class={{
+                                                            "annotation-body": true,
+                                                            label: true,
+                                                            empty: !!l.empty,
+                                                            valid: !l.error,
+                                                            invalid: l.error,
+                                                        }}
+                                                        >{l.arg}<span
+                                                            class={{
+                                                                "annotation-extra": true,
+                                                                hidden:
+                                                                    l.arg ==
+                                                                    l.numericArg,
+                                                            }}
+                                                            >&nbsp;(#{l.numericArg})
+                                                        </span>
+                                                    </span>
+                                                {/if}<span class="spaces"
+                                                    >{l.spaces || ""}</span
+                                                ><span class="comment"
+                                                    >{l.comment || ""}</span
+                                                ><span>{" "}</span>
+                                            {/if}
+                                        </span>
+                                    {/each}
+                                </div>
+                                <div
+                                    style="z-index: 100; pointer-events: none;"
+                                    class={{
+                                        "overlay-layer": true,
+                                        "overlay-annotations": true,
+                                        "annoatation-right": true,
+                                    }}
+                                >
+                                    {#each currentCommands.value as l, li}
+                                        <span
+                                            style="background: none;"
+                                            class={{
+                                                annotation: true,
+                                            }}
+                                        >
+                                            <span
+                                                style="color: transparent; background: none"
+                                            >
+                                                {l.indentSpaces ||
+                                                    ""}{#if l.label}<span
+                                                        >{l.label}:</span
+                                                    >{l.labelSpace}
+                                                {/if}{#if l.empty !== undefined}<span
+                                                        >{l.empty}</span
+                                                    ><span>{l.comment}</span
+                                                    >{:else if l.invalid}<span
+                                                        >{l.invalid || ""}</span
+                                                    ><span
+                                                        >{l.comment || ""}</span
+                                                    >{:else}<span class={{}}
+                                                        >{l.op || " "}{l.arg !==
+                                                        undefined
+                                                            ? " " + l.arg
+                                                            : ""}</span
+                                                    ><span
+                                                        >{l.spaces || ""}</span
+                                                    ><span
+                                                        >{l.comment || ""}</span
+                                                    >
+                                                {/if}</span
+                                            >
+                                            {#if l.invalid}<span>{" - "}</span
+                                                ><span class="inlay error"
+                                                    >Invalid syntax</span
+                                                >{:else if !!l.error}<span
+                                                    >{" - "}</span
+                                                ><label class="inlay error"
+                                                    ><input
+                                                        type="checkbox"
+                                                    />{l.error}</label
+                                                >{/if}
+                                            {#if executionErrorLine.value === li}
+                                                <label class="inlay error">
+                                                    <input
+                                                        type="checkbox"
+                                                    />{executionErrorMessage.value}</label
+                                                >
+                                            {/if}
+                                        </span>
+                                    {/each}
                                     <span
                                         style="background: none;"
                                         class={{
                                             annotation: true,
                                         }}
                                     >
-                                        <span
-                                            style="color: transparent; background: none"
-                                        >
-                                            {#if l.label}<span>{l.label}:</span
-                                                >{l.labelSpace}
-                                            {/if}{#if l.empty !== undefined}<span
-                                                    >{l.empty}</span
-                                                ><span>{l.comment}</span
-                                                >{:else if l.invalid}<span
-                                                    >{l.invalid || ""}</span
-                                                ><span>{l.comment || ""}</span
-                                                >{:else}<span class={{}}
-                                                    >{l.op || " "}{l.arg !==
-                                                    undefined
-                                                        ? " " + l.arg
-                                                        : ""}</span
-                                                ><span>{l.spaces || ""}</span
-                                                ><span>{l.comment || ""}</span>
-                                            {/if}</span
-                                        >
-                                        {#if l.invalid}<span>{" - "}</span><span
-                                                class="inlay error"
-                                                >Invalid syntax</span
-                                            >{:else if !!l.error}<span
-                                                >{" - "}</span
-                                            ><label class="inlay error"
-                                                ><input
-                                                    type="checkbox"
-                                                />{l.error}</label
-                                            >{/if}
-                                        {#if executionErrorLine.value === li}
-                                            <label class="inlay error">
-                                                <input
-                                                    type="checkbox"
-                                                />{executionErrorMessage.value}</label
+                                        {#if executionErrorLine.value === currentCommands.value.length}
+                                            <span class="inlay error"
+                                                >{executionErrorMessage.value}</span
                                             >
                                         {/if}
                                     </span>
-                                {/each}
-                                <span
-                                    style="background: none;"
+                                </div>
+                                <textarea
+                                    cols="0"
+                                    rows="0"
+                                    use:bindValue={text}
+                                    autocomplete="off"
+                                    autocorrect="off"
+                                    autocapitalize="off"
+                                    spellcheck="false"
+                                    readonly={running.value}
                                     class={{
-                                        annotation: true,
+                                        hidden: running.value,
+                                        "overlay-layer": true,
+                                        "overlay-input": true,
                                     }}
-                                >
-                                    {#if executionErrorLine.value === currentCommands.value.length}
-                                        <span class="inlay error"
-                                            >{executionErrorMessage.value}</span
-                                        >
-                                    {/if}
-                                </span>
+                                ></textarea>
                             </div>
-                            <textarea
-                                cols="0"
-                                rows="0"
-                                use:bindValue={text}
-                                autocomplete="off"
-                                autocorrect="off"
-                                autocapitalize="off"
-                                spellcheck="false"
-                                readonly={running.value}
+                        </label>
+                    </div>
+                {:else}
+                    <div style="display: flex; flex-direction: column;">
+                        <div class="world-stack">
+                            <div
                                 class={{
-                                    hidden: running.value,
-                                    "overlay-layer": true,
-                                    "overlay-input": true,
+                                    "stack-container": true,
+                                    error: executionErrorKind.value === "stack",
                                 }}
-                            ></textarea>
-                        </div>
-                    </label>
-                </div>
-            {:else}
-                <div style="display: flex; flex-direction: column;">
-                    <div class="world-stack">
-                        <div
-                            class={{
-                                "stack-container": true,
-                                error: executionErrorKind.value === "stack",
-                            }}
-                        >
-                            <h3 class="stack-head">Bookmark<br /> Stack:</h3>
-                            <ol class="stack-body">
-                                {#each stack.value as s}
-                                    <li class="stack-item">
-                                        {s}
-                                    </li>
-                                {:else}
-                                    <li class="stack-empty">Empty</li>
-                                {/each}
-                            </ol>
-                        </div>
-                        <div class="canvas-container">
-                            <svg
-                                class="canvas"
-                                viewBox={viewBox.value}
-                                preserveAspectRatio="xMidYMin meet"
                             >
-                                {#each { length: level.value.size.y } as _, y}
-                                    {#each { length: level.value.size.x } as _, x}
-                                        <rect
-                                            x={x * resolution}
-                                            y={y * resolution}
-                                            width={resolution}
-                                            height={resolution}
-                                            fill="#f0f0f0"
-                                            stroke="#ccc"
-                                            shape-rendering="geometricPrecision"
-                                            vector-effect="non-scaling-stroke"
-                                        ></rect>
+                                <h3 class="stack-head">
+                                    Bookmark<br /> Stack:
+                                </h3>
+                                <ol class="stack-body">
+                                    {#each stack.value as s}
+                                        <li class="stack-item">
+                                            {s}
+                                        </li>
+                                    {:else}
+                                        <li class="stack-empty">Empty</li>
                                     {/each}
-                                {/each}
-                                {#each { length: level.value.size.y } as _, y}
-                                    {#each { length: level.value.size.x } as _, x}
-                                        {@const isWall =
-                                            level.value.walls[
-                                                y * level.value.size.x + x
-                                            ]}
-                                        {@const isCrystal =
-                                            level.value.crystals[
-                                                y * level.value.size.x + x
-                                            ]}
-                                        {#if isCrystal}
-                                            {@render diamond(x, y, resolution)}
-                                        {/if}
-                                        {#if isWall}
-                                            {@render wall(x, y, resolution)}
-                                        {/if}
+                                </ol>
+                            </div>
+                            <div class="canvas-container">
+                                <svg
+                                    class="canvas"
+                                    viewBox={viewBox.value}
+                                    preserveAspectRatio="xMidYMin meet"
+                                >
+                                    {#each { length: level.value.size.y } as _, y}
+                                        {#each { length: level.value.size.x } as _, x}
+                                            <rect
+                                                x={x * resolution}
+                                                y={y * resolution}
+                                                width={resolution}
+                                                height={resolution}
+                                                fill="#f0f0f0"
+                                                stroke="#ccc"
+                                                shape-rendering="geometricPrecision"
+                                                vector-effect="non-scaling-stroke"
+                                            ></rect>
+                                        {/each}
                                     {/each}
-                                {/each}
-                                {@render robot(
-                                    player.value.pos.x,
-                                    player.value.pos.y,
-                                    player.value.dir.x,
-                                    player.value.dir.y,
-                                    resolution,
-                                    choice.value,
-                                )}
-                                {#if executionErrorPosition.value && executionErrorKind.value == "world"}
-                                    {@render error(
-                                        executionErrorPosition.value.pos.x,
-                                        executionErrorPosition.value.pos.y,
+                                    {#each { length: level.value.size.y } as _, y}
+                                        {#each { length: level.value.size.x } as _, x}
+                                            {@const isWall =
+                                                level.value.walls[
+                                                    y * level.value.size.x + x
+                                                ]}
+                                            {@const isCrystal =
+                                                level.value.crystals[
+                                                    y * level.value.size.x + x
+                                                ]}
+                                            {#if isCrystal}
+                                                {@render diamond(
+                                                    x,
+                                                    y,
+                                                    resolution,
+                                                )}
+                                            {/if}
+                                            {#if isWall}
+                                                {@render wall(x, y, resolution)}
+                                            {/if}
+                                        {/each}
+                                    {/each}
+                                    {@render robot(
+                                        player.value.pos.x,
+                                        player.value.pos.y,
+                                        player.value.dir.x,
+                                        player.value.dir.y,
                                         resolution,
+                                        choice.value,
                                     )}
-                                {/if}
-                                <rect
-                                    x={-3}
-                                    y={-3}
-                                    width={resolution * level.value.size.x + 6}
-                                    height={resolution * level.value.size.y + 6}
-                                    fill="none"
-                                    stroke-width="6"
-                                    stroke="#555"
-                                    shape-rendering="crispEdges"
-                                ></rect>
-                            </svg>
+                                    {#if executionErrorPosition.value && executionErrorKind.value == "world"}
+                                        {@render error(
+                                            executionErrorPosition.value.pos.x,
+                                            executionErrorPosition.value.pos.y,
+                                            resolution,
+                                        )}
+                                    {/if}
+                                    <rect
+                                        x={-3}
+                                        y={-3}
+                                        width={resolution * level.value.size.x +
+                                            6}
+                                        height={resolution *
+                                            level.value.size.y +
+                                            6}
+                                        fill="none"
+                                        stroke-width="6"
+                                        stroke="#555"
+                                        shape-rendering="crispEdges"
+                                    ></rect>
+                                </svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {/if}
+                {/if}
+            {/snippet}
+        </Split>
+        {#snippet robot(x, y, dx, dy, size, choice)}
+            <g
+                transform="rotate({(Math.atan2(dy, dx) * 180) / Math.PI +
+                    90} {x * size + size / 2} {y * size + size / 2})"
+            >
+                <rect
+                    x={x * size}
+                    y={y * size + (size * (1 - 1 / 1.9)) / 2}
+                    width={size}
+                    height={size / 1.9}
+                    fill="#3300ff"
+                    stroke-width="1"
+                    stroke="#110022"
+                    rx="10"
+                    ry="10"
+                    vector-effect="non-scaling-stroke"
+                ></rect>
+                <circle
+                    cx={x * size + size / 2}
+                    cy={y * size + size / 2}
+                    r={size / 1.6 / 2}
+                    fill="#aaaadd"
+                    stroke-width="2"
+                    stroke="#1100aa"
+                    rx="10"
+                    ry="10"
+                    vector-effect="non-scaling-stroke"
+                ></circle>
+                <polygon
+                    stroke="#1100aa"
+                    stroke-width="1"
+                    points="{size * x + size / 2 - size / 6} {size * y +
+                        size / 2 +
+                        size / 20}
+                {size * x + size / 2} {size * y +
+                        size / 2 -
+                        size / 6 +
+                        size / 20}
+                    {size * x + size / 2 + size / 6} {size * y +
+                        size / 2 +
+                        size / 20}
+                        "
+                    fill="#3300ff"
+                    class={{
+                        "choice-yes": choice === true,
+                        "choice-no": choice === false,
+                    }}
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                ></polygon>
+                <circle
+                    fill="white"
+                    class={{
+                        "choice-yes": choice === true,
+                        "choice-no": choice === false,
+                    }}
+                    r="2.5"
+                    stroke-width="1.5"
+                    stroke="#1100aa"
+                    cx={size * x + size / 2 - size / 7}
+                    cy={size * y + size / 2 - size / 4}
+                ></circle>
+                <circle
+                    fill="white"
+                    class={{
+                        "choice-yes": choice === true,
+                        "choice-no": choice === false,
+                    }}
+                    r="2.5"
+                    stroke-width="1.5"
+                    stroke="#1100aa"
+                    cx={size * x + size / 2 + size / 7}
+                    cy={size * y + size / 2 - size / 4}
+                ></circle>
+            </g>
         {/snippet}
-    </Split>
-    {#snippet robot(x, y, dx, dy, size, choice)}
-        <g
-            transform="rotate({(Math.atan2(dy, dx) * 180) / Math.PI + 90} {x *
-                size +
-                size / 2} {y * size + size / 2})"
-        >
+
+        {#snippet wall(x, y, size)}
             <rect
                 x={x * size}
-                y={y * size + (size * (1 - 1 / 1.9)) / 2}
+                y={y * size}
                 width={size}
-                height={size / 1.9}
-                fill="#3300ff"
-                stroke-width="1"
-                stroke="#110022"
-                rx="10"
-                ry="10"
-                vector-effect="non-scaling-stroke"
+                height={size}
+                fill="#555"
+                stroke-width="0"
+                shape-rendering="crispEdges"
             ></rect>
-            <circle
-                cx={x * size + size / 2}
-                cy={y * size + size / 2}
-                r={size / 1.6 / 2}
-                fill="#aaaadd"
-                stroke-width="2"
-                stroke="#1100aa"
-                rx="10"
-                ry="10"
-                vector-effect="non-scaling-stroke"
-            ></circle>
-            <polyline
-                stroke="#000"
+        {/snippet}
+        {#snippet diamond(x, y, size)}
+            <polygon
+                fill="#48f273"
+                points="{size * x + size / 2} {size * y + size / 2} {size *
+                    x} {size * y + size / 2} {size * x + size / 2} {size * y} "
+            ></polygon>
+            <polygon
+                fill="#28a233"
+                points="{size * x + size / 2} {size * y + size / 2} {size * x +
+                    size} {size * y + size / 2} {size * x + size / 2} {size *
+                    y} "
+            ></polygon>
+            <polygon
+                fill="#28b233"
+                points="{size * x + size / 2} {size * y + size / 2} {size *
+                    x} {size * y + size / 2} {size * x + size / 2} {size * y +
+                    size} "
+            ></polygon>
+            <polygon
+                fill="#285233"
+                points="{size * x + size / 2} {size * y + size / 2} {size * x +
+                    size} {size * y + size / 2} {size * x + size / 2} {size *
+                    y +
+                    size} "
+            ></polygon>
+            <polygon
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke="#285233"
                 fill="none"
-                stroke-width="2"
-                points="{size * x + size / 2 - size / 6} {size * y +
-                    size / 2 +
-                    size / 20}
-                {size * x + size / 2} {size * y +
-                    size / 2 -
-                    size / 6 +
-                    size / 20}
-                    {size * x + size / 2 + size / 6} {size * y +
-                    size / 2 +
-                    size / 20}"
-            ></polyline>
-            <circle
-                fill="white"
-                class={{
-                    "choice-yes": choice === true,
-                    "choice-no": choice === false,
-                }}
-                r="2.5"
-                stroke-width="1.5"
-                stroke="#3300ff"
-                cx={size * x + size / 2 - size / 7}
-                cy={size * y + size / 2 - size / 4}
-            ></circle>
-            <circle
-                fill="white"
-                class={{
-                    "choice-yes": choice === true,
-                    "choice-no": choice === false,
-                }}
-                r="2.5"
-                stroke-width="1.5"
-                stroke="#3300ff"
-                cx={size * x + size / 2 + size / 7}
-                cy={size * y + size / 2 - size / 4}
-            ></circle>
-        </g>
-    {/snippet}
-
-    {#snippet wall(x, y, size)}
-        <rect
-            x={x * size}
-            y={y * size}
-            width={size}
-            height={size}
-            fill="#555"
-            stroke-width="0"
-            shape-rendering="crispEdges"
-        ></rect>
-    {/snippet}
-    {#snippet diamond(x, y, size)}
-        <polygon
-            fill="#48f273"
-            points="{size * x + size / 2} {size * y + size / 2} {size *
-                x} {size * y + size / 2} {size * x + size / 2} {size * y} "
-        ></polygon>
-        <polygon
-            fill="#28a233"
-            points="{size * x + size / 2} {size * y + size / 2} {size * x +
-                size} {size * y + size / 2} {size * x + size / 2} {size * y} "
-        ></polygon>
-        <polygon
-            fill="#28b233"
-            points="{size * x + size / 2} {size * y + size / 2} {size *
-                x} {size * y + size / 2} {size * x + size / 2} {size * y +
-                size} "
-        ></polygon>
-        <polygon
-            fill="#285233"
-            points="{size * x + size / 2} {size * y + size / 2} {size * x +
-                size} {size * y + size / 2} {size * x + size / 2} {size * y +
-                size} "
-        ></polygon>
-        <polygon
-            stroke-linejoin="round"
-            stroke-linecap="round"
-            stroke="#285233"
-            fill="none"
-            points="{size * x + size / 2} {size * y}
+                points="{size * x + size / 2} {size * y}
             {size * x + size} {size * y + size / 2}
             {size * x + size / 2} {size * y + size}
             {size * x} {size * y + size / 2}
 
             "
-        ></polygon>
-    {/snippet}
-    {#snippet error(x, y, size)}
-        <polygon
-            stroke-linejoin="round"
-            stroke-linecap="round"
-            stroke="red"
-            stroke-widht="3"
-            fill-opacity="0.8"
-            fill="#aa0000"
-            points="{size * x + size / 2} {size * y}
+            ></polygon>
+        {/snippet}
+        {#snippet error(x, y, size)}
+            <polygon
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke="red"
+                stroke-widht="3"
+                fill-opacity="0.8"
+                fill="#aa0000"
+                points="{size * x + size / 2} {size * y}
             {size * x + size} {size * y + size / 2}
             {size * x + size / 2} {size * y + size}
             {size * x} {size * y + size / 2}
 
             "
-        ></polygon>
-    {/snippet}
+            ></polygon>
+        {/snippet}
+    </div>
 </div>
 
 <style>
@@ -2237,7 +1594,11 @@
         display: flex;
         align-items: stretch;
         font-family: monospace;
-        gap: 1ex;
+        gap: 3em;
+        padding: 1ex 1em;
+        justify-content: space-between;
+        background-image: linear-gradient(#fff, #eee, #ccc);
+        border-bottom: 2px solid #bbb;
     }
     .controls label:has(select, input) {
         display: flex;
@@ -2246,16 +1607,20 @@
     }
     select {
         align-self: stretch;
+        min-width: 20em;
         padding: 0 1ex;
     }
     .toolbar {
         display: flex;
+        flex-wrap: wrap;
         gap: 1ex;
         padding: 0.5ex;
         background-color: #333;
-        border-bottom: 2px solid #fff;
+        color: #eee;
+        border-bottom: 2px solid #444;
         font-family: monospace;
         overflow: hidden;
+        justify-content: space-between;
     }
     button {
         font: inherit;
@@ -2263,13 +1628,28 @@
         margin: 0;
         border: 1px solid #fff5;
     }
+    abbr {
+        cursor: help;
+    }
+    .slider {
+        flex-grow: 1;
+        flex-basis: 10em;
+        padding: 0 1ex;
+        margin-left: auto;
+        justify-self: end;
+        align-self: end;
+    }
+
+    .slider input {
+        margin: 0;
+        padding: 0;
+        --accent-color: #399;
+    }
 
     .button-row {
-        border-left: 1px solid #222;
         display: flex;
-        gap: 0;
         gap: 5px;
-        padding: 3px 5px;
+        padding: 2px;
     }
     .toggle-buttons {
         display: flex;
@@ -2280,7 +1660,7 @@
     .toggle-button {
         border: none;
         background-color: transparent;
-        padding: 1ex 2ex;
+        padding: 1.5ex 2ex;
         color: #fff;
         margin: 1px;
         border-radius: 5px;
@@ -2299,7 +1679,23 @@
         text-decoration: line-through;
     }
     .flow-button {
-        border-radius: 5px;
+        border-radius: 8px;
+        border-width: 2px;
+        border-color: #399;
+        background-color: #166;
+    }
+    .flow-button:hover {
+        border-color: #4aa;
+        background-color: #277;
+    }
+    .flow-button:active {
+        border-color: #388;
+        background-color: #266;
+    }
+    .flow-button:disabled {
+        color: #fffa;
+        border-color: #333;
+        background-color: #444;
     }
     .overlay {
         display: grid;
@@ -2468,7 +1864,7 @@
         overflow: auto;
     }
     .line-numbered:not(.disabled):has(:focus-visible) {
-        border-color: orangered;
+        border-color: #0c8;
     }
     .line-numbered.disabled:has(:focus-visible) {
         border-color: gray;
@@ -2476,11 +1872,8 @@
 
     .robot-container {
         display: block;
-        resize: vertical;
-        height: 30em;
         width: 100%;
         overflow: auto;
-        border: 2px solid gray;
         box-sizing: border-box;
     }
     .world-stack {
@@ -2586,10 +1979,12 @@
     }
 
     .choice-no {
-        fill: red;
+        fill: #ff6666;
+        stroke: #cc0000;
     }
     .choice-yes {
-        fill: green;
+        fill: #66ff66;
+        stroke: #00cc00;
     }
     .stack-container {
         margin-bottom: auto;
@@ -2615,10 +2010,12 @@
         text-align: right;
         font-size: 1em;
         margin: 0;
-        padding: 0 1ex;
+        padding: 0 2ex 0 1ex;
         display: flex;
         align-items: center;
         font-family: monospace;
+        background-color: #eee;
+        border-radius: 8px;
     }
     .stack-body {
         flex-grow: 1;
@@ -2631,6 +2028,7 @@
         padding: 0.5ex;
         border-left: 0;
         justify-content: end;
+        border-radius: 5px;
     }
     .stack-item {
         padding: 1ex;
@@ -2638,6 +2036,7 @@
         box-sizing: border-box;
         flex-shrink: 1;
         font-family: monospace;
+        border-radius: 4px;
     }
     .stack-empty {
         padding: 1ex;
@@ -2654,6 +2053,33 @@
         font-weight: bold;
     }
     .hidden {
-        display: none;
+        display: none !important;
+    }
+    .container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: grid;
+        grid-template-rows: auto 1fr;
+    }
+    .editor {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        background-color: #333;
+        max-height: 100%;
+        align-self: stretch;
+        overflow-y: auto;
+    }
+    .level-button {
+        border-radius: 8px;
+        padding: 1ex 1em;
+    }
+    h1 {
+        margin: 0;
+        font-size: 1em;
+        align-self: center;
+        padding: 0;
     }
 </style>

@@ -16,8 +16,8 @@ export default defineConfig({
         enabled: false, // No dev SW
       },
       manifest: {
-        short_name: "Svatom",
-        name: "Svatom",
+        short_name: "Robot",
+        name: "Robot",
         description:
           "Experiment of applying  the CALMM.js architecture to Svelte",
         icons: [
@@ -32,8 +32,8 @@ export default defineConfig({
             type: "image/svg+xml",
           },
         ],
-        start_url: "/svatom/",
-        scope: "/svatom/",
+        start_url: "/robot/",
+        scope: "/robot/",
         display: "standalone",
         theme_color: "#ff3e00",
         background_color: "#fff",
