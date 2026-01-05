@@ -1,0 +1,15 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="-2 -2  36 36">
+
+<polygon fill="#48f273" points="16 16 0 16 16 0 "></polygon>
+<polygon fill="#28a233" points="16 16 32 16 16 0 "></polygon>
+<polygon fill="#28b233" points="16 16 0 16 16 32 "></polygon>
+<polygon fill="#285233" points="16 16 32 16 16 32 "></polygon>
+<polygon stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#184223" fill="none" points="16 0
+            32 16
+            16 32
+            0 16
+
+            "></polygon>
+
+</svg>

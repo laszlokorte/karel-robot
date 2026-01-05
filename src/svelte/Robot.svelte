@@ -11,11 +11,12 @@
     } from "./svatom.svelte.js";
     import Split from "./Split.svelte";
     import * as predefined from "./levels.js";
+    import { levels, solutions } from "./levels/index.js";
 
     const {
         autoplaySpeed = atom(5),
-        allLevels = atom(predefined.levels),
-        allCommands = atom(predefined.solutions),
+        allLevels = atom(levels),
+        allCommands = atom(solutions),
         world = atom({
             dirty: false,
             started: false,
@@ -43,7 +44,7 @@
     const resolution = 32;
 
     const goal = atom(false);
-    const levelKey = atom("lvl1");
+    const levelKey = atom(levels[0].id);
     const currentCommands = $derived(
         view(
             [
@@ -324,9 +325,11 @@
     }
 
     reloadLevel(false);
-    const lineCount = $derived(view("length", lines));
     const json = $derived(
         view(L.inverse(L.json({ space: "  " })), currentCommands),
+    );
+    const levelJson = $derived(
+        view(L.inverse(L.json({ space: "  " })), currentLevel),
     );
     const levelError = atom();
     const currentLevelText = $derived(
@@ -828,6 +831,7 @@
         autoplay.value = false;
     }
 
+    function beginGoal() {}
     function beginEdit() {
         reloadLevel(false);
     }
@@ -1005,7 +1009,7 @@
         </div>
     </div>
     <div
-        style="display: none; grid-template-columns: 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
+        style=" display: grid; grid-template-columns: 1fr 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
     >
         <div
             style="display: grid; grid-template-rows: 1fr auto; box-sizing: border-box; "
@@ -1042,6 +1046,11 @@
         <textarea
             style="overflow: auto; height: 10em; font-family: monospace;"
             readonly={true}>{json.value}</textarea
+        >
+
+        <textarea
+            style="overflow: auto; height: 10em; font-family: monospace;"
+            readonly={true}>{levelJson.value}</textarea
         >
     </div>
 
