@@ -13,6 +13,16 @@ import * as level012 from "./012cleanTheRoom.js";
 import * as level013 from "./013tileTheFloor.js";
 import * as level014 from "./014stealTheOlympicFire.js";
 import * as level015 from "./015removeTheTiles.js";
+import * as level016 from "./016walkTheLabyrinth.js";
+import * as level017 from "./017hangTheLampions.js";
+import * as level018 from "./018followTheSeeds.js";
+import * as level019 from "./019cleanTheTunnels.js";
+import * as level020 from "./020increment.js";
+import * as level021 from "./021decrement.js";
+import * as level022 from "./022addSlow.js";
+import * as level023 from "./023saveTheFlowers.js";
+import * as level024 from "./024findTeddyBear.js";
+import * as level025 from "./025jumpTheHurdles.js";
 
 export const levels = [
   {
@@ -90,6 +100,56 @@ export const levels = [
     name: "Remove the tiles",
     level: level015.world,
   },
+  {
+    id: "level016",
+    name: "Walk the labyrinth",
+    level: level016.world,
+  },
+  {
+    id: "level017",
+    name: "Hang the lapions",
+    level: level017.world,
+  },
+  {
+    id: "level018",
+    name: "Follow the seeds",
+    level: level018.world,
+  },
+  {
+    id: "level019",
+    name: "Clean the tunnels",
+    level: level019.world,
+  },
+  {
+    id: "level020",
+    name: "Increment",
+    level: level020.world,
+  },
+  {
+    id: "level021",
+    name: "Decrement",
+    level: level021.world,
+  },
+  {
+    id: "level022",
+    name: "Add Slow",
+    level: level022.world,
+  },
+  {
+    id: "level023",
+    name: "Save the flowers",
+    level: level023.world,
+  },
+  {
+    id: "level024",
+    name: "Find Teddy Bear",
+    level: level024.world,
+  },
+  {
+    id: "level025",
+    name: "Jump the hurdle",
+    level: level025.world,
+  },
 ];
 
 export const solutions = [
@@ -152,5 +212,45 @@ export const solutions = [
   {
     level: "level015",
     commands: level015.solution,
+  },
+  {
+    level: "level016",
+    commands: level016.solution,
+  },
+  {
+    level: "level017",
+    commands: level017.solution,
+  },
+  {
+    level: "level018",
+    commands: level018.solution,
+  },
+  {
+    level: "level019",
+    commands: level019.solution,
+  },
+  {
+    level: "level020",
+    commands: level020.solution,
+  },
+  {
+    level: "level021",
+    commands: level021.solution,
+  },
+  {
+    level: "level022",
+    commands: level022.solution,
+  },
+  {
+    level: "level023",
+    commands: level023.solution,
+  },
+  {
+    level: "level024",
+    commands: level024.solution,
+  },
+  {
+    level: "level025",
+    commands: level025.solution,
   },
 ];

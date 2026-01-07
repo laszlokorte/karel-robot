@@ -188,12 +188,24 @@
                 L.valueOr([]),
                 L.whereEq({ id: levelKey }),
                 "level",
-                L.valueOr(() => ({
+                L.valueOr({
                     size: { x: 10, y: 10 },
                     start: { x: 5, y: 5 },
                     walls: Array(10 * 10).fill(false),
                     crystals: Array(10 * 10).fill(false),
-                })),
+                }),
+                L.iso(
+                    (gen) => ({
+                        ...gen(),
+                        gen: gen,
+                    }),
+                    (x) => () => ({
+                        size: x.size,
+                        start: x.start,
+                        walls: x.walls,
+                        crystals: x.crystals,
+                    }),
+                ),
             ]),
             combine({ allLevels, levelKey }),
         ),
@@ -291,7 +303,7 @@
     const executionErrorKind = $derived(view("kind", executionError));
 
     function reloadLevel(init) {
-        const lvl = currentLevel.value();
+        const lvl = currentLevel.value.gen();
         const cmds = currentCommands.value;
         update((w) => {
             return {
@@ -329,7 +341,7 @@
         view(L.inverse(L.json({ space: "  " })), currentCommands),
     );
     const levelJson = $derived(
-        view(L.inverse(L.json({ space: "  " })), currentLevel),
+        view([L.inverse(L.json({ space: "  " }))], currentLevel),
     );
     const levelError = atom();
     const currentLevelText = $derived(
