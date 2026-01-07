@@ -1,4 +1,4 @@
-export const world = {
+export const world = () => ({
   size: {
     y: 10,
     x: 10,
@@ -211,7 +211,7 @@ export const world = {
     false,
     false,
   ],
-};
+});
 export const solution = [
   {
     indentSpaces: "",

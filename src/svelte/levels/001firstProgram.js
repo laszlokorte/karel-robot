@@ -1,4 +1,4 @@
-export const world = {
+export const world = (seed) => ({
   size: {
     y: 3,
     x: 5,
@@ -41,7 +41,7 @@ export const world = {
     false,
     false,
   ],
-};
+});
 
 export const solution = [
   {

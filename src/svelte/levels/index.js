@@ -8,6 +8,11 @@ import * as level007 from "./007fillTheHoles.js";
 import * as level008 from "./008saveTheFlower.js";
 import * as level009 from "./009mowTheLawn.js";
 import * as level010 from "./010harvestTheField.js";
+import * as level011 from "./011repairTheStreet.js";
+import * as level012 from "./012cleanTheRoom.js";
+import * as level013 from "./013tileTheFloor.js";
+import * as level014 from "./014stealTheOlympicFire.js";
+import * as level015 from "./015removeTheTiles.js";
 
 export const levels = [
   {
@@ -60,6 +65,31 @@ export const levels = [
     name: "Harvest the field",
     level: level010.world,
   },
+  {
+    id: "level011",
+    name: "Repair the street",
+    level: level011.world,
+  },
+  {
+    id: "level012",
+    name: "Clean the room",
+    level: level012.world,
+  },
+  {
+    id: "level013",
+    name: "Tile the floor",
+    level: level013.world,
+  },
+  {
+    id: "level014",
+    name: "Steal the olympic fire",
+    level: level014.world,
+  },
+  {
+    id: "level015",
+    name: "Remove the tiles",
+    level: level015.world,
+  },
 ];
 
 export const solutions = [
@@ -102,5 +132,25 @@ export const solutions = [
   {
     level: "level010",
     commands: level010.solution,
+  },
+  {
+    level: "level011",
+    commands: level011.solution,
+  },
+  {
+    level: "level012",
+    commands: level012.solution,
+  },
+  {
+    level: "level013",
+    commands: level013.solution,
+  },
+  {
+    level: "level014",
+    commands: level014.solution,
+  },
+  {
+    level: "level015",
+    commands: level015.solution,
   },
 ];

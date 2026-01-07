@@ -188,12 +188,12 @@
                 L.valueOr([]),
                 L.whereEq({ id: levelKey }),
                 "level",
-                L.valueOr({
+                L.valueOr(() => ({
                     size: { x: 10, y: 10 },
                     start: { x: 5, y: 5 },
                     walls: Array(10 * 10).fill(false),
                     crystals: Array(10 * 10).fill(false),
-                }),
+                })),
             ]),
             combine({ allLevels, levelKey }),
         ),
@@ -291,7 +291,7 @@
     const executionErrorKind = $derived(view("kind", executionError));
 
     function reloadLevel(init) {
-        const lvl = currentLevel.value;
+        const lvl = currentLevel.value();
         const cmds = currentCommands.value;
         update((w) => {
             return {
@@ -613,8 +613,8 @@
             }
             case "checkWallLeft": {
                 const sidePos = {
-                    x: player.pos.x - player.dir.y,
-                    y: player.pos.y + player.dir.x,
+                    x: player.pos.x + player.dir.y,
+                    y: player.pos.y - player.dir.x,
                 };
                 return (
                     sidePos.y == -1 ||
@@ -878,7 +878,7 @@
                         player: player,
                         level: level,
                         stack: stack,
-                        running: false,
+                        running: true,
                         started: true,
                         autoplay: false,
                     };
@@ -1009,7 +1009,7 @@
         </div>
     </div>
     <div
-        style="display: none; grid-template-columns: 1fr 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
+        style="display: grid; grid-template-columns: 1fr 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
     >
         <div
             style="display: grid; grid-template-rows: 1fr auto; box-sizing: border-box; "
@@ -1099,6 +1099,14 @@
                                         running.value}>Run</button
                                 >
                             </div>
+                            {#if commandErrorCount.value > 0}
+                                <div class="error-summary">
+                                    {commandErrorCount.value}
+                                    {commandErrorCount.value > 1
+                                        ? "Errors"
+                                        : "Error"}
+                                </div>
+                            {/if}
                             {#if running.value}
                                 <div class="button-row">
                                     <button
@@ -1144,9 +1152,7 @@
                                 <label class="slider">
                                     <div>
                                         Playback Speed:
-                                        <output
-                                            >{autoplaySpeed.value}&times;</output
-                                        >
+                                        <output>{autoplaySpeed.value}/s</output>
                                     </div>
                                     <input
                                         type="range"
@@ -1156,13 +1162,6 @@
                                         step="1"
                                     />
                                 </label>
-                            {:else if commandErrorCount.value > 0}
-                                <div class="error-summary">
-                                    {commandErrorCount.value}
-                                    {commandErrorCount.value > 1
-                                        ? "Errors"
-                                        : "Error"}
-                                </div>
                             {/if}
                         </div>
                         <label
@@ -1177,6 +1176,8 @@
                                     <span
                                         class={{
                                             "line-number": true,
+
+                                            labeled: !!c.label,
                                             active: program.value.next == l,
                                             error:
                                                 executionErrorLine.value == l ||
@@ -1204,14 +1205,21 @@
                                         <span
                                             class={{
                                                 annotation: true,
+                                                labeled: !!l.label,
+                                                empty: !!l.empty,
                                                 invalid:
                                                     l.empty !== "" &&
                                                     (!!l.invalid || !!l.error),
+                                                valid: !(
+                                                    l.empty !== "" &&
+                                                    (!!l.invalid || !!l.error)
+                                                ),
                                             }}
                                             >{l.indentSpaces ||
                                                 ""}{#if l.label}<span
-                                                    class={{ label: true }}
-                                                    >{l.label}:</span
+                                                    class={{
+                                                        "annotation-label": true,
+                                                    }}>{l.label}:</span
                                                 >{l.labelSpace}
                                             {/if}{#if l.empty !== undefined}
                                                 <span class="empty"
@@ -1229,6 +1237,7 @@
                                                 <span
                                                     class={{
                                                         "annotation-body": true,
+                                                        label: !!l.label,
                                                         empty: !!l.empty,
                                                         valid: !l.error,
                                                         invalid: l.error,
@@ -1238,8 +1247,8 @@
                                                         >{" "}</span
                                                     ><span
                                                         class={{
-                                                            "annotation-body": true,
-                                                            label: true,
+                                                            "annotation-arg": true,
+                                                            "annotation-label": true,
                                                             empty: !!l.empty,
                                                             valid: !l.error,
                                                             invalid: l.error,
@@ -1731,7 +1740,7 @@
         background-color: #0844;
         outline: 1px solid #0a68;
     }
-    .overlay-layer.faded .valid.label {
+    .overlay-layer.faded .annotation-body.valid.label {
         background-color: #aa00ff44;
         outline: 1px solid #cc00ff88;
     }
@@ -1740,6 +1749,10 @@
     }
     .annotation-extra {
         display: none;
+    }
+
+    .annotation.labeled:not(.invalid) {
+        background-color: #aa00ff44;
     }
 
     .overlay-layer.faded .annotation-extra {
@@ -1781,12 +1794,7 @@
         outline: 1px solid #cc0000;
     }
 
-    .annotation-body.label {
-        background-color: #aa00ff33;
-        outline: 1px solid #cc00ff;
-    }
-
-    .label {
+    .annotation-label {
         background-color: #ff00aa33;
         outline: 1px solid #cc00cc;
         padding: 2px 3px;
@@ -1796,6 +1804,10 @@
         outline-offset: -1px;
         z-index: 10;
         position: relative;
+    }
+    .annotation-arg {
+        background-color: #aa00ff33;
+        outline: 1px solid #cc00ff;
     }
 
     .overlay-input {
@@ -1837,6 +1849,7 @@
         min-width: 2em;
         padding-right: 1ex;
         color: #aaa;
+        border-right: 3px solid transparent;
     }
     .line-number.active {
         background: aquamarine;
@@ -1847,6 +1860,9 @@
         background: goldenrod;
         color: #000;
     }
+    .line-number.labeled {
+        border-color: #cc00aa;
+    }
 
     .line-number.error {
         background: palevioletred;
@@ -1855,9 +1871,10 @@
     .line-number.active.error {
         outline: 2px solid aquamarine;
     }
-    .line-number.targetted {
+    /* .line-number.targetted {
         text-decoration: underline;
-    }
+        text-decoration-color: #cc00aa;
+        }*/
 
     .line-numbered {
         display: grid;
@@ -2060,6 +2077,7 @@
         align-items: center;
         color: #ffbbbb;
         font-weight: bold;
+        margin-right: auto;
     }
     .hidden {
         display: none !important;

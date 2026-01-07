@@ -1,4 +1,4 @@
-export const world = {
+export const world = () => ({
   size: {
     y: 9,
     x: 9,
@@ -173,7 +173,7 @@ export const world = {
     false,
     false,
   ],
-};
+});
 
 export const solution = [
   {
