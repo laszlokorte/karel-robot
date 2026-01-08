@@ -1034,7 +1034,7 @@
 <div class="container">
     <div class="controls">
         <h1>
-            <img src="/favicon.svg" alt="[Icon]" />
+            <img src="favicon.svg" alt="[Icon]" />
             Caroline The Robot
             <span>(<abbr title="Work in Progress">WIP</abbr>)</span>
         </h1>
@@ -1262,6 +1262,7 @@
                                 </label>
                             {/if}
                         </div>
+
                         {#if goal.value}
                             <div class="goal-text">Explanation</div>
                         {:else}
@@ -1475,6 +1476,112 @@
                                 </div>
                             </label>
                         {/if}
+                        <details>
+                            <summary>Help</summary>
+                            <div>
+                                <h3>Movement commands</h3>
+                                <dl>
+                                    <dt><code>forward</code></dt>
+                                    <dd>
+                                        Moves carol one step into the direction
+                                        she is facing.
+                                    </dd>
+                                    <dt><code>turnLeft</code></dt>
+                                    <dd>Turns carol 90° clockwise</dd>
+
+                                    <dt><code>turnRight</code></dt>
+                                    <dd>Turns carol 90° counter-clockwise</dd>
+
+                                    <dt><code>turnAround</code></dt>
+                                    <dd>Turns carol 180°</dd>
+                                </dl>
+                                <h3>Comments</h3>
+                                <dl>
+                                    <dt><code># some comment</code></dt>
+                                    <dd>
+                                        Everything after a <code>#</code> to the end
+                                        of the line is ignored
+                                    </dd>
+                                </dl>
+                                <h3>Beeper commands</h3>
+                                <dl>
+                                    <dt><code>pick</code></dt>
+                                    <dd>
+                                        Picks the beeper at the current position
+                                    </dd>
+                                    <dt><code>drop</code></dt>
+                                    <dd>
+                                        Places a beeper at the current position
+                                    </dd>
+                                </dl>
+                                <h3>Check commands</h3>
+                                <dl>
+                                    <dt><code>checkBeeper</code></dt>
+                                    <dd></dd>
+                                    <dt><code>checkWallAhead</code></dt>
+                                    <dd></dd>
+                                    <dt><code>checkBeeperAhead</code></dt>
+                                    <dd></dd>
+                                    <dt><code>checkWallLeft</code></dt>
+                                    <dd></dd>
+                                    <dt><code>checkWallRight</code></dt>
+                                    <dd></dd>
+                                </dl>
+                                <h3>labels</h3>
+                                <dl>
+                                    <dt><code>someLabel:</code></dt>
+                                    <dd></dd>
+                                </dl>
+                                <h3>Jumps</h3>
+                                <dl>
+                                    <dt>
+                                        <code>jumpBy</code>
+                                        <code>&lt;n&gt;</code>
+                                    </dt>
+                                    <dd></dd>
+                                    <dt>
+                                        <code>jumpTo</code>
+                                        <code>&lt;label&gt;</code>
+                                    </dt>
+                                    <dd></dd>
+                                </dl>
+                                <h3>Conditional Jumps</h3>
+                                <dl>
+                                    <dt>
+                                        <code>ifYesJumpBy</code>
+                                        <code>&lt;n&gt;</code>
+                                    </dt>
+                                    <dd></dd>
+                                    <dt>
+                                        <code>ifNotJumpBy</code>
+                                        <code>&lt;n&gt;</code>
+                                    </dt>
+                                    <dd></dd>
+                                    <dt>
+                                        <code>ifYesJumpTo</code>
+                                        <code>&lt;label&gt;</code>
+                                    </dt>
+                                    <dd></dd>
+                                    <dt>
+                                        <code>ifNotJumpTo</code>
+                                        <code>&lt;label&gt;</code>
+                                    </dt>
+                                    <dd></dd>
+                                </dl>
+                                <h3>Bookmark Stack</h3>
+                                <dl>
+                                    <dt><code>bookmark</code></dt>
+                                    <dd></dd>
+                                    <dt><code>return</code></dt>
+                                    <dd></dd>
+                                    <dt>
+                                        <code>bookmarkAndJumpTo</code>
+                                        <code>&lt;label&gt;</code>
+                                    </dt>
+                                    <dd></dd>
+                                </dl>
+                            </div>
+                        </details>
                     </div>
                 {:else}
                     <div style="display: flex; flex-direction: column;">
@@ -1498,6 +1605,7 @@
                                     {/each}
                                 </ol>
                             </div>
+
                             <div class="canvas-container">
                                 <svg
                                     class="canvas"
@@ -1739,7 +1847,8 @@
     select {
         align-self: stretch;
         min-width: 20em;
-        padding: 0 1ex;
+        padding: 0 1em 0 1ex;
+        border-radius: 1ex;
     }
     .toolbar {
         display: flex;
@@ -1769,6 +1878,7 @@
         margin-left: auto;
         justify-self: end;
         align-self: end;
+        white-space: nowrap;
     }
 
     .slider input {
@@ -2265,5 +2375,42 @@
         background-color: #222;
         color: #fff;
         font-family: monospace;
+    }
+    summary {
+        padding: 1em;
+        background-color: #000;
+        color: #fff;
+        font-family: monospace;
+        cursor: pointer;
+    }
+    details > div {
+        padding: 1em;
+        background-color: #fff;
+        color: #000;
+        font-family: monospace;
+    }
+
+    details code {
+        background-color: #111;
+        color: #fff;
+        font-family: monospace;
+        display: inline-block;
+        padding: 2px 4px;
+        border-radius: 4px;
+    }
+    dl {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 1em;
+        justify-content: start;
+        align-items: baseline;
+    }
+    dt,
+    dd {
+        margin: 0;
+        padding: 0;
+    }
+    dt {
+        text-align: right;
     }
 </style>
