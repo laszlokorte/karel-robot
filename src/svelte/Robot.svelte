@@ -3,6 +3,7 @@
     import * as R from "ramda";
     import {
         atom,
+        storedAtom,
         view,
         update,
         combine,
@@ -16,7 +17,7 @@
     const {
         autoplaySpeed = atom(5),
         allLevels = atom(levels),
-        allCommands = atom(solutions),
+        storedCommands = storedAtom("commands"),
         world = atom({
             dirty: false,
             started: false,
@@ -42,6 +43,7 @@
         }),
     } = $props();
     const resolution = 32;
+    const allCommands = $derived(view(L.json(), storedCommands));
 
     const goal = atom(false);
     const levelKey = atom(levels[0].id);
@@ -194,7 +196,7 @@
                     walls: Array(10 * 10).fill(false),
                     crystals: Array(10 * 10).fill(false),
                 }),
-                L.iso(
+                L.lens(
                     (gen) => ({
                         ...gen(),
                         gen: gen,
@@ -302,10 +304,11 @@
     const executionErrorPosition = $derived(view("location", executionError));
     const executionErrorKind = $derived(view("kind", executionError));
 
-    function reloadLevel(init) {
-        const lvl = currentLevel.value.gen();
+    function reloadLevel(init, randomize) {
         const cmds = currentCommands.value;
         update((w) => {
+            const lvl = randomize ? currentLevel.value.gen() : w.level;
+
             return {
                 ...w,
                 dirty: false,
@@ -321,6 +324,7 @@
                     size: lvl.size,
                     crystals: lvl.crystals,
                     walls: lvl.walls,
+                    start: lvl.start,
                 },
                 player: {
                     pos: {
@@ -843,14 +847,19 @@
         autoplay.value = false;
     }
 
-    function beginGoal() {}
+    function beginGoal() {
+        goal.value = true;
+        running.value = false;
+    }
     function beginEdit() {
+        goal.value = false;
         reloadLevel(false);
     }
     function beginExecute() {
+        goal.value = false;
         reloadLevel(true);
     }
-    function resetExecution() {
+    function resetExecution(loadGoal) {
         reloadLevel(true);
     }
     function executeLine() {
@@ -997,12 +1006,16 @@
 
 <div class="container">
     <div class="controls">
-        <h1>Caroline The Robot (<abbr title="Work in Progress">WIP</abbr>)</h1>
+        <h1>
+            <img src="/favicon.svg" alt="[Icon]" />
+            Caroline The Robot
+            <span>(<abbr title="Work in Progress">WIP</abbr>)</span>
+        </h1>
         <div class="button-row">
             <label>
                 Level: <select
                     bind:value={levelKey.value}
-                    onchange={(evt) => reloadLevel(false)}
+                    onchange={(evt) => reloadLevel(false, true)}
                 >
                     {#each allLevels.value as l, li (l.id)}
                         <option value={l.id} selected={levelKey.value === l.id}
@@ -1015,7 +1028,7 @@
             <button
                 class="level-button"
                 onclick={(evt) => {
-                    reloadLevel(false);
+                    reloadLevel(false, true);
                 }}>Reload</button
             >
         </div>
@@ -1082,20 +1095,19 @@
                                     type="button"
                                     class={{
                                         "toggle-button": true,
-                                        active: false,
+                                        active: goal.value,
                                     }}
                                     onclick={beginGoal}
-                                    disabled={!running.value}
                                     >Goal
                                 </button>
                                 <button
                                     type="button"
                                     class={{
                                         "toggle-button": true,
-                                        active: !running.value,
+                                        active: !running.value && !goal.value,
                                     }}
                                     onclick={beginEdit}
-                                    disabled={!running.value}
+                                    disabled={!running.value && !goal.value}
                                     >Edit
                                 </button>
                                 <button
@@ -1103,11 +1115,10 @@
                                     class={{
                                         "toggle-button": true,
                                         error: commandErrorCount.value > 0,
-                                        active: running.value,
+                                        active: running.value && !goal.value,
                                     }}
                                     onclick={beginExecute}
-                                    disabled={!currentCommands.value.length ||
-                                        commandErrorCount.value > 0 ||
+                                    disabled={commandErrorCount.value > 0 ||
                                         running.value}>Run</button
                                 >
                             </div>
@@ -1174,206 +1185,272 @@
                                         step="1"
                                     />
                                 </label>
+                            {:else if goal.value}
+                                <div class="button-row">
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        onclick={resetGoalExecution}
+                                        >Reset
+                                    </button>
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        onclick={executeGoalLine}
+                                        >Step
+                                    </button>
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        disabled={!currentCommands.value
+                                            .length ||
+                                            executionError.value ||
+                                            halted.value ||
+                                            autoplay.value}
+                                        onclick={startGoalExecution}
+                                        >Play
+                                    </button>
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        disabled={!currentCommands.value
+                                            .length ||
+                                            executionError.value ||
+                                            halted.value ||
+                                            !autoplay.value}
+                                        onclick={pauseGoalExecution}
+                                        >Pause
+                                    </button>
+                                </div>
+
+                                <label class="slider">
+                                    <div>
+                                        Playback Speed:
+                                        <output>{autoplaySpeed.value}/s</output>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        bind:value={autoplaySpeed.value}
+                                        min="1"
+                                        max="50"
+                                        step="1"
+                                    />
+                                </label>
                             {/if}
                         </div>
-                        <label
-                            class={{
-                                "line-numbered": true,
-                                disabled: running.value,
-                            }}
-                        >
-                            <div class="line-numbers">
-                                {#each { length: lines.value.length } as _, l (l)}
-                                    {@const c = currentCommands.value[l] ?? {}}
-                                    <span
-                                        class={{
-                                            "line-number": true,
-
-                                            labeled: !!c.label,
-                                            active: program.value.next == l,
-                                            error:
-                                                executionErrorLine.value == l ||
-                                                !!c.error,
-                                            halted: halted.value,
-                                            targetted:
-                                                allJumpTargets.value.includes(
-                                                    l,
-                                                ),
-                                        }}
-                                    >
-                                        {l}
-                                    </span>
-                                {/each}
-                            </div>
-                            <div class="overlay">
-                                <div
-                                    class={{
-                                        faded: running.value,
-                                        "overlay-layer": true,
-                                        "overlay-annotations": true,
-                                    }}
-                                >
-                                    {#each currentCommands.value as l}
+                        {#if goal.value}
+                            <div class="goal-text">Hello</div>
+                        {:else}
+                            <label
+                                class={{
+                                    "line-numbered": true,
+                                    disabled: running.value,
+                                }}
+                            >
+                                <div class="line-numbers">
+                                    {#each { length: lines.value.length } as _, l (l)}
+                                        {@const c =
+                                            currentCommands.value[l] ?? {}}
                                         <span
                                             class={{
-                                                annotation: true,
-                                                labeled: !!l.label,
-                                                empty: !!l.empty,
-                                                invalid:
-                                                    l.empty !== "" &&
-                                                    (!!l.invalid || !!l.error),
-                                                valid: !(
-                                                    l.empty !== "" &&
-                                                    (!!l.invalid || !!l.error)
-                                                ),
+                                                "line-number": true,
+
+                                                labeled: !!c.label,
+                                                active: program.value.next == l,
+                                                error:
+                                                    executionErrorLine.value ==
+                                                        l || !!c.error,
+                                                halted: halted.value,
+                                                targetted:
+                                                    allJumpTargets.value.includes(
+                                                        l,
+                                                    ),
                                             }}
-                                            >{l.indentSpaces ||
-                                                ""}{#if l.label}<span
-                                                    class={{
-                                                        "annotation-label": true,
-                                                    }}>{l.label}:</span
-                                                >{l.labelSpace}
-                                            {/if}{#if l.empty !== undefined}
-                                                <span class="empty"
-                                                    >{l.empty}</span
-                                                ><span class="comment"
-                                                    >{l.comment}</span
-                                                ><span>{" "}</span>
-                                            {:else if l.invalid}<span
-                                                    class="invalid"
-                                                    >{l.invalid || " "}</span
-                                                ><span class="comment"
-                                                    >{l.comment || ""}</span
-                                                >
-                                            {:else}
-                                                <span
-                                                    class={{
-                                                        "annotation-body": true,
-                                                        label: !!l.label,
-                                                        empty: !!l.empty,
-                                                        valid: !l.error,
-                                                        invalid: l.error,
-                                                    }}>{l.op || " "}</span
-                                                >{#if l.arg !== undefined}
-                                                    <span class="spaces"
-                                                        >{" "}</span
-                                                    ><span
-                                                        class={{
-                                                            "annotation-arg": true,
-                                                            "annotation-label": true,
-                                                            empty: !!l.empty,
-                                                            valid: !l.error,
-                                                            invalid: l.error,
-                                                        }}
-                                                        >{l.arg}<span
-                                                            class={{
-                                                                "annotation-extra": true,
-                                                                hidden:
-                                                                    l.arg ==
-                                                                    l.numericArg,
-                                                            }}
-                                                            >&nbsp;(#{l.numericArg})
-                                                        </span>
-                                                    </span>
-                                                {/if}<span class="spaces"
-                                                    >{l.spaces || ""}</span
-                                                ><span class="comment"
-                                                    >{l.comment || ""}</span
-                                                ><span>{" "}</span>
-                                            {/if}
+                                        >
+                                            {l}
                                         </span>
                                     {/each}
                                 </div>
-                                <div
-                                    style="z-index: 100; pointer-events: none;"
-                                    class={{
-                                        "overlay-layer": true,
-                                        "overlay-annotations": true,
-                                        "annoatation-right": true,
-                                    }}
-                                >
-                                    {#each currentCommands.value as l, li}
+                                <div class="overlay">
+                                    <div
+                                        class={{
+                                            faded: running.value,
+                                            "overlay-layer": true,
+                                            "overlay-annotations": true,
+                                        }}
+                                    >
+                                        {#each currentCommands.value as l}
+                                            <span
+                                                class={{
+                                                    annotation: true,
+                                                    labeled: !!l.label,
+                                                    empty: !!l.empty,
+                                                    invalid:
+                                                        l.empty !== "" &&
+                                                        (!!l.invalid ||
+                                                            !!l.error),
+                                                    valid: !(
+                                                        l.empty !== "" &&
+                                                        (!!l.invalid ||
+                                                            !!l.error)
+                                                    ),
+                                                }}
+                                                >{l.indentSpaces ||
+                                                    ""}{#if l.label}<span
+                                                        class={{
+                                                            "annotation-label": true,
+                                                        }}>{l.label}:</span
+                                                    >{l.labelSpace}
+                                                {/if}{#if l.empty !== undefined}
+                                                    <span class="empty"
+                                                        >{l.empty}</span
+                                                    ><span class="comment"
+                                                        >{l.comment}</span
+                                                    ><span>{" "}</span>
+                                                {:else if l.invalid}<span
+                                                        class="invalid"
+                                                        >{l.invalid ||
+                                                            " "}</span
+                                                    ><span class="comment"
+                                                        >{l.comment || ""}</span
+                                                    >
+                                                {:else}
+                                                    <span
+                                                        class={{
+                                                            "annotation-body": true,
+                                                            label: !!l.label,
+                                                            empty: !!l.empty,
+                                                            valid: !l.error,
+                                                            invalid: l.error,
+                                                        }}>{l.op || " "}</span
+                                                    >{#if l.arg !== undefined}
+                                                        <span class="spaces"
+                                                            >{" "}</span
+                                                        ><span
+                                                            class={{
+                                                                "annotation-arg": true,
+                                                                "annotation-label": true,
+                                                                empty: !!l.empty,
+                                                                valid: !l.error,
+                                                                invalid:
+                                                                    l.error,
+                                                            }}
+                                                            >{l.arg}<span
+                                                                class={{
+                                                                    "annotation-extra": true,
+                                                                    hidden:
+                                                                        l.arg ==
+                                                                        l.numericArg,
+                                                                }}
+                                                                >&nbsp;(#{l.numericArg})
+                                                            </span>
+                                                        </span>
+                                                    {/if}<span class="spaces"
+                                                        >{l.spaces || ""}</span
+                                                    ><span class="comment"
+                                                        >{l.comment || ""}</span
+                                                    ><span>{" "}</span>
+                                                {/if}
+                                            </span>
+                                        {/each}
+                                    </div>
+                                    <div
+                                        style="z-index: 100; pointer-events: none;"
+                                        class={{
+                                            "overlay-layer": true,
+                                            "overlay-annotations": true,
+                                            "annoatation-right": true,
+                                        }}
+                                    >
+                                        {#each currentCommands.value as l, li}
+                                            <span
+                                                style="background: none;"
+                                                class={{
+                                                    annotation: true,
+                                                }}
+                                            >
+                                                <span
+                                                    style="color: transparent; background: none"
+                                                >
+                                                    {l.indentSpaces ||
+                                                        ""}{#if l.label}<span
+                                                            >{l.label}:</span
+                                                        >{l.labelSpace}
+                                                    {/if}{#if l.empty !== undefined}<span
+                                                            >{l.empty}</span
+                                                        ><span>{l.comment}</span
+                                                        >{:else if l.invalid}<span
+                                                            >{l.invalid ||
+                                                                ""}</span
+                                                        ><span
+                                                            >{l.comment ||
+                                                                ""}</span
+                                                        >{:else}<span class={{}}
+                                                            >{l.op ||
+                                                                " "}{l.arg !==
+                                                            undefined
+                                                                ? " " + l.arg
+                                                                : ""}</span
+                                                        ><span
+                                                            >{l.spaces ||
+                                                                ""}</span
+                                                        ><span
+                                                            >{l.comment ||
+                                                                ""}</span
+                                                        >
+                                                    {/if}</span
+                                                >
+                                                {#if l.invalid}<span
+                                                        >{" - "}</span
+                                                    ><span class="inlay error"
+                                                        >Invalid syntax</span
+                                                    >{:else if !!l.error}<span
+                                                        >{" - "}</span
+                                                    ><label class="inlay error"
+                                                        ><input
+                                                            type="checkbox"
+                                                        />{l.error}</label
+                                                    >{/if}
+                                                {#if executionErrorLine.value === li}
+                                                    <label class="inlay error">
+                                                        <input
+                                                            type="checkbox"
+                                                        />{executionErrorMessage.value}</label
+                                                    >
+                                                {/if}
+                                            </span>
+                                        {/each}
                                         <span
                                             style="background: none;"
                                             class={{
                                                 annotation: true,
                                             }}
                                         >
-                                            <span
-                                                style="color: transparent; background: none"
-                                            >
-                                                {l.indentSpaces ||
-                                                    ""}{#if l.label}<span
-                                                        >{l.label}:</span
-                                                    >{l.labelSpace}
-                                                {/if}{#if l.empty !== undefined}<span
-                                                        >{l.empty}</span
-                                                    ><span>{l.comment}</span
-                                                    >{:else if l.invalid}<span
-                                                        >{l.invalid || ""}</span
-                                                    ><span
-                                                        >{l.comment || ""}</span
-                                                    >{:else}<span class={{}}
-                                                        >{l.op || " "}{l.arg !==
-                                                        undefined
-                                                            ? " " + l.arg
-                                                            : ""}</span
-                                                    ><span
-                                                        >{l.spaces || ""}</span
-                                                    ><span
-                                                        >{l.comment || ""}</span
-                                                    >
-                                                {/if}</span
-                                            >
-                                            {#if l.invalid}<span>{" - "}</span
-                                                ><span class="inlay error"
-                                                    >Invalid syntax</span
-                                                >{:else if !!l.error}<span
-                                                    >{" - "}</span
-                                                ><label class="inlay error"
-                                                    ><input
-                                                        type="checkbox"
-                                                    />{l.error}</label
-                                                >{/if}
-                                            {#if executionErrorLine.value === li}
-                                                <label class="inlay error">
-                                                    <input
-                                                        type="checkbox"
-                                                    />{executionErrorMessage.value}</label
+                                            {#if executionErrorLine.value === currentCommands.value.length}
+                                                <span class="inlay error"
+                                                    >{executionErrorMessage.value}</span
                                                 >
                                             {/if}
                                         </span>
-                                    {/each}
-                                    <span
-                                        style="background: none;"
+                                    </div>
+                                    <textarea
+                                        cols="0"
+                                        rows="0"
+                                        use:bindValue={text}
+                                        autocomplete="off"
+                                        autocorrect="off"
+                                        autocapitalize="off"
+                                        spellcheck="false"
+                                        readonly={running.value}
                                         class={{
-                                            annotation: true,
+                                            hidden: running.value,
+                                            "overlay-layer": true,
+                                            "overlay-input": true,
                                         }}
-                                    >
-                                        {#if executionErrorLine.value === currentCommands.value.length}
-                                            <span class="inlay error"
-                                                >{executionErrorMessage.value}</span
-                                            >
-                                        {/if}
-                                    </span>
+                                    ></textarea>
                                 </div>
-                                <textarea
-                                    cols="0"
-                                    rows="0"
-                                    use:bindValue={text}
-                                    autocomplete="off"
-                                    autocorrect="off"
-                                    autocapitalize="off"
-                                    spellcheck="false"
-                                    readonly={running.value}
-                                    class={{
-                                        hidden: running.value,
-                                        "overlay-layer": true,
-                                        "overlay-input": true,
-                                    }}
-                                ></textarea>
-                            </div>
-                        </label>
+                            </label>
+                        {/if}
                     </div>
                 {:else}
                     <div style="display: flex; flex-direction: column;">
@@ -2151,5 +2228,18 @@
         font-size: 1em;
         align-self: center;
         padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 1ex;
+    }
+    h1 img {
+        height: 1.5em;
+        width: 1.5em;
+    }
+    .goal-text {
+        padding: 1em;
+        background-color: #222;
+        color: #fff;
+        font-family: monospace;
     }
 </style>
