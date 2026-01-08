@@ -215,18 +215,7 @@ export const solution = [
     labelSpace: "",
     empty: "",
   },
-  {
-    indentSpaces: "",
-    op: "checkWallAhead",
-    spaces: "",
-  },
-  {
-    indentSpaces: "",
-    op: "ifYesJumpTo",
-    arg: "@done",
-    spaces: "",
-    numericArg: 17,
-  },
+
   {
     indentSpaces: "",
     op: "checkWallRight",
@@ -238,6 +227,18 @@ export const solution = [
     arg: "@fill",
     spaces: "",
     numericArg: 7,
+  },
+  {
+    indentSpaces: "",
+    op: "checkWallAhead",
+    spaces: "",
+  },
+  {
+    indentSpaces: "",
+    op: "ifYesJumpTo",
+    arg: "@done",
+    spaces: "",
+    numericArg: 19,
   },
   {
     indentSpaces: "",
@@ -286,6 +287,18 @@ export const solution = [
     indentSpaces: "",
     op: "turnRight",
     spaces: "",
+  },
+  {
+    indentSpaces: "",
+    op: "checkWallAhead",
+    spaces: "",
+  },
+  {
+    indentSpaces: "",
+    op: "ifYesJumpTo",
+    arg: "@done",
+    spaces: "",
+    numericArg: 19,
   },
   {
     indentSpaces: "",

@@ -17,6 +17,7 @@
     const {
         autoplaySpeed = atom(5),
         allLevels = atom(levels),
+        allSolutions = atom(solutions),
         storedCommands = storedAtom("commands"),
         world = atom({
             dirty: false,
@@ -24,12 +25,8 @@
             running: false,
             halted: false,
             error: null,
-            level: {
-                size: { x: 10, y: 10 },
-                start: { x: 5, y: 5 },
-                walls: Array(10 * 10).fill(false),
-                crystals: Array(10 * 10).fill(false),
-            },
+            level: levels[0].level(),
+            original: levels[0].level(),
             player: {
                 pos: { x: 0, y: 0 },
                 dir: { x: 0, y: 1 },
@@ -45,7 +42,7 @@
     const resolution = 32;
     const allCommands = $derived(view(L.json(), storedCommands));
 
-    const goal = atom(false);
+    const goal = atom(true);
     const levelKey = atom(levels[0].id);
     const currentCommands = $derived(
         view(
@@ -152,6 +149,18 @@
             currentCommands,
         ),
     );
+
+    const commandsToRun = $derived(
+        view(
+            L.choose(({ goal }) => (goal ? "currentGoal" : "currentCommands")),
+            combine({
+                currentCommands,
+                currentGoal,
+                goal,
+            }),
+        ),
+    );
+
     function jumpTargets(c, ci) {
         switch (c.op) {
             case "ifYesJumpTo":
@@ -191,10 +200,12 @@
                 L.whereEq({ id: levelKey }),
                 "level",
                 L.valueOr({
-                    size: { x: 10, y: 10 },
-                    start: { x: 5, y: 5 },
-                    walls: Array(10 * 10).fill(false),
-                    crystals: Array(10 * 10).fill(false),
+                    gen: () => ({
+                        size: { x: 10, y: 10 },
+                        start: { x: 5, y: 5 },
+                        walls: Array(10 * 10).fill(false),
+                        crystals: Array(10 * 10).fill(false),
+                    }),
                 }),
                 L.lens(
                     (gen) => ({
@@ -212,6 +223,19 @@
             combine({ allLevels, levelKey }),
         ),
     );
+    const currentGoal = $derived(
+        view(
+            L.choose(({ levelKey }) => [
+                "allSolutions",
+                L.valueOr([]),
+                L.whereEq({ level: levelKey }),
+                "commands",
+                L.valueOr([]),
+            ]),
+            combine({ allSolutions, levelKey }),
+        ),
+    );
+    const currentGoalJson = $derived(view(L.inverse(L.json()), currentGoal));
 
     const command = L.iso(
         (cmd) =>
@@ -304,10 +328,13 @@
     const executionErrorPosition = $derived(view("location", executionError));
     const executionErrorKind = $derived(view("kind", executionError));
 
-    function reloadLevel(init, randomize) {
-        const cmds = currentCommands.value;
+    function reloadLevel(init, randomize, showGoal) {
+        if (showGoal) {
+            goal.value = true;
+        }
+        const cmds = commandsToRun.value;
         update((w) => {
-            const lvl = randomize ? currentLevel.value.gen() : w.level;
+            const lvl = randomize ? currentLevel.value.gen() : w.original;
 
             return {
                 ...w,
@@ -320,6 +347,7 @@
                     next: init ? 0 : -1,
                     commands: cmds,
                 },
+                original: lvl,
                 level: {
                     size: lvl.size,
                     crystals: lvl.crystals,
@@ -340,7 +368,7 @@
         }, world);
     }
 
-    reloadLevel(false);
+    reloadLevel(true, false, true);
     const json = $derived(
         view(L.inverse(L.json({ space: "  " })), currentCommands),
     );
@@ -848,8 +876,7 @@
     }
 
     function beginGoal() {
-        goal.value = true;
-        running.value = false;
+        reloadLevel(true, false, true);
     }
     function beginEdit() {
         goal.value = false;
@@ -857,10 +884,10 @@
     }
     function beginExecute() {
         goal.value = false;
-        reloadLevel(true);
+        reloadLevel(true, false);
     }
     function resetExecution(loadGoal) {
-        reloadLevel(true);
+        reloadLevel(true, false);
     }
     function executeLine() {
         update(
@@ -977,7 +1004,7 @@
                     program,
                     player,
                     choice,
-                    commands: currentCommands,
+                    commands: commandsToRun,
                     level,
                     error: executionError,
                     running,
@@ -1015,7 +1042,7 @@
             <label>
                 Level: <select
                     bind:value={levelKey.value}
-                    onchange={(evt) => reloadLevel(false, true)}
+                    onchange={(evt) => reloadLevel(true, true, true)}
                 >
                     {#each allLevels.value as l, li (l.id)}
                         <option value={l.id} selected={levelKey.value === l.id}
@@ -1028,7 +1055,7 @@
             <button
                 class="level-button"
                 onclick={(evt) => {
-                    reloadLevel(false, true);
+                    reloadLevel(true, true, true);
                 }}>Reload</button
             >
         </div>
@@ -1098,6 +1125,7 @@
                                         active: goal.value,
                                     }}
                                     onclick={beginGoal}
+                                    disabled={!currentGoal.value}
                                     >Goal
                                 </button>
                                 <button
@@ -1118,8 +1146,8 @@
                                         active: running.value && !goal.value,
                                     }}
                                     onclick={beginExecute}
-                                    disabled={commandErrorCount.value > 0 ||
-                                        running.value}>Run</button
+                                    disabled={commandErrorCount.value > 0}
+                                    >Run</button
                                 >
                             </div>
                             {#if commandErrorCount.value > 0}
@@ -1146,6 +1174,53 @@
                                             halted.value ||
                                             commandErrorCount.value > 0 ||
                                             autoplay.value}
+                                        >Step
+                                    </button>
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        disabled={executionError.value ||
+                                            halted.value ||
+                                            autoplay.value}
+                                        onclick={startExecution}
+                                        >Play
+                                    </button>
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        disabled={executionError.value ||
+                                            halted.value ||
+                                            !autoplay.value}
+                                        onclick={pauseExecution}
+                                        >Pause
+                                    </button>
+                                </div>
+
+                                <label class="slider">
+                                    <div>
+                                        Playback Speed:
+                                        <output>{autoplaySpeed.value}/s</output>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        bind:value={autoplaySpeed.value}
+                                        min="1"
+                                        max="50"
+                                        step="1"
+                                    />
+                                </label>
+                            {:else if goal.value}
+                                <div class="button-row">
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        onclick={resetExecution}
+                                        >Reset
+                                    </button>
+                                    <button
+                                        class="flow-button"
+                                        type="button"
+                                        onclick={executeLine}
                                         >Step
                                     </button>
                                     <button
@@ -1185,61 +1260,10 @@
                                         step="1"
                                     />
                                 </label>
-                            {:else if goal.value}
-                                <div class="button-row">
-                                    <button
-                                        class="flow-button"
-                                        type="button"
-                                        onclick={resetGoalExecution}
-                                        >Reset
-                                    </button>
-                                    <button
-                                        class="flow-button"
-                                        type="button"
-                                        onclick={executeGoalLine}
-                                        >Step
-                                    </button>
-                                    <button
-                                        class="flow-button"
-                                        type="button"
-                                        disabled={!currentCommands.value
-                                            .length ||
-                                            executionError.value ||
-                                            halted.value ||
-                                            autoplay.value}
-                                        onclick={startGoalExecution}
-                                        >Play
-                                    </button>
-                                    <button
-                                        class="flow-button"
-                                        type="button"
-                                        disabled={!currentCommands.value
-                                            .length ||
-                                            executionError.value ||
-                                            halted.value ||
-                                            !autoplay.value}
-                                        onclick={pauseGoalExecution}
-                                        >Pause
-                                    </button>
-                                </div>
-
-                                <label class="slider">
-                                    <div>
-                                        Playback Speed:
-                                        <output>{autoplaySpeed.value}/s</output>
-                                    </div>
-                                    <input
-                                        type="range"
-                                        bind:value={autoplaySpeed.value}
-                                        min="1"
-                                        max="50"
-                                        step="1"
-                                    />
-                                </label>
                             {/if}
                         </div>
                         {#if goal.value}
-                            <div class="goal-text">Hello</div>
+                            <div class="goal-text">Explanation</div>
                         {:else}
                             <label
                                 class={{
