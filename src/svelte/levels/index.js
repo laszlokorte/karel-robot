@@ -23,6 +23,13 @@ import * as level022 from "./022addSlow.js";
 import * as level023 from "./023saveTheFlowers.js";
 import * as level024 from "./024findTeddyBear.js";
 import * as level025 from "./025jumpTheHurdles.js";
+import * as level026 from "./026solveTheMaze.js";
+import * as level027 from "./027quantizeBits.js";
+import * as level028 from "./028addFast.js";
+import * as level029 from "./029partyAgain.js";
+import * as level030 from "./030fetchTheStars.js";
+import * as level031 from "./031secureTheCave.js";
+import * as level032 from "./032layAndRemoveTiles.js";
 
 export const levels = [
   {
@@ -150,6 +157,41 @@ export const levels = [
     name: "Jump the hurdle",
     level: level025.world,
   },
+  {
+    id: "level026",
+    name: "Solve the maze",
+    level: level026.world,
+  },
+  {
+    id: "level027",
+    name: "Quantize Bites",
+    level: level027.world,
+  },
+  {
+    id: "level028",
+    name: "Add Fast",
+    level: level028.world,
+  },
+  {
+    id: "level029",
+    name: "Party again",
+    level: level029.world,
+  },
+  {
+    id: "level030",
+    name: "Fetch the stars",
+    level: level030.world,
+  },
+  {
+    id: "level031",
+    name: "Secure the Cave",
+    level: level031.world,
+  },
+  {
+    id: "level032",
+    name: "Lay and remove Tiles",
+    level: level032.world,
+  },
 ];
 
 export const solutions = [
@@ -252,5 +294,33 @@ export const solutions = [
   {
     level: "level025",
     commands: level025.solution,
+  },
+  {
+    level: "level026",
+    commands: level026.solution,
+  },
+  {
+    level: "level027",
+    commands: level027.solution,
+  },
+  {
+    level: "level028",
+    commands: level028.solution,
+  },
+  {
+    level: "level029",
+    commands: level029.solution,
+  },
+  {
+    level: "level030",
+    commands: level030.solution,
+  },
+  {
+    level: "level031",
+    commands: level031.solution,
+  },
+  {
+    level: "level032",
+    commands: level032.solution,
   },
 ];

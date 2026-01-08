@@ -674,9 +674,9 @@
                 }
                 return { line: line + 1, stack: [line + 2, ...stack] };
             case "bookmarkAndJump":
-                if (stack.length > 12) {
+                if (stack.length > 200) {
                     return {
-                        error: "To many bookmarks (Stack overflow)",
+                        error: "Too many bookmarks (Stack overflow)",
                         kind: "stack",
                     };
                 }
@@ -1006,7 +1006,7 @@
                 >
                     {#each allLevels.value as l, li (l.id)}
                         <option value={l.id} selected={levelKey.value === l.id}
-                            >{l.name}</option
+                            >{li + 1}. {l.name}</option
                         >
                     {/each}
                 </select>
@@ -1021,7 +1021,7 @@
         </div>
     </div>
     <div
-        style="display: grid; grid-template-columns: 1fr 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
+        style="display: none; grid-template-columns: 1fr 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
     >
         <div
             style="display: grid; grid-template-rows: 1fr auto; box-sizing: border-box; "
@@ -2067,14 +2067,45 @@
         border-left: 0;
         justify-content: end;
         border-radius: 5px;
+        counter-reset: stacksize;
+        position: relative;
     }
     .stack-item {
         padding: 1ex;
         border: 1px solid gray;
         box-sizing: border-box;
         flex-shrink: 1;
+        text-align: center;
+        max-width: 5em;
         font-family: monospace;
         border-radius: 4px;
+        counter-increment: stacksize;
+    }
+    .stack-body:has(.stack-item:nth-child(8))::after {
+        opacity: 0.5;
+        font-size: 0.8em;
+        display: flex;
+        align-items: center;
+        content: "(" counter(stacksize) " more...)";
+        white-space: nowrap;
+        padding: 1ex;
+        border: 1px dashed gray;
+        box-sizing: border-box;
+        flex-shrink: 1;
+        font-family: monospace;
+        border-radius: 4px;
+        text-align: center;
+        justify-content: center;
+        flex-grow: 1;
+    }
+    .stack-item:nth-child(n + 8) {
+        visibility: hidden;
+        width: 0;
+        flex-grow: 0;
+        display: block;
+        overflow: hidden;
+        position: absolute;
+        right: 0;
     }
     .stack-empty {
         padding: 1ex;
