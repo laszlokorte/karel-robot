@@ -348,6 +348,18 @@
         ),
     );
     const executionError = $derived(view("error", world));
+    const stackError = $derived(
+        view(
+            L.reread((e) => e && e.kind == "stack"),
+            executionError,
+        ),
+    );
+    const worldErrorPosition = $derived(
+        view(
+            L.reread((e) => (e && e.kind == "world" ? e.location : null)),
+            executionError,
+        ),
+    );
 
     function reloadLevel(init, randomize, showGoal) {
         if (showGoal) {
@@ -1023,25 +1035,25 @@
             (state) => {
                 let maxSkip = goal.value || fast ? 100 : 1;
                 const commands = state.program.commands;
-                let lastCommand = commands[state.program.next].op;
+                let lastCommand = commands[state.program.next];
                 do {
-                    lastCommand = commands[state.program.next].op;
+                    lastCommand = commands[state.program.next];
                     state = executionStep({ commands, ...state });
                 } while (
                     maxSkip-- > 0 &&
-                    commands[state.program.next].op != "halt" &&
                     state.running &&
                     !state.error &&
                     (fast || goal.value) &&
-                    (![
-                        "forward",
-                        "turnLeft",
-                        "turnRight",
-                        "turnAround",
-                        "pick",
-                        "drop",
-                        "halt",
-                    ].includes(lastCommand) ||
+                    ((lastCommand &&
+                        ![
+                            "forward",
+                            "turnLeft",
+                            "turnRight",
+                            "turnAround",
+                            "pick",
+                            "drop",
+                            "halt",
+                        ].includes(lastCommand.op)) ||
                         goal.value)
                 );
                 return { ...state, program: { ...state.program, commands } };
@@ -1107,7 +1119,7 @@
         </div>
     </div>
     <div
-        style="display: grid; grid-template-columns: 1fr 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
+        style="display: none; grid-template-columns: 1fr 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
     >
         <div
             style="display: grid; grid-template-rows: 1fr auto; box-sizing: border-box; "
@@ -1254,10 +1266,18 @@
                     <div style="display: flex; flex-direction: column;">
                         <div class="world-stack">
                             <div class="canvas-container">
-                                <World {player} {level}></World>
+                                <World
+                                    {player}
+                                    {level}
+                                    errorPosition={worldErrorPosition}
+                                ></World>
                             </div>
 
-                            <Stack {stack} disabled={hideStack}></Stack>
+                            <Stack
+                                {stack}
+                                disabled={hideStack}
+                                error={stackError}
+                            ></Stack>
                             <footer>
                                 <p>
                                     <a
