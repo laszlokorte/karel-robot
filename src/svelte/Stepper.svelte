@@ -26,13 +26,13 @@
     {/if}
 </div>
 <div class={{ "button-row": true, gold: goal.value }}>
-    <button class="flow-button" type="button" onclick={resetExecution}
+    <button class="flow-button" type="button" onclick={() => resetExecution()}
         >Reset
     </button>
     <button
         class="flow-button"
         type="button"
-        onclick={executeLine}
+        onclick={() => executeLine()}
         disabled={executionError.value ||
             halted.value ||
             commandErrorCount.value > 0 ||
@@ -43,14 +43,14 @@
         class="flow-button"
         type="button"
         disabled={executionError.value || halted.value || autoplay.value}
-        onclick={startExecution}
+        onclick={() => startExecution()}
         >Play
     </button>
     <button
         class="flow-button"
         type="button"
         disabled={executionError.value || halted.value || !autoplay.value}
-        onclick={pauseExecution}
+        onclick={() => pauseExecution()}
         >Pause
     </button>
 </div>

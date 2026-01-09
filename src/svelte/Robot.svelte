@@ -1040,21 +1040,21 @@
                     lastCommand = commands[state.program.next];
                     state = executionStep({ commands, ...state });
                 } while (
-                    maxSkip-- > 0 &&
                     state.running &&
                     !state.error &&
                     (fast || goal.value) &&
-                    ((lastCommand &&
-                        ![
-                            "forward",
-                            "turnLeft",
-                            "turnRight",
-                            "turnAround",
-                            "pick",
-                            "drop",
-                            "halt",
-                        ].includes(lastCommand.op)) ||
-                        goal.value)
+                    lastCommand &&
+                    ![
+                        "forward",
+                        "turnLeft",
+                        "turnRight",
+                        "turnAround",
+                        "pick",
+                        "drop",
+                        "halt",
+                    ].includes(lastCommand.op) &&
+                    (fast || goal.value) &&
+                    maxSkip-- > 0
                 );
                 return { ...state, program: { ...state.program, commands } };
             },
@@ -1269,6 +1269,7 @@
                                 <World
                                     {player}
                                     {level}
+                                    {choice}
                                     errorPosition={worldErrorPosition}
                                 ></World>
                             </div>
