@@ -21,6 +21,7 @@
     class={{
         "stack-container": true,
         error: error.value,
+        disabled: disabled.value,
     }}
 >
     <h3 class="stack-head">
@@ -50,6 +51,9 @@
         align-items: stretch;
         gap: 1ex;
         justify-content: space-between;
+    }
+    .stack-container.disabled {
+        opacity: 0;
     }
     .stack-container.error {
         color: #a00;

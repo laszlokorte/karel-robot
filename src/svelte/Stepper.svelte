@@ -16,6 +16,7 @@
         halted = atom(false),
         autoplay = atom(false),
         commandErrorCount = atom(0),
+        goal = atom(false),
         executeLine,
         resetExecution,
         startExecution,
@@ -23,7 +24,14 @@
     } = $props();
 </script>
 
-<div class="button-row">
+<div class="button-row-head">
+    {#if goal.value}
+        Preview the goal
+    {:else}
+        Run your program
+    {/if}
+</div>
+<div class={{ "button-row": true, gold: goal.value }}>
     <button class="flow-button" type="button" onclick={resetExecution}
         >Reset
     </button>
@@ -88,6 +96,12 @@
         gap: 5px;
         padding: 2px;
     }
+    .button-row-head {
+        margin-left: 2em;
+        margin-right: 1ex;
+        opacity: 0.7;
+        align-self: center;
+    }
     .flow-button {
         border-radius: 8px;
         border-width: 2px;
@@ -104,6 +118,22 @@
     }
     .flow-button:disabled {
         color: #fffa;
+        border-color: #333;
+        background-color: #444;
+    }
+    .gold .flow-button {
+        background-color: #a70;
+        border-color: #b90;
+    }
+    .gold .flow-button:hover {
+        background-color: #b70;
+        border-color: #c90;
+    }
+    .gold .flow-button:active {
+        background-color: #960;
+        border-color: #a70;
+    }
+    .gold .flow-button:disabled {
         border-color: #333;
         background-color: #444;
     }

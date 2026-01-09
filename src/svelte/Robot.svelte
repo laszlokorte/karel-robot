@@ -23,7 +23,7 @@
         allLevels = atom(levels),
         allSolutions = atom(solutions),
         storedCommands = storedAtom("commands"),
-        storedSettings = storedAtom("settings"),
+        storedSettings = storedAtom("settings", false),
         world = atom({
             dirty: false,
             started: false,
@@ -58,7 +58,10 @@
     const resolution = 32;
     const allCommands = $derived(view(L.json(), storedCommands));
     const allSettings = $derived(view(L.json(), storedSettings));
-    const shwHelp = $derived(view("showHelp", allSettings));
+    const showHelp = $derived(view("showHelp", allSettings));
+    const showGoalText = $derived(
+        view(["showGoalText", L.valueOr(false)], allSettings),
+    );
     const autoplaySpeed = $derived(view("autoplaySpeed", allSettings));
     const levelKey = $derived(
         view(["levelKey", L.valueOr(levels[0].id)], allSettings),
@@ -81,7 +84,10 @@
         return cmds
             .map((c) => {
                 if (c.label && labelMap[c.label] === -1) {
-                    return { ...c, error: "duplicate label" };
+                    return {
+                        ...c,
+                        error: { kind: "label", msg: "duplicate label" },
+                    };
                 }
                 if (c.arg) {
                     if (c.arg[0] === "@") {
@@ -89,7 +95,10 @@
                         if (!label) {
                             return {
                                 ...c,
-                                error: "Label must not be empty",
+                                error: {
+                                    kind: "label",
+                                    msg: "Label must not be empty",
+                                },
                             };
                         }
                         if (labelMap[label] >= 0) {
@@ -100,13 +109,19 @@
                         } else if (labelMap[label] === -1) {
                             return {
                                 ...c,
-                                error: `Label is defined multiple times`,
+                                error: {
+                                    kind: "label",
+                                    msg: `Label is defined multiple times`,
+                                },
                             };
                         }
                         {
                             return {
                                 ...c,
-                                error: `Unknown label @${label}`,
+                                error: {
+                                    kind: "arg",
+                                    msg: `Unknown label @${label}`,
+                                },
                             };
                         }
                     } else {
@@ -133,7 +148,10 @@
                 ) {
                     return {
                         ...x,
-                        error: `Jump target (${jumpTargets(x, i).join(", ")}) outside range`,
+                        error: {
+                            kind: "arg",
+                            msg: `Jump target (${jumpTargets(x, i).join(", ")}) outside range`,
+                        },
                     };
                 }
                 return x;
@@ -269,6 +287,12 @@
     const running = $derived(view("running", world));
     const started = $derived(view("started", world));
     const autoplay = $derived(view("autoplay", world));
+    const hideStack = $derived(
+        view(
+            L.reread(({ goal, running }) => goal || !running),
+            combine({ goal, running }),
+        ),
+    );
     const autoplayDelay = $derived(
         view(
             [
@@ -300,7 +324,7 @@
         ),
     );
     $effect(() => {
-        if (autoplay.value && running.value) {
+        if (autoplay.value && running.value && !halted.value) {
             const frame = () => {
                 executeLine();
                 raf = window.setTimeout(frame, autoplayDelay.value);
@@ -331,7 +355,9 @@
         }
         const cmds = commandsToRun.value;
         update((w) => {
-            const lvl = randomize ? currentLevel.value.gen() : w.original;
+            const lvl = randomize
+                ? currentLevel.value.gen()
+                : currentLevel.value;
 
             return {
                 ...w,
@@ -513,7 +539,7 @@
                 "bookmarkAndJump",
             ].includes(op)
         ) {
-            return { error: "unknown command" };
+            return { error: { kind: "command", msg: "unknown command" } };
         }
         if (
             [
@@ -527,7 +553,7 @@
             ].includes(op) &&
             undefined === arg
         ) {
-            return { error: "missing argument" };
+            return { error: { kind: "arg", msg: "missing argument" } };
         }
         if (
             ![
@@ -541,7 +567,7 @@
             ].includes(op) &&
             undefined !== arg
         ) {
-            return { error: "unexpected argument" };
+            return { error: { kind: "arg", msg: "unexpected argument" } };
         }
 
         const argIsLabel = arg && arg[0] === "@";
@@ -555,13 +581,17 @@
             ].includes(op) &&
             !argIsLabel
         ) {
-            return { error: "Expect argument to be a @label" };
+            return {
+                error: { kind: "arg", msg: "Expect argument to be a @label" },
+            };
         }
         if (
             ["ifYesJumpBy", "ifNotJumpBy", "jumpBy"].includes(op) &&
             !argIsNum
         ) {
-            return { error: "Expect argument to be a number" };
+            return {
+                error: { kind: "arg", msg: "Expect argument to be a number" },
+            };
         }
         return true;
     }
@@ -794,7 +824,7 @@
         }
         const validatedOp = validateOp(op.op, op.arg);
         if (validatedOp.error) {
-            return { error: validatedOp.error, errorKind: "operation" };
+            return { error: validatedOp.error.msg, errorKind: "operation" };
         }
         const newPlayerResult = runPlayerOp(op, player);
         if (newPlayerResult.player) {
@@ -880,122 +910,143 @@
     function resetExecution(loadGoal) {
         reloadLevel(true, false);
     }
-    function executeLine() {
-        update(
-            ({
+
+    const executionStep = ({
+        program: { next },
+        player,
+        commands,
+        level,
+        choice,
+        error,
+        halted,
+        running,
+        stack,
+        autoplay,
+    }) => {
+        if (halted) {
+            return {
                 program: { next },
-                player,
-                commands,
+                player: player,
+                level: level,
+                choice: choice,
+                error: error,
+                running: running,
+                halted: halted,
+                started: started,
+                autoplay: false,
+            };
+        }
+        if (next == commands.length) {
+            return {
+                error: {
+                    message: `End of program reached`,
+                    command: next,
+                },
+                program: { next },
+                player: player,
+                level: level,
+                stack: stack,
+                running: true,
+                started: true,
+                autoplay: false,
+            };
+        }
+        if (next < commands.length) {
+            const result = runOp(
+                commands[next],
                 level,
+                player,
+                next,
                 choice,
-                error,
-                halted,
-                running,
                 stack,
-                autoplay,
-            }) => {
-                if (halted) {
-                    return {
-                        program: { next },
-                        player: player,
-                        level: level,
-                        choice: choice,
-                        error: error,
-                        running: running,
-                        halted: halted,
-                        started: started,
-                        autoplay: false,
-                    };
-                }
-                if (next == commands.length) {
+            );
+            if (result.error) {
+                return {
+                    error: {
+                        message: result.error,
+                        command: next,
+                        location: player,
+                        kind: result.errorKind,
+                    },
+                    program: { next },
+                    player: player,
+                    level: level,
+                    stack: stack,
+                    running: running,
+                    started: true,
+                    autoplay: false,
+                };
+            } else {
+                if (result.next < 0 || result.next > commands.length) {
                     return {
                         error: {
-                            message: `End of program reached`,
+                            message: `Can not jump to line ${result.next}`,
                             command: next,
                         },
                         program: { next },
                         player: player,
                         level: level,
                         stack: stack,
-                        running: true,
-                        started: true,
-                        autoplay: false,
-                    };
-                }
-                if (next < commands.length) {
-                    const result = runOp(
-                        commands[next],
-                        level,
-                        player,
-                        next,
-                        choice,
-                        stack,
-                    );
-                    if (result.error) {
-                        return {
-                            error: {
-                                message: result.error,
-                                command: next,
-                                location: player,
-                                kind: result.errorKind,
-                            },
-                            program: { next },
-                            player: player,
-                            level: level,
-                            stack: stack,
-                            running: running,
-                            started: true,
-                            autoplay: false,
-                        };
-                    } else {
-                        if (result.next < 0 || result.next > commands.length) {
-                            return {
-                                error: {
-                                    message: `Can not jump to line ${result.next}`,
-                                    command: next,
-                                },
-                                program: { next },
-                                player: player,
-                                level: level,
-                                stack: stack,
-                                running: false,
-                                started: true,
-                                autoplay: false,
-                            };
-                        }
-                        return {
-                            program: { next: result.next },
-                            player: result.player,
-                            level: result.level,
-                            choice: result.choice,
-                            error: null,
-                            stack: result.stack,
-                            running: true,
-                            halted: result.halt,
-                            started: true,
-                            autoplay: autoplay && !result.halt,
-                        };
-                    }
-                } else {
-                    return {
-                        program: { next: commands.length },
-                        player,
-                        level,
-                        choice,
-                        stack,
-                        error: null,
                         running: false,
                         started: true,
                         autoplay: false,
                     };
                 }
+
+                return {
+                    program: { next: result.next },
+                    player: result.player,
+                    level: result.level,
+                    choice: result.choice,
+                    error: null,
+                    stack: result.stack,
+                    running: true,
+                    halted: result.halt,
+                    started: true,
+                    autoplay: autoplay && !result.halt,
+                };
+            }
+        } else {
+            return {
+                program: { next: commands.length },
+                player,
+                level,
+                choice,
+                stack,
+                error: null,
+                running: false,
+                started: true,
+                autoplay: false,
+            };
+        }
+    };
+    function executeLine() {
+        update(
+            (state) => {
+                const commands = state.program.commands;
+                do {
+                    state = executionStep({ commands, ...state });
+                } while (
+                    !state.halt &&
+                    !state.error &&
+                    goal.value &&
+                    ![
+                        "forward",
+                        "turnLeft",
+                        "turnRight",
+                        "turnAround",
+                        "pick",
+                        "drop",
+                        "halt",
+                    ].includes(commands[state.program.next].op)
+                );
+                return { ...state, program: { ...state.program, commands } };
             },
             combine(
                 {
                     program,
                     player,
                     choice,
-                    commands: commandsToRun,
                     level,
                     error: executionError,
                     running,
@@ -1116,7 +1167,7 @@
                                         active: goal.value,
                                     }}
                                     onclick={beginGoal}
-                                    style:--accent-color="#b90"
+                                    style:--accent-color="#a70"
                                     disabled={!currentGoal.value}
                                     >Goal
                                 </button>
@@ -1124,6 +1175,7 @@
                                     type="button"
                                     class={{
                                         "toggle-button": true,
+                                        error: commandErrorCount.value > 0,
                                         active: !running.value && !goal.value,
                                     }}
                                     onclick={beginEdit}
@@ -1154,6 +1206,7 @@
                             {/if}
                             {#if running.value}
                                 <Stepper
+                                    {goal}
                                     {executeLine}
                                     {startExecution}
                                     {resetExecution}
@@ -1175,8 +1228,17 @@
                             {allJumpTargets}
                             {executionError}
                         ></Editor>
+                        <details bind:open={showGoalText.value}>
+                            <summary>Goal </summary>
+                            <div>
+                                Help Caroline to achieve her goal. Play the goal
+                                recording to see what to do. Then switch to the
+                                edit mode, write down the commands to reproduce
+                                the same movement.
+                            </div>
+                        </details>
 
-                        <details bind:open={shwHelp.value}>
+                        <details bind:open={showHelp.value}>
                             <summary>Help</summary>
                             <div>
                                 <Help></Help>
@@ -1186,7 +1248,7 @@
                 {:else}
                     <div style="display: flex; flex-direction: column;">
                         <div class="world-stack">
-                            <Stack {stack} disabled={goal}></Stack>
+                            <Stack {stack} disabled={hideStack}></Stack>
 
                             <div class="canvas-container">
                                 <World {player} {level}></World>
@@ -1219,7 +1281,10 @@
         align-self: stretch;
         min-width: 20em;
         padding: 0 1em 0 1ex;
-        border-radius: 1ex;
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid #ccc;
+        font: inherit;
     }
     .toolbar {
         display: flex;
@@ -1272,9 +1337,16 @@
         font-weight: bold;
         border-color: #fff5;
     }
-    .toggle-button.error {
-        color: #ff9999aa;
+    .toggle-button:disabled:not(.active).error {
         text-decoration: line-through;
+    }
+    .toggle-button:not(:disabled):not(.active).error {
+        background: #a005;
+        color: #fee;
+    }
+    .toggle-button.error:not(.active) {
+        background: #a001;
+        color: #a66;
     }
 
     .robot-container {
@@ -1311,9 +1383,6 @@
         font-weight: bold;
         margin-right: auto;
     }
-    .hidden {
-        display: none !important;
-    }
     .container {
         position: absolute;
         top: 0;
@@ -1348,18 +1417,15 @@
         height: 1.5em;
         width: 1.5em;
     }
-    .goal-text {
-        padding: 1em;
-        background-color: #222;
-        color: #fff;
-        font-family: monospace;
-    }
     summary {
         padding: 1em;
         background-color: #000;
         color: #fff;
         font-family: monospace;
         cursor: pointer;
+    }
+    details {
+        margin-top: 2px;
     }
     details > div {
         padding: 1em;
@@ -1368,14 +1434,5 @@
         font-family: monospace;
         max-height: 50vh;
         overflow: auto;
-    }
-
-    details code {
-        background-color: #111;
-        color: #fff;
-        font-family: monospace;
-        display: inline-block;
-        padding: 2px 4px;
-        border-radius: 4px;
     }
 </style>
