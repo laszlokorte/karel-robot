@@ -354,9 +354,7 @@
         }
         const cmds = commandsToRun.value;
         update((w) => {
-            const lvl = randomize
-                ? currentLevel.value.gen()
-                : currentLevel.value;
+            const lvl = randomize ? currentLevel.value.gen() : w.original;
 
             return {
                 ...w,

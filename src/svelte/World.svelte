@@ -337,10 +337,11 @@
 <style>
     .canvas {
         max-width: 100%;
-        height: auto;
+        height: 76vh;
         display: block;
         align-self: center;
         justify-self: center;
+        width: 100%;
     }
 
     .choice-no {
