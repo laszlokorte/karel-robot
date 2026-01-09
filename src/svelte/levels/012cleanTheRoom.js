@@ -30,7 +30,6 @@ export const solution = [
     op: "ifNotJumpBy",
     arg: "2",
     spaces: "",
-    numericArg: 2,
   },
   {
     indentSpaces: "",
@@ -52,7 +51,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@walkRight",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",
@@ -64,7 +62,6 @@ export const solution = [
     op: "ifNotJumpBy",
     arg: "2",
     spaces: "",
-    numericArg: 2,
   },
   {
     indentSpaces: "",
@@ -81,7 +78,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@done",
     spaces: "",
-    numericArg: 34,
   },
   {
     indentSpaces: "",
@@ -103,7 +99,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkLeft",
     spaces: "",
-    numericArg: 17,
   },
   {
     indentSpaces: "",
@@ -125,7 +120,6 @@ export const solution = [
     op: "ifNotJumpBy",
     arg: "2",
     spaces: "",
-    numericArg: 2,
   },
   {
     indentSpaces: "",
@@ -147,7 +141,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@walkLeft",
     spaces: "",
-    numericArg: 17,
   },
   {
     indentSpaces: "",
@@ -159,7 +152,6 @@ export const solution = [
     op: "ifNotJumpBy",
     arg: "2",
     spaces: "",
-    numericArg: 2,
   },
   {
     indentSpaces: "",
@@ -176,7 +168,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@done",
     spaces: "",
-    numericArg: 34,
   },
   {
     indentSpaces: "",
@@ -198,7 +189,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkRight",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",

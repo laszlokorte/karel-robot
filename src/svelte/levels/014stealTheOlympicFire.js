@@ -235,7 +235,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@steal",
     spaces: "",
-    numericArg: 9,
   },
   {
     indentSpaces: "",
@@ -257,7 +256,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@climb",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",
@@ -300,7 +298,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@finish",
     spaces: "",
-    numericArg: 19,
   },
   {
     indentSpaces: "",
@@ -312,7 +309,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@stepDown",
     spaces: "",
-    numericArg: 13,
   },
   {
     indentSpaces: "",

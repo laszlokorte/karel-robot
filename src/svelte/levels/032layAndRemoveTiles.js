@@ -17,7 +17,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@place",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -44,14 +43,12 @@ export const solution = [
     op: "ifYesJumpBy",
     arg: "2",
     spaces: "",
-    numericArg: 2,
   },
   {
     indentSpaces: "",
     op: "jumpBy",
     arg: "3",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -78,7 +75,6 @@ export const solution = [
     op: "ifYesJumpBy",
     arg: "3",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -90,7 +86,6 @@ export const solution = [
     op: "ifNotJumpBy",
     arg: "8",
     spaces: "",
-    numericArg: 8,
   },
   {
     indentSpaces: "",
@@ -107,7 +102,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@place",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -139,7 +133,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@place",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",

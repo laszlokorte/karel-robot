@@ -1,7 +1,6 @@
 export const world = () => {
   const size = 20;
 
-  // Start bei (1,1), Budget groß genug für 100 Schritte
   return {
     size: {
       y: size,
@@ -13,6 +12,7 @@ export const world = () => {
     },
     walls: Array(size * size).fill(false),
     crystals: Array(size * size).fill(false),
+    digits: Array(size).fill(false),
   };
 };
 

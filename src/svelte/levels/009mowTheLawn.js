@@ -224,7 +224,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@mowTwoRows",
     spaces: "",
-    numericArg: 14,
   },
   {
     indentSpaces: "",
@@ -251,7 +250,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@mowTwoRows",
     spaces: "",
-    numericArg: 14,
   },
   {
     indentSpaces: "",
@@ -278,7 +276,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@mowTwoRows",
     spaces: "",
-    numericArg: 14,
   },
   {
     indentSpaces: "",
@@ -321,7 +318,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@mowRowToRight",
     spaces: "",
-    numericArg: 15,
   },
   {
     indentSpaces: "",
@@ -369,7 +365,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@mowRowToLeft",
     spaces: "",
-    numericArg: 24,
   },
   {
     indentSpaces: "",

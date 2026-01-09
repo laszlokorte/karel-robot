@@ -230,7 +230,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@takeBeeper",
     spaces: "",
-    numericArg: 6,
   },
   {
     indentSpaces: "",
@@ -242,7 +241,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkToBeeper",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",
@@ -284,7 +282,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@nextWall",
     spaces: "",
-    numericArg: 16,
   },
   {
     indentSpaces: "",
@@ -296,7 +293,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkToWall",
     spaces: "",
-    numericArg: 10,
   },
   {
     indentSpaces: "",
@@ -318,7 +314,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@stop",
     spaces: "",
-    numericArg: 22,
   },
   {
     indentSpaces: "",
@@ -330,7 +325,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkToBeeper",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",

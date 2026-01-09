@@ -52,7 +52,6 @@ export const solution = [
     op: "ifYesJumpBy",
     arg: "3",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -64,7 +63,6 @@ export const solution = [
     op: "jumpBy",
     arg: "-3",
     spaces: "",
-    numericArg: -3,
   },
   {
     indentSpaces: "",
@@ -91,7 +89,6 @@ export const solution = [
     op: "ifNotJumpBy",
     arg: "-2",
     spaces: "",
-    numericArg: -2,
   },
   {
     indentSpaces: "",
@@ -113,7 +110,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@end",
     spaces: "",
-    numericArg: 18,
   },
   {
     indentSpaces: "",
@@ -125,7 +121,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@start",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",

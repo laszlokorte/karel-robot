@@ -24,6 +24,7 @@ export const world = () => {
           .fill(false)
           .map((x, i) => (i < 2 ? false : row <= 1 ? Math.random() > 0.5 : x));
       }),
+    digits: Array(size * size).fill(true),
   };
 };
 
@@ -59,7 +60,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@writeDecrement",
     spaces: "",
-    numericArg: 12,
   },
   {
     indentSpaces: "",
@@ -76,7 +76,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@overflowDecrement",
     spaces: "",
-    numericArg: 26,
   },
   {
     indentSpaces: "",
@@ -88,7 +87,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@decrement",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -130,7 +128,6 @@ export const solution = [
     op: "ifYesJumpBy",
     arg: "3",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -142,7 +139,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkBackDecrement",
     spaces: "",
-    numericArg: 16,
   },
   {
     indentSpaces: "",
@@ -164,7 +160,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@increment",
     spaces: "",
-    numericArg: 30,
   },
   {
     indentSpaces: "",
@@ -206,7 +201,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@writeIncrement",
     spaces: "",
-    numericArg: 39,
   },
   {
     indentSpaces: "",
@@ -223,7 +217,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@overflowIncrement",
     spaces: "",
-    numericArg: 53,
   },
   {
     indentSpaces: "",
@@ -235,7 +228,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@increment",
     spaces: "",
-    numericArg: 30,
   },
   {
     indentSpaces: "",
@@ -277,7 +269,6 @@ export const solution = [
     op: "ifYesJumpBy",
     arg: "3",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -289,7 +280,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkBackIncrement",
     spaces: "",
-    numericArg: 43,
   },
   {
     indentSpaces: "",
@@ -311,7 +301,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@decrement",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -333,7 +322,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkBackIncrement",
     spaces: "",
-    numericArg: 43,
   },
   {
     indentSpaces: "",

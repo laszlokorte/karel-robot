@@ -61,7 +61,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@hang",
     spaces: "",
-    numericArg: 9,
   },
   {
     indentSpaces: "",
@@ -73,7 +72,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkUp",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -111,7 +109,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@next",
     spaces: "",
-    numericArg: 18,
   },
   {
     indentSpaces: "",
@@ -123,7 +120,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@stepDown",
     spaces: "",
-    numericArg: 12,
   },
   {
     indentSpaces: "",
@@ -150,7 +146,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@done",
     spaces: "",
-    numericArg: 25,
   },
   {
     indentSpaces: "",
@@ -162,7 +157,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@start",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",

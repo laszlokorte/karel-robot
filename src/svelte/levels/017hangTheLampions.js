@@ -4,7 +4,6 @@ export const world = () => {
   const heights = Array(size)
     .fill(false)
     .map((x) => Math.floor(Math.random() * 3));
-  // Start bei (1,1), Budget groß genug für 100 Schritte
   return {
     size: {
       y: size,
@@ -26,6 +25,7 @@ export const world = () => {
       .flatMap((_, x) => {
         return Array(size).fill(x == size - 1);
       }),
+    digits: Array(size).fill(false),
   };
 };
 
@@ -62,7 +62,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@hang",
     spaces: "",
-    numericArg: 9,
   },
   {
     indentSpaces: "",
@@ -74,7 +73,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkUp",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -112,7 +110,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@next",
     spaces: "",
-    numericArg: 18,
   },
   {
     indentSpaces: "",
@@ -124,7 +121,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@stepDown",
     spaces: "",
-    numericArg: 12,
   },
   {
     indentSpaces: "",
@@ -151,7 +147,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@done",
     spaces: "",
-    numericArg: 25,
   },
   {
     indentSpaces: "",
@@ -163,7 +158,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@start",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",

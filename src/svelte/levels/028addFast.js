@@ -24,6 +24,7 @@ export const world = () => {
           .fill(false)
           .map((x, i) => (i < 2 ? false : row <= 1 ? Math.random() > 0.5 : x));
       }),
+    digits: Array(size * size).fill(true),
   };
 };
 
@@ -49,14 +50,12 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@carryzeroone",
     spaces: "",
-    numericArg: 21,
   },
   {
     indentSpaces: "",
     op: "jumpTo",
     arg: "@carryzerozero",
     spaces: "",
-    numericArg: 11,
   },
   {
     indentSpaces: "",
@@ -78,14 +77,12 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@carryoneone",
     spaces: "",
-    numericArg: 42,
   },
   {
     indentSpaces: "",
     op: "jumpTo",
     arg: "@carryonezero",
     spaces: "",
-    numericArg: 32,
   },
   {
     indentSpaces: "",
@@ -112,7 +109,6 @@ export const solution = [
     op: "ifNotJumpBy",
     arg: "4",
     spaces: "",
-    numericArg: 4,
   },
   {
     indentSpaces: "",
@@ -129,7 +125,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryzeronext",
     spaces: "",
-    numericArg: 64,
   },
   {
     indentSpaces: "",
@@ -141,7 +136,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryzeronext",
     spaces: "",
-    numericArg: 64,
   },
   {
     indentSpaces: "",
@@ -168,7 +162,6 @@ export const solution = [
     op: "ifNotJumpBy",
     arg: "3",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -180,7 +173,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryonenext",
     spaces: "",
-    numericArg: 53,
   },
   {
     indentSpaces: "",
@@ -197,7 +189,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryzeronext",
     spaces: "",
-    numericArg: 64,
   },
   {
     indentSpaces: "",
@@ -228,7 +219,6 @@ export const solution = [
     op: "ifYesJumpBy",
     arg: "4",
     spaces: "",
-    numericArg: 4,
   },
   {
     indentSpaces: "",
@@ -245,7 +235,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryzeronext",
     spaces: "",
-    numericArg: 64,
   },
   {
     indentSpaces: "",
@@ -257,7 +246,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryonenext",
     spaces: "",
-    numericArg: 53,
   },
   {
     indentSpaces: "",
@@ -284,7 +272,6 @@ export const solution = [
     op: "ifNotJumpBy",
     arg: "4",
     spaces: "",
-    numericArg: 4,
   },
   {
     indentSpaces: "",
@@ -301,7 +288,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryonenext",
     spaces: "",
-    numericArg: 53,
   },
   {
     indentSpaces: "",
@@ -313,7 +299,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryonenext",
     spaces: "",
-    numericArg: 53,
   },
   {
     indentSpaces: "",
@@ -359,7 +344,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@stop",
     spaces: "",
-    numericArg: 75,
   },
   {
     indentSpaces: "",
@@ -376,7 +360,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryone",
     spaces: "",
-    numericArg: 6,
   },
   {
     indentSpaces: "",
@@ -418,7 +401,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@stop",
     spaces: "",
-    numericArg: 75,
   },
   {
     indentSpaces: "",
@@ -435,7 +417,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@carryzero",
     spaces: "",
-    numericArg: 1,
   },
   {
     indentSpaces: "",

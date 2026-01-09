@@ -51,7 +51,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@found",
     spaces: "",
-    numericArg: 11,
   },
   {
     indentSpaces: "",
@@ -63,7 +62,6 @@ export const solution = [
     op: "ifYesJumpBy",
     arg: "3",
     spaces: "",
-    numericArg: 3,
   },
   {
     indentSpaces: "",
@@ -75,7 +73,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@search",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",
@@ -87,7 +84,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@search",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",

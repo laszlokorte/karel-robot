@@ -207,7 +207,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@uturn",
     spaces: "",
-    numericArg: 11,
   },
   {
     indentSpaces: "",
@@ -229,7 +228,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@rep",
     spaces: "",
-    numericArg: 1,
   },
   {
     indentSpaces: "",
@@ -282,7 +280,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@blub",
     spaces: "",
-    numericArg: 28,
   },
   {
     indentSpaces: "",
@@ -299,7 +296,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@repp",
     spaces: "",
-    numericArg: 14,
   },
   {
     indentSpaces: "",
@@ -321,7 +317,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@rep",
     spaces: "",
-    numericArg: 1,
   },
   {
     indentSpaces: "",
@@ -348,7 +343,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@backTurn",
     spaces: "",
-    numericArg: 24,
   },
   {
     indentSpaces: "",

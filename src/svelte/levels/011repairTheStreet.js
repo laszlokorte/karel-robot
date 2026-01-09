@@ -226,7 +226,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@fill",
     spaces: "",
-    numericArg: 7,
   },
   {
     indentSpaces: "",
@@ -238,7 +237,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@done",
     spaces: "",
-    numericArg: 19,
   },
   {
     indentSpaces: "",
@@ -250,7 +248,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@tryFill",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",
@@ -298,7 +295,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@done",
     spaces: "",
-    numericArg: 19,
   },
   {
     indentSpaces: "",
@@ -310,7 +306,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@tryFill",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",

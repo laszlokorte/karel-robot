@@ -33,7 +33,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@turn",
     spaces: "",
-    numericArg: 9,
   },
   {
     indentSpaces: "",
@@ -45,7 +44,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@turn",
     spaces: "",
-    numericArg: 9,
   },
   {
     indentSpaces: "",
@@ -57,7 +55,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@step",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",
@@ -84,7 +81,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@done",
     spaces: "",
-    numericArg: 16,
   },
   {
     indentSpaces: "",
@@ -96,7 +92,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@step",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",

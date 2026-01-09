@@ -250,7 +250,6 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@turn",
     spaces: "",
-    numericArg: 7,
   },
   {
     indentSpaces: "",
@@ -267,7 +266,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walk",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",
@@ -294,14 +292,12 @@ export const solution = [
     op: "ifNotJumpTo",
     arg: "@end",
     spaces: "",
-    numericArg: 13,
   },
   {
     indentSpaces: "",
     op: "jumpTo",
     arg: "@walk",
     spaces: "",
-    numericArg: 0,
   },
   {
     indentSpaces: "",

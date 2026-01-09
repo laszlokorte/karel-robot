@@ -1,11 +1,6 @@
 export const world = () => {
-  const size = 20;
+  const size = 10;
 
-  const goalColumn = 11 + Math.ceil(Math.random() * 4) * 2 - 1;
-  const heights = Array(size)
-    .fill(size - 1)
-    .map((x) => Math.round(Math.random() * x));
-  // Start bei (1,1), Budget groß genug für 100 Schritte
   return {
     size: {
       y: size,

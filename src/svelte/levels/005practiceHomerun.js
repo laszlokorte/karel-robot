@@ -219,7 +219,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@walkToWall",
     spaces: "",
-    numericArg: 14,
   },
   {
     indentSpaces: "",
@@ -236,7 +235,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@walkToWall",
     spaces: "",
-    numericArg: 14,
   },
   {
     indentSpaces: "",
@@ -253,7 +251,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@walkToWall",
     spaces: "",
-    numericArg: 14,
   },
   {
     indentSpaces: "",
@@ -270,7 +267,6 @@ export const solution = [
     op: "bookmarkAndJump",
     arg: "@walkToWall",
     spaces: "",
-    numericArg: 14,
   },
   {
     indentSpaces: "",
@@ -307,7 +303,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@reachedWall",
     spaces: "",
-    numericArg: 19,
   },
   {
     indentSpaces: "",
@@ -319,7 +314,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@walkToWall",
     spaces: "",
-    numericArg: 14,
   },
   {
     indentSpaces: "",

@@ -30,6 +30,9 @@ import * as level029 from "./029partyAgain.js";
 import * as level030 from "./030fetchTheStars.js";
 import * as level031 from "./031secureTheCave.js";
 import * as level032 from "./032layAndRemoveTiles.js";
+import * as level033 from "./033findShelters.js";
+import * as level034 from "./034addSmart.js";
+import * as level035 from "./035computeFibonacci.js";
 
 export const levels = [
   {
@@ -192,6 +195,21 @@ export const levels = [
     name: "Lay and remove Tiles",
     level: level032.world,
   },
+  {
+    id: "level033",
+    name: "Find shelters",
+    level: level033.world,
+  },
+  {
+    id: "level034",
+    name: "Add smart",
+    level: level034.world,
+  },
+  {
+    id: "level035",
+    name: "Compute fiboncacci",
+    level: level035.world,
+  },
 ];
 
 export const solutions = [
@@ -322,5 +340,17 @@ export const solutions = [
   {
     level: "level032",
     commands: level032.solution,
+  },
+  {
+    level: "level033",
+    commands: level033.solution,
+  },
+  {
+    level: "level034",
+    commands: level034.solution,
+  },
+  {
+    level: "level035",
+    commands: level035.solution,
   },
 ];

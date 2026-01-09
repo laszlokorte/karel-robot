@@ -24,6 +24,7 @@ export const world = () => {
           .fill(false)
           .map((x, i) => (i == 0 ? true : row == 0 ? Math.random() > 0.5 : x));
       }),
+    digits: Array(size * size).fill(true),
   };
 };
 export const solution = [
@@ -52,7 +53,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@write",
     spaces: "",
-    numericArg: 11,
   },
   {
     indentSpaces: "",
@@ -69,7 +69,6 @@ export const solution = [
     op: "ifYesJumpTo",
     arg: "@overflow",
     spaces: "",
-    numericArg: 16,
   },
   {
     indentSpaces: "",
@@ -81,7 +80,6 @@ export const solution = [
     op: "jumpTo",
     arg: "@search",
     spaces: "",
-    numericArg: 2,
   },
   {
     indentSpaces: "",
