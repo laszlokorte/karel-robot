@@ -114,17 +114,25 @@
                                 valid: !l.error,
                                 invalid: l.error && l.error.kind == "label",
                             }}
+                            inert
                             data-inject="{l.label}:"
-                        /><span data-inject={l.labelSpace} />
+                        ></span><span inert data-inject={l.labelSpace}></span>
                     {/if}{#if l.empty !== undefined}
-                        <span class="empty" data-inject={l.empty} /><span
+                        <span class="empty" inert data-inject={l.empty}
+                        ></span><span
                             class="comment"
+                            inert
                             data-inject={l.comment}
-                        /><span data-inject={" "} />
+                        ></span><span inert data-inject={" "}></span>
                     {:else if l.invalid}<span
                             class="invalid"
+                            inert
                             data-inject={l.invalid || " "}
-                        /><span class="comment" data-inject={l.comment || ""} />
+                        ></span><span
+                            class="comment"
+                            inert
+                            data-inject={l.comment || ""}
+                        ></span>
                     {:else}
                         <span
                             class={{
@@ -134,9 +142,11 @@
                                 valid: !l.error,
                                 invalid: l.error && l.error.kind == "command",
                             }}
+                            inert
                             data-inject={l.op || " "}
-                        />{#if l.arg !== undefined}
-                            <span class="spaces" data-inject={" "} /><span
+                        ></span>{#if l.arg !== undefined}
+                            <span class="spaces" inert data-inject={" "}
+                            ></span><span
                                 class={{
                                     "annotation-arg": true,
                                     "annotation-label": true,
@@ -144,19 +154,25 @@
                                     valid: !l.error,
                                     invalid: l.error && l.error.kind == "arg",
                                 }}
-                                ><span data-inject={l.arg} /><span
+                                ><span inert data-inject={l.arg}></span><span
                                     class={{
                                         "annotation-extra": true,
                                         hidden: l.arg == l.numericArg,
                                     }}
+                                    inert
                                     data-inject=" (#{l.numericArg})"
-                                />
+                                ></span>
                             </span>
                         {/if}<span
                             class="spaces"
+                            inert
                             data-inject={l.spaces || ""}
-                        /><span class="comment" data-inject={l.comment || ""} />
-                        <span data-inject={" "} />
+                        ></span><span
+                            class="comment"
+                            inert
+                            data-inject={l.comment || ""}
+                        ></span>
+                        <span inert data-inject={" "}></span>
                     {/if}
                 </span>
             {/each}
@@ -177,29 +193,32 @@
                     }}
                 >
                     <span style="color: transparent; background: none">
-                        <span data-inject={l.indentSpaces || ""} />
-                        {#if l.label}<span data-inject="{l.label}:" /><span
-                                data-inject={l.labelSpace}
-                            />
+                        <span inert data-inject={l.indentSpaces || ""}></span>
+                        {#if l.label}<span inert data-inject="{l.label}:"
+                            ></span><span inert data-inject={l.labelSpace}
+                            ></span>
                         {/if}{#if l.empty !== undefined}<span
+                                inert
                                 data-inject={l.empty}
-                            /><span
-                                data-inject={l.comment}
-                            />{:else if l.invalid}<span
+                            ></span><span inert data-inject={l.comment}
+                            ></span>{:else if l.invalid}<span
+                                inert
                                 data-inject={l.invalid || ""}
-                            /><span data-inject={l.comment || ""} />{:else}<span
+                            ></span><span inert data-inject={l.comment || ""}
+                            ></span>{:else}<span
+                                inert
                                 data-inject="{l.op || ' '}{l.arg !== undefined
                                     ? ' ' + l.arg
                                     : ''}"
-                            /><span data-inject={l.spaces || ""} /><span
-                                data-inject={l.comment || ""}
-                            />
+                            ></span><span inert data-inject={l.spaces || ""}
+                            ></span><span inert data-inject={l.comment || ""}
+                            ></span>
                         {/if}</span
                     >
-                    {#if l.invalid}<span data-inject={" - "} /><span
+                    {#if l.invalid}<span inert data-inject={" - "}></span><span
                             class="inlay error">Invalid syntax</span
-                        >{:else if !!l.error}<span data-inject={" - "} /><label
-                            class="inlay error"
+                        >{:else if !!l.error}<span inert data-inject={" - "}
+                        ></span><label class="inlay error"
                             ><input type="checkbox" />{l.error.msg}</label
                         >{/if}
                     {#if executionErrorLine.value === li}
