@@ -1,15 +1,7 @@
 <script>
     import * as L from "partial.lenses";
     import * as R from "ramda";
-    import {
-        atom,
-        storedAtom,
-        view,
-        update,
-        combine,
-        failableView,
-        bindValue,
-    } from "./svatom.svelte.js";
+    import { atom, read } from "./svatom.svelte.js";
     export const {
         executionError = atom(null),
         autoplaySpeed = atom(1),
@@ -21,7 +13,9 @@
         resetExecution,
         startExecution,
         pauseExecution,
+        maxSpeed,
     } = $props();
+    const isTurbo = $derived(read(R.equals(maxSpeed), autoplaySpeed));
 </script>
 
 <div class="button-row-head">
@@ -64,13 +58,17 @@
 <label class="slider">
     <div>
         Playback Speed:
-        <output>{autoplaySpeed.value}/s</output>
+        {#if isTurbo.value}
+            Turbo!
+        {:else}
+            <output>{autoplaySpeed.value}/s</output>
+        {/if}
     </div>
     <input
         type="range"
         bind:value={autoplaySpeed.value}
         min="1"
-        max="50"
+        max={maxSpeed}
         step="1"
     />
 </label>

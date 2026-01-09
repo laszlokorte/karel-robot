@@ -18,6 +18,7 @@
     import World from "./World.svelte";
     import Stack from "./Stack.svelte";
     import Help from "./Help.svelte";
+    const maxSpeed = 50;
 
     const {
         allLevels = atom(levels),
@@ -325,7 +326,7 @@
     $effect(() => {
         if (autoplay.value && running.value && !halted.value) {
             const frame = () => {
-                executeLine();
+                executeLine(autoplaySpeed.value == maxSpeed);
                 raf = window.setTimeout(frame, autoplayDelay.value);
             };
             let raf = window.setTimeout(frame, autoplayDelay.value);
@@ -1017,17 +1018,22 @@
             };
         }
     };
-    function executeLine() {
+    function executeLine(fast) {
         update(
             (state) => {
+                let maxSkip = goal.value || fast ? 100 : 1;
                 const commands = state.program.commands;
+                let lastCommand = commands[state.program.next].op;
                 do {
+                    lastCommand = commands[state.program.next].op;
                     state = executionStep({ commands, ...state });
                 } while (
-                    !state.halt &&
+                    maxSkip-- > 0 &&
+                    commands[state.program.next].op != "halt" &&
+                    state.running &&
                     !state.error &&
-                    goal.value &&
-                    ![
+                    (fast || goal.value) &&
+                    (![
                         "forward",
                         "turnLeft",
                         "turnRight",
@@ -1035,7 +1041,8 @@
                         "pick",
                         "drop",
                         "halt",
-                    ].includes(commands[state.program.next].op)
+                    ].includes(lastCommand) ||
+                        goal.value)
                 );
                 return { ...state, program: { ...state.program, commands } };
             },
@@ -1100,7 +1107,7 @@
         </div>
     </div>
     <div
-        style="display: none; grid-template-columns: 1fr 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
+        style="display: grid; grid-template-columns: 1fr 1fr 1fr; border: 2px solid gray; border-bottom: none; box-sizing: border-box;gap: 1ex; padding: 1ex;"
     >
         <div
             style="display: grid; grid-template-rows: 1fr auto; box-sizing: border-box; "
@@ -1203,6 +1210,7 @@
                             {/if}
                             {#if running.value}
                                 <Stepper
+                                    {maxSpeed}
                                     {goal}
                                     {executeLine}
                                     {startExecution}
@@ -1438,6 +1446,7 @@
     }
     details {
         margin-top: 2px;
+        user-select: text;
     }
     details > div {
         padding: 1em;

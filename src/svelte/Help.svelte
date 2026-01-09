@@ -109,8 +109,9 @@
                 be unique.
             </p>
             <p>
-                A label must consist only of lower case letters and end with a
-                double colon.
+                A label must start with a lower cast letter and further only
+                contain letters, digits or <em>_</em> symbols. A label
+                declaration must end with a double colon (<em>:</em>)
             </p>
         </dd>
     </dl>
@@ -259,7 +260,7 @@
             its line number.
         </dd>
         <dt>
-            <code>bookmarkAndJumpTo</code>
+            <code>bookmarkAndJump</code>
             <code>@&lt;label&gt;</code>
         </dt>
         <dd>
