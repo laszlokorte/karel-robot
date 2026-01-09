@@ -32,9 +32,23 @@
             level,
         ),
     );
+    const dims = $derived(
+        view(
+            ({ size }) => ({
+                width: size.x * resolution,
+                height: size.y * resolution,
+            }),
+            level,
+        ),
+    );
 </script>
 
-<svg class="canvas" viewBox={viewBox.value} preserveAspectRatio="xMidYMin meet">
+<svg
+    class="canvas"
+    {...dims.value}
+    viewBox={viewBox.value}
+    preserveAspectRatio="xMidYMin meet"
+>
     {#each { length: level.value.size.y } as _, y}
         {#each { length: level.value.size.x } as _, x}
             <rect
@@ -44,7 +58,7 @@
                 height={resolution}
                 fill="#f0f0f0"
                 stroke="#ccc"
-                shape-rendering="geometricPrecision"
+                shape-rendering="crispEdges"
                 vector-effect="non-scaling-stroke"
             ></rect>
         {/each}
@@ -322,10 +336,11 @@
 
 <style>
     .canvas {
-        height: 100%;
-        width: 100%;
+        max-width: 100%;
+        height: auto;
         display: block;
-        position: absolute;
+        align-self: center;
+        justify-self: center;
     }
 
     .choice-no {

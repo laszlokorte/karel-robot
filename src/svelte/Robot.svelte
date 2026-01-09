@@ -276,7 +276,6 @@
             combine({ allSolutions, levelKey }),
         ),
     );
-    const currentGoalJson = $derived(view(L.inverse(L.json()), currentGoal));
 
     const level = $derived(view("level", world));
     const player = $derived(view("player", world));
@@ -393,7 +392,7 @@
     }
 
     reloadLevel(true, true, true);
-    const json = $derived(
+    const commandsJson = $derived(
         view(L.inverse(L.json({ space: "  " })), currentCommands),
     );
     const levelJson = $derived(
@@ -1084,7 +1083,7 @@
             <label>
                 Level: <select
                     bind:value={levelKey.value}
-                    onchange={(evt) => reloadLevel(true, true, true)}
+                    onchange={() => reloadLevel(true, true, true)}
                 >
                     {#each allLevels.value as l, li (l.id)}
                         <option value={l.id} selected={levelKey.value === l.id}
@@ -1097,7 +1096,7 @@
             <button
                 class="level-button"
                 onclick={(evt) => {
-                    reloadLevel(true, true, true);
+                    reloadLevel(true, true, false);
                 }}>Reload</button
             >
         </div>
@@ -1139,7 +1138,7 @@
         </div>
         <textarea
             style="overflow: auto; height: 10em; font-family: monospace;"
-            readonly={true}>{json.value}</textarea
+            readonly={true}>{commandsJson.value}</textarea
         >
 
         <textarea
@@ -1248,11 +1247,28 @@
                 {:else}
                     <div style="display: flex; flex-direction: column;">
                         <div class="world-stack">
-                            <Stack {stack} disabled={hideStack}></Stack>
-
                             <div class="canvas-container">
                                 <World {player} {level}></World>
                             </div>
+
+                            <Stack {stack} disabled={hideStack}></Stack>
+                            <footer>
+                                <p>
+                                    <a
+                                        href="https://github.com/fredoverflow/karel"
+                                        target="_blank">Inspired by karel</a
+                                    >
+                                </p>
+                                <hr />
+
+                                <p>
+                                    <a
+                                        href="//tools.laszlokorte.de"
+                                        target="_blank"
+                                        >More Educational Tools</a
+                                    >
+                                </p>
+                            </footer>
                         </div>
                     </div>
                 {/if}
@@ -1357,22 +1373,20 @@
     }
     .world-stack {
         display: grid;
-        grid-template-rows: auto minmax(10em, 1fr);
+        grid-template-rows: auto auto 1fr;
+        grid-auto-rows: auto;
         flex-direction: column;
-        align-content: stretch;
+        align-content: start;
         align-items: stretch;
         justify-content: stretch;
+        flex-grow: 1;
         width: 100%;
-        height: 100%;
     }
     .canvas-container {
         position: relative;
-        width: 100%;
-        height: 100%;
         display: grid;
         align-content: stretch;
         align-items: stretch;
-        grid-template-rows: 1fr;
     }
 
     .error-summary {
@@ -1434,5 +1448,19 @@
         font-family: monospace;
         max-height: 50vh;
         overflow: auto;
+    }
+    footer {
+        margin-top: auto;
+        align-self: end;
+
+        font-family: monospace;
+        padding: 1ex;
+        text-align: center;
+        margin: 0;
+    }
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #eee;
     }
 </style>
