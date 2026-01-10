@@ -1044,7 +1044,7 @@
                     !state.error &&
                     (fast || goal.value) &&
                     lastCommand &&
-                    ![
+                    (![
                         "forward",
                         "turnLeft",
                         "turnRight",
@@ -1052,8 +1052,8 @@
                         "pick",
                         "drop",
                         "halt",
-                    ].includes(lastCommand.op) &&
-                    (fast || goal.value) &&
+                    ].includes(lastCommand.op) ||
+                        (fast && goal.value)) &&
                     maxSkip-- > 0
                 );
                 return { ...state, program: { ...state.program, commands } };
