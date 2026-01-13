@@ -1,3 +1,4 @@
+import commands from "../commands";
 export const world = () => ({
   size: {
     y: 9,
@@ -214,102 +215,102 @@ export const world = () => ({
 export const solution = [
   {
     indentSpaces: "",
-    op: "turnRight",
+    op: commands.turnRight.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "drop",
+    op: commands.drop.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "halt",
+    op: commands.halt.long,
     spaces: "",
   },
 ];

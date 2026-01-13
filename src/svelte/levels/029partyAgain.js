@@ -1,3 +1,4 @@
+import commands from "../commands";
 export const world = () => {
   const size = 10;
 
@@ -37,12 +38,12 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
@@ -53,23 +54,23 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "checkWallAhead",
+    op: commands.checkWallAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpTo",
+    op: commands.ifYesJumpTo.long,
     arg: "@hang",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@walkUp",
     spaces: "",
   },
@@ -85,12 +86,12 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "drop",
+    op: commands.drop.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnAround",
+    op: commands.turnAround.long,
     spaces: "",
   },
   {
@@ -101,23 +102,23 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "checkWallAhead",
+    op: commands.checkWallAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpTo",
+    op: commands.ifYesJumpTo.long,
     arg: "@next",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@stepDown",
     spaces: "",
   },
@@ -133,28 +134,28 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "checkWallAhead",
+    op: commands.checkWallAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpTo",
+    op: commands.ifYesJumpTo.long,
     arg: "@done",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@start",
     spaces: "",
   },
@@ -170,7 +171,7 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "halt",
+    op: commands.halt.long,
     spaces: "",
   },
 ];

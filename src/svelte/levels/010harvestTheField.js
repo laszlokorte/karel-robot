@@ -1,3 +1,4 @@
+import commands from "../commands";
 export const world = () => ({
   size: {
     y: 9,
@@ -178,7 +179,7 @@ export const world = () => ({
 export const solution = [
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
@@ -189,43 +190,43 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "checkBeeperAhead",
+    op: commands.checkBeeperAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifNotJumpTo",
+    op: commands.ifNotJumpTo.long,
     arg: "@uturn",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnRight",
+    op: commands.turnRight.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@rep",
     spaces: "",
   },
@@ -241,12 +242,12 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
@@ -257,43 +258,43 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "checkBeeperAhead",
+    op: commands.checkBeeperAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifNotJumpTo",
+    op: commands.ifNotJumpTo.long,
     arg: "@blub",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnRight",
+    op: commands.turnRight.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@repp",
     spaces: "",
   },
@@ -309,12 +310,12 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@rep",
     spaces: "",
   },
@@ -330,28 +331,28 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "turnAround",
+    op: commands.turnAround.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "checkBeeperAhead",
+    op: commands.checkBeeperAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpTo",
+    op: commands.ifYesJumpTo.long,
     arg: "@backTurn",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnRight",
+    op: commands.turnRight.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "halt",
+    op: commands.halt.long,
     spaces: "",
   },
 ];

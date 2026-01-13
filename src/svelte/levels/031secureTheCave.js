@@ -1,3 +1,4 @@
+import commands from "../commands";
 export const world = () => {
   const size = 10;
 
@@ -43,66 +44,66 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "checkWallAhead",
+    op: commands.checkWallAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpBy",
+    op: commands.ifYesJumpBy.long,
     arg: "3",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpBy",
+    op: commands.jumpBy.long,
     arg: "-3",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnAround",
+    op: commands.turnAround.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "bookmarkAndJump",
+    op: commands.bookmarkAndJump.long,
     arg: "@collect",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnRight",
+    op: commands.turnRight.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "checkWallAhead",
+    op: commands.checkWallAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpTo",
+    op: commands.ifYesJumpTo.long,
     arg: "@end",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@start",
     spaces: "",
   },
@@ -126,76 +127,76 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "checkBeeper",
+    op: commands.checkBeeper.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifNotJumpBy",
+    op: commands.ifNotJumpBy.long,
     arg: "7",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "bookmarkAndJump",
+    op: commands.bookmarkAndJump.long,
     arg: "@collect",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "drop",
+    op: commands.drop.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "return",
+    op: commands.return.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "checkWallAhead",
+    op: commands.checkWallAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpBy",
+    op: commands.ifYesJumpBy.long,
     arg: "3",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpBy",
+    op: commands.jumpBy.long,
     arg: "-3",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnAround",
+    op: commands.turnAround.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "return",
+    op: commands.return.long,
     spaces: "",
   },
   {
@@ -210,7 +211,7 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "halt",
+    op: commands.halt.long,
     spaces: "",
   },
 ];

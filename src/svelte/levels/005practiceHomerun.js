@@ -1,3 +1,4 @@
+import commands from "../commands";
 export const world = () => ({
   size: {
     y: 10,
@@ -216,71 +217,71 @@ export const world = () => ({
 export const solution = [
   {
     indentSpaces: "",
-    op: "bookmarkAndJump",
+    op: commands.bookmarkAndJump.long,
     arg: "@walkToWall",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "bookmarkAndJump",
+    op: commands.bookmarkAndJump.long,
     arg: "@walkToWall",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "bookmarkAndJump",
+    op: commands.bookmarkAndJump.long,
     arg: "@walkToWall",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "bookmarkAndJump",
+    op: commands.bookmarkAndJump.long,
     arg: "@walkToWall",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "halt",
+    op: commands.halt.long,
     spaces: "",
   },
   {
@@ -295,23 +296,23 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "checkWallAhead",
+    op: commands.checkWallAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpTo",
+    op: commands.ifYesJumpTo.long,
     arg: "@reachedWall",
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@walkToWall",
     spaces: "",
   },
@@ -323,7 +324,7 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "return",
+    op: commands.return.long,
     spaces: "",
   },
 ];

@@ -1,3 +1,4 @@
+import commands from "../commands";
 function generateMaze(size = 20) {
   if (size % 2 !== 0) {
     throw new Error("size must be even");
@@ -71,29 +72,29 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "checkBeeper",
+    op: commands.checkBeeper.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifNotJumpBy",
+    op: commands.ifNotJumpBy.long,
     arg: "3",
     spaces: "",
     numericArg: 3,
   },
   {
     indentSpaces: "",
-    op: "pick",
+    op: commands.pick.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "halt",
+    op: commands.halt.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@tryRight",
     spaces: "",
     numericArg: 7,
@@ -110,29 +111,29 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "checkWallRight",
+    op: commands.checkWallRight.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpTo",
+    op: commands.ifYesJumpTo.long,
     arg: "@tryForward",
     spaces: "",
     numericArg: 14,
   },
   {
     indentSpaces: "",
-    op: "turnRight",
+    op: commands.turnRight.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@begin",
     spaces: "",
     numericArg: 0,
@@ -149,24 +150,24 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "checkWallAhead",
+    op: commands.checkWallAhead.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpTo",
+    op: commands.ifYesJumpTo.long,
     arg: "@tryLeft",
     spaces: "",
     numericArg: 20,
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@begin",
     spaces: "",
     numericArg: 0,
@@ -183,29 +184,29 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "checkWallLeft",
+    op: commands.checkWallLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "ifYesJumpTo",
+    op: commands.ifYesJumpTo.long,
     arg: "@tryBack",
     spaces: "",
     numericArg: 27,
   },
   {
     indentSpaces: "",
-    op: "turnLeft",
+    op: commands.turnLeft.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@begin",
     spaces: "",
     numericArg: 0,
@@ -222,17 +223,17 @@ export const solution = [
   },
   {
     indentSpaces: "",
-    op: "turnAround",
+    op: commands.turnAround.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "forward",
+    op: commands.forward.long,
     spaces: "",
   },
   {
     indentSpaces: "",
-    op: "jumpTo",
+    op: commands.jumpTo.long,
     arg: "@begin",
     spaces: "",
     numericArg: 0,

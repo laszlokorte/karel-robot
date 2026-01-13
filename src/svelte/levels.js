@@ -85,20 +85,20 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpBy",
+        op: commands.ifYesJumpBy.long,
         arg: "3",
         spaces: "",
       },
       {
-        op: "jumpBy",
+        op: commands.jumpBy.long,
         arg: "-3",
         spaces: "",
       },
@@ -106,28 +106,28 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpBy",
+        op: commands.ifYesJumpBy.long,
         arg: "5",
         spaces: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "jumpBy",
+        op: commands.jumpBy.long,
         arg: "-4",
         spaces: "",
       },
@@ -135,41 +135,41 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
       {
-        op: "pick",
+        op: commands.pick.long,
         spaces: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpBy",
+        op: commands.ifYesJumpBy.long,
         arg: "3",
         spaces: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "jumpBy",
+        op: commands.jumpBy.long,
         arg: "-4",
         spaces: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
       {
-        op: "jumpTo",
+        op: commands.jumpTo.long,
         arg: "@start",
         spaces: "",
       },
@@ -182,20 +182,20 @@ export const solutions = [
     level: "line",
     commands: [
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpTo",
+        op: commands.ifYesJumpTo.long,
         arg: "@foo",
         spaces: "",
       },
       {
-        op: "jumpBy",
+        op: commands.jumpBy.long,
         arg: "-3",
         spaces: "",
       },
@@ -208,28 +208,28 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpTo",
+        op: commands.ifYesJumpTo.long,
         arg: "@bar",
         spaces: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "jumpBy",
+        op: commands.jumpBy.long,
         arg: "-4",
         spaces: "",
       },
@@ -242,41 +242,41 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
       {
-        op: "pick",
+        op: commands.pick.long,
         spaces: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpBy",
+        op: commands.ifYesJumpBy.long,
         arg: "3",
         spaces: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "jumpBy",
+        op: commands.jumpBy.long,
         arg: "-4",
         spaces: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
       {
-        op: "halt",
+        op: commands.halt.long,
         spaces: "",
       },
       {
@@ -288,15 +288,15 @@ export const solutions = [
     level: "error",
     commands: [
       {
-        op: "turnLeft",
+        op: commands.turnLeft.long,
         spaces: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
     ],
@@ -305,39 +305,39 @@ export const solutions = [
     level: "bookmarks",
     commands: [
       {
-        op: "bookmark",
+        op: commands.bookmark.long,
         spaces: "",
       },
       {
-        op: "bookmark",
+        op: commands.bookmark.long,
         spaces: "",
       },
       {
-        op: "bookmark",
+        op: commands.bookmark.long,
         spaces: "",
       },
       {
-        op: "bookmark",
+        op: commands.bookmark.long,
         spaces: "",
       },
       {
-        op: "bookmark",
+        op: commands.bookmark.long,
         spaces: "",
       },
       {
-        op: "bookmark",
+        op: commands.bookmark.long,
         spaces: "",
       },
       {
-        op: "bookmark",
+        op: commands.bookmark.long,
         spaces: "",
       },
       {
-        op: "return",
+        op: commands.return.long,
         spaces: "",
       },
       {
-        op: "halt",
+        op: commands.halt.long,
         spaces: "",
       },
     ],
@@ -346,95 +346,95 @@ export const solutions = [
     level: "stack",
     commands: [
       {
-        op: "bookmarkAndJump",
+        op: commands.bookmarkAndJump.long,
         arg: "@walkToWall",
         spaces: "",
       },
       {
-        op: "turnLeft",
+        op: commands.turnLeft.long,
         spaces: "",
       },
       {
-        op: "bookmarkAndJump",
+        op: commands.bookmarkAndJump.long,
         arg: "@walkToWall",
         spaces: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "turnLeft",
+        op: commands.turnLeft.long,
         spaces: "",
       },
       {
-        op: "bookmarkAndJump",
+        op: commands.bookmarkAndJump.long,
         arg: "@walkToWall",
         spaces: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "turnLeft",
+        op: commands.turnLeft.long,
         spaces: "",
       },
       {
-        op: "bookmarkAndJump",
+        op: commands.bookmarkAndJump.long,
         arg: "@walkToWall",
         spaces: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "turnLeft",
+        op: commands.turnLeft.long,
         spaces: "",
       },
       {
-        op: "bookmarkAndJump",
+        op: commands.bookmarkAndJump.long,
         arg: "@walkToWall",
         spaces: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
       {
-        op: "bookmarkAndJump",
+        op: commands.bookmarkAndJump.long,
         arg: "@walkToWall",
         spaces: "",
       },
       {
-        op: "turnRight",
+        op: commands.turnRight.long,
         spaces: "",
       },
       {
-        op: "bookmarkAndJump",
+        op: commands.bookmarkAndJump.long,
         arg: "@walkToWall",
         spaces: "",
       },
       {
-        op: "turnRight",
+        op: commands.turnRight.long,
         spaces: "",
       },
       {
-        op: "bookmarkAndJump",
+        op: commands.bookmarkAndJump.long,
         arg: "@walkToWall",
         spaces: "",
       },
       {
-        op: "turnRight",
+        op: commands.turnRight.long,
         spaces: "",
       },
       {
-        op: "halt",
+        op: commands.halt.long,
         spaces: "",
       },
       {
@@ -449,25 +449,25 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpBy",
+        op: commands.ifYesJumpBy.long,
         arg: "3",
         spaces: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "jumpTo",
+        op: commands.jumpTo.long,
         arg: "@walkToWall",
         spaces: "",
       },
       {
-        op: "return",
+        op: commands.return.long,
         spaces: "",
       },
     ],
@@ -481,21 +481,21 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpBy",
+        op: commands.ifYesJumpBy.long,
         arg: "3",
         spaces: "",
         numericArg: 3,
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "jumpTo",
+        op: commands.jumpTo.long,
         arg: "@start",
         spaces: "",
         numericArg: 0,
@@ -509,7 +509,7 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "turnLeft",
+        op: commands.turnLeft.long,
         spaces: "",
       },
       {
@@ -518,49 +518,49 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpTo",
+        op: commands.ifYesJumpTo.long,
         arg: "@turn",
         spaces: "",
         numericArg: 6,
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "checkWallLeft",
+        op: commands.checkWallLeft.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpBy",
+        op: commands.ifYesJumpBy.long,
         arg: "2",
         spaces: "",
         numericArg: 2,
       },
       {
-        op: "turnRight",
+        op: commands.turnRight.long,
         spaces: "",
       },
       {
-        op: "checkBeeper",
+        op: commands.checkBeeper.long,
         spaces: "",
       },
       {
-        op: "ifNotJumpTo",
+        op: commands.ifNotJumpTo.long,
         arg: "@step",
         spaces: "",
         numericArg: 8,
       },
       {
-        op: "pick",
+        op: commands.pick.long,
         spaces: "",
       },
       {
-        op: "jumpTo",
+        op: commands.jumpTo.long,
         arg: "@step",
         spaces: "",
         numericArg: 8,
@@ -574,7 +574,7 @@ export const solutions = [
     level: "empty",
     commands: [
       {
-        op: "jumpTo",
+        op: commands.jumpTo.long,
         arg: "@begin",
         spaces: "",
       },
@@ -584,7 +584,7 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
       {
@@ -596,105 +596,105 @@ export const solutions = [
         empty: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpTo",
+        op: commands.ifYesJumpTo.long,
         arg: "@turn",
         spaces: "",
       },
       {
-        op: "checkBeeper",
+        op: commands.checkBeeper.long,
         spaces: "",
       },
       {
-        op: "ifNotJumpBy",
+        op: commands.ifNotJumpBy.long,
         arg: "15",
         spaces: "",
       },
       {
-        op: "pick",
+        op: commands.pick.long,
         spaces: "",
       },
       {
-        op: "turnLeft",
+        op: commands.turnLeft.long,
         spaces: "",
       },
       {
-        op: "checkWallAhead",
+        op: commands.checkWallAhead.long,
         spaces: "",
       },
       {
-        op: "ifNotJumpBy",
+        op: commands.ifNotJumpBy.long,
         arg: "2",
         spaces: "",
       },
       {
-        op: "halt",
+        op: commands.halt.long,
         spaces: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "checkBeeper",
+        op: commands.checkBeeper.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpBy",
+        op: commands.ifYesJumpBy.long,
         arg: "-5",
         spaces: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "turnAround",
+        op: commands.turnAround.long,
         spaces: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "checkBeeper",
+        op: commands.checkBeeper.long,
         spaces: "",
       },
       {
-        op: "ifYesJumpBy",
+        op: commands.ifYesJumpBy.long,
         arg: "-2",
         spaces: "",
       },
       {
-        op: "turnLeft",
+        op: commands.turnLeft.long,
         spaces: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "jumpTo",
+        op: commands.jumpTo.long,
         arg: "@begin",
         spaces: "",
       },
       {
-        op: "drop",
+        op: commands.drop.long,
         spaces: "",
       },
       {
-        op: "forward",
+        op: commands.forward.long,
         spaces: "",
       },
       {
-        op: "jumpTo",
+        op: commands.jumpTo.long,
         arg: "@begin",
         spaces: "",
       },

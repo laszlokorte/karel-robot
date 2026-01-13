@@ -11,13 +11,13 @@
         bindValue,
     } from "./svatom.svelte.js";
     import Split from "./Split.svelte";
-    import * as predefined from "./levels.js";
     import { levels, solutions } from "./levels/index.js";
     import Editor from "./Editor.svelte";
     import Stepper from "./Stepper.svelte";
     import World from "./World.svelte";
     import Stack from "./Stack.svelte";
     import Help from "./Help.svelte";
+    import commands from "./commands.js";
     const maxSpeed = 50;
 
     const {
@@ -202,21 +202,21 @@
 
     function jumpTargets(c, ci) {
         switch (c.op) {
-            case "ifYesJumpTo":
+            case commands.ifYesJumpTo.long:
                 return [c.numericArg];
-            case "ifNotJumpTo":
+            case commands.ifNotJumpTo.long:
                 return [c.numericArg];
-            case "jumpTo":
+            case commands.jumpTo.long:
                 return [c.numericArg];
-            case "ifYesJumpBy":
+            case commands.ifYesJumpBy.long:
                 return [ci + c.numericArg];
-            case "ifNotJumpBy":
+            case commands.ifNotJumpBy.long:
                 return [ci + c.numericArg];
-            case "jumpBy":
+            case commands.jumpBy.long:
                 return [ci + c.numericArg];
-            case "bookmarkAndJump":
+            case commands.bookmarkAndJump.long:
                 return [ci + 1, c.numericArg];
-            case "bookmark":
+            case commands.bookmark.long:
                 return [ci + 2];
         }
         return [];
@@ -524,81 +524,25 @@
         ),
     );
     function validateOp(op, arg) {
-        if (
-            ![
-                "turnLeft",
-                "turnRight",
-                "turnAround",
-                "forward",
-                "pick",
-                "drop",
-                "checkWallAhead",
-                "checkWallLeft",
-                "checkWallRight",
-                "checkBeeperAhead",
-                "checkBeeper",
-                "ifYesJumpTo",
-                "ifNotJumpTo",
-                "jumpTo",
-                "ifYesJumpBy",
-                "ifNotJumpBy",
-                "jumpBy",
-                "halt",
-                "bookmark",
-                "return",
-                "bookmarkAndJump",
-            ].includes(op)
-        ) {
+        const cmd = Object.values(commands).find((c) => c.long == op);
+        if (!cmd) {
             return { error: { kind: "command", msg: "unknown command" } };
         }
-        if (
-            [
-                "ifYesJumpTo",
-                "ifNotJumpTo",
-                "jumpTo",
-                "ifYesJumpBy",
-                "ifNotJumpBy",
-                "jumpBy",
-                "bookmarkAndJump",
-            ].includes(op) &&
-            undefined === arg
-        ) {
+        if (cmd.arg && undefined === arg) {
             return { error: { kind: "arg", msg: "missing argument" } };
         }
-        if (
-            ![
-                "ifYesJumpTo",
-                "ifNotJumpTo",
-                "jumpTo",
-                "ifYesJumpBy",
-                "ifNotJumpBy",
-                "jumpBy",
-                "bookmarkAndJump",
-            ].includes(op) &&
-            undefined !== arg
-        ) {
+        if (!cmd.arg && undefined !== arg) {
             return { error: { kind: "arg", msg: "unexpected argument" } };
         }
 
         const argIsLabel = arg && arg[0] === "@";
         const argIsNum = arg && arg[0] !== "@";
-        if (
-            [
-                "ifYesJumpTo",
-                "ifNotJumpTo",
-                "jumpTo",
-                "bookmarkAndJump",
-            ].includes(op) &&
-            !argIsLabel
-        ) {
+        if (cmd.arg === "label" && !argIsLabel) {
             return {
                 error: { kind: "arg", msg: "Expect argument to be a @label" },
             };
         }
-        if (
-            ["ifYesJumpBy", "ifNotJumpBy", "jumpBy"].includes(op) &&
-            !argIsNum
-        ) {
+        if (cmd.arg === "number" && !argIsNum) {
             return {
                 error: { kind: "arg", msg: "Expect argument to be a number" },
             };
@@ -608,28 +552,28 @@
 
     function runPlayerOp(op, player) {
         switch (op.op) {
-            case "turnRight":
+            case commands.turnRight.long:
                 return {
                     player: {
                         ...player,
                         dir: { x: -player.dir.y, y: player.dir.x },
                     },
                 };
-            case "turnLeft":
+            case commands.turnLeft.long:
                 return {
                     player: {
                         ...player,
                         dir: { x: player.dir.y, y: -player.dir.x },
                     },
                 };
-            case "turnAround":
+            case commands.turnAround.long:
                 return {
                     player: {
                         ...player,
                         dir: { x: -player.dir.x, y: -player.dir.y },
                     },
                 };
-            case "forward":
+            case commands.forward.long:
                 return {
                     player: {
                         ...player,
@@ -644,12 +588,12 @@
     }
     function runLevelOp(op, cell) {
         switch (op.op) {
-            case "pick":
+            case commands.pick.long:
                 if (!cell) {
                     return { error: "There is no crystal to pick" };
                 }
                 return { newCell: false };
-            case "drop":
+            case commands.drop.long:
                 if (cell) {
                     return { error: "There is is already a crystal" };
                 }
@@ -660,7 +604,7 @@
 
     function runChoiceOp(op, player, level) {
         switch (op.op) {
-            case "checkWallAhead": {
+            case commands.checkWallAhead.long: {
                 const frontPos = {
                     x: player.pos.x + player.dir.x,
                     y: player.pos.y + player.dir.y,
@@ -673,7 +617,7 @@
                     level.walls[frontPos.x + frontPos.y * level.size.x] === true
                 );
             }
-            case "checkWallRight": {
+            case commands.checkWallRight.long: {
                 const sidePos = {
                     x: player.pos.x - player.dir.y,
                     y: player.pos.y + player.dir.x,
@@ -686,7 +630,7 @@
                     level.walls[sidePos.x + sidePos.y * level.size.x] === true
                 );
             }
-            case "checkWallLeft": {
+            case commands.checkWallLeft.long: {
                 const sidePos = {
                     x: player.pos.x + player.dir.y,
                     y: player.pos.y - player.dir.x,
@@ -699,7 +643,7 @@
                     level.walls[sidePos.x + sidePos.y * level.size.x] === true
                 );
             }
-            case "checkBeeperAhead": {
+            case commands.checkBeeperAhead.long: {
                 const frontPos = {
                     x: player.pos.x + player.dir.x,
                     y: player.pos.y + player.dir.y,
@@ -717,7 +661,7 @@
                     true
                 );
             }
-            case "checkBeeper":
+            case commands.checkBeeper.long:
                 return (
                     level.crystals[
                         player.pos.x + player.pos.y * level.size.x
@@ -728,7 +672,7 @@
     }
     function runConrolOp(op, line, choice, stack) {
         switch (op.op) {
-            case "bookmark":
+            case commands.bookmark.long:
                 if (stack.length > 12) {
                     return {
                         error: "To many bookmarks (Stack overflow)",
@@ -736,7 +680,7 @@
                     };
                 }
                 return { line: line + 1, stack: [line + 2, ...stack] };
-            case "bookmarkAndJump":
+            case commands.bookmarkAndJump.long:
                 if (stack.length > 200) {
                     return {
                         error: "Too many bookmarks (Stack overflow)",
@@ -744,14 +688,14 @@
                     };
                 }
                 return { line: op.numericArg, stack: [line + 1, ...stack] };
-            case "return":
+            case commands.return.long:
                 if (!stack.length) {
                     return { error: "No bookmark to return to", kind: "stack" };
                 }
                 return { line: stack[0], stack: stack.slice(1) };
-            case "halt":
+            case commands.halt.long:
                 return { line, halt: true, stack };
-            case "ifYesJumpTo":
+            case commands.ifYesJumpTo.long:
                 if (choice === true) {
                     return {
                         line: op.numericArg,
@@ -765,7 +709,7 @@
                         kind: "choice",
                     };
                 }
-            case "ifNotJumpTo":
+            case commands.ifNotJumpTo.long:
                 if (choice === false) {
                     return {
                         line: op.numericArg,
@@ -779,12 +723,12 @@
                         kind: "choice",
                     };
                 }
-            case "jumpTo":
+            case commands.jumpTo.long:
                 return {
                     line: op.numericArg,
                     stack,
                 };
-            case "ifYesJumpBy":
+            case commands.ifYesJumpBy.long:
                 if (choice === true) {
                     return {
                         line: line + op.numericArg,
@@ -793,7 +737,7 @@
                 } else if (choice === false) {
                     return { line: line + 1, stack };
                 }
-            case "ifNotJumpBy":
+            case commands.ifNotJumpBy.long:
                 if (choice === false) {
                     return {
                         line: line + op.numericArg,
@@ -807,7 +751,7 @@
                         kind: "choice",
                     };
                 }
-            case "jumpBy":
+            case commands.jumpBy.long:
                 return {
                     line: line + op.numericArg,
                     stack,
@@ -1034,29 +978,32 @@
         update(
             (state) => {
                 let maxSkip = goal.value || fast ? 100 : 1;
-                const commands = state.program.commands;
-                let lastCommand = commands[state.program.next];
+                const cmds = state.program.commands;
+                let lastCommand = cmds[state.program.next];
                 do {
-                    lastCommand = commands[state.program.next];
-                    state = executionStep({ commands, ...state });
+                    lastCommand = cmds[state.program.next];
+                    state = executionStep({ commands: cmds, ...state });
                 } while (
                     state.running &&
                     !state.error &&
                     (fast || goal.value) &&
                     lastCommand &&
                     (![
-                        "forward",
-                        "turnLeft",
-                        "turnRight",
-                        "turnAround",
-                        "pick",
-                        "drop",
-                        "halt",
+                        commands.forward.long,
+                        commands.turnLeft.long,
+                        commands.turnRight.long,
+                        commands.turnAround.long,
+                        commands.pick.long,
+                        commands.drop.long,
+                        commands.halt.long,
                     ].includes(lastCommand.op) ||
                         (fast && goal.value)) &&
                     maxSkip-- > 0
                 );
-                return { ...state, program: { ...state.program, commands } };
+                return {
+                    ...state,
+                    program: { ...state.program, commands: cmds },
+                };
             },
             combine(
                 {
@@ -1258,7 +1205,7 @@
                         <details bind:open={showHelp.value}>
                             <summary>Help</summary>
                             <div>
-                                <Help></Help>
+                                <Help {commands}></Help>
                             </div>
                         </details>
                     </div>

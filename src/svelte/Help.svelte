@@ -1,3 +1,7 @@
+<script>
+    const { commands } = $props();
+</script>
+
 <h2>Introduction</h2>
 
 <p>
@@ -24,11 +28,11 @@
     <h3>Halt command</h3>
     <p>
         Caroline must know when she can stop reading any more commands. Every
-        program you write must end with the <code>halt</code> command.
+        program you write must end with the <code>{commands.halt.long}</code> command.
     </p>
     <dl>
         <dt>
-            <code class="cmd-help">halt</code>
+            <code class="cmd-help">{commands.halt.long}</code>
         </dt>
         <dd>Stops the program.</dd>
     </dl>
@@ -39,21 +43,21 @@
     </p>
     <dl>
         <dt>
-            <code class="cmd-help">forward</code>
+            <code class="cmd-help">{commands.forward.long}</code>
         </dt>
         <dd>Moves carol one step into the direction she is facing.</dd>
         <dt>
-            <code class="cmd-help">turnLeft</code>
+            <code class="cmd-help">{commands.turnLeft.long}</code>
         </dt>
         <dd>Turns carol 90° clockwise</dd>
 
         <dt>
-            <code class="cmd-help">turnRight</code>
+            <code class="cmd-help">{commands.turnRight.long}</code>
         </dt>
         <dd>Turns carol 90° counter-clockwise</dd>
 
         <dt>
-            <code class="cmd-help">turnAround</code>
+            <code class="cmd-help">{commands.turnAround.long}</code>
         </dt>
         <dd>Turns carol 180°</dd>
     </dl>
@@ -69,7 +73,7 @@
     </p>
     <dl>
         <dt>
-            <code class="cmd-help"># some comment</code>
+            <code class="cmd-help"># comment</code>
         </dt>
         <dd>
             Everything after a <code>#</code> to the end of the line is ignored
@@ -87,9 +91,9 @@
         other crystal at the same location yet.
     </p>
     <dl>
-        <dt><code class="cmd-help">pick</code></dt>
+        <dt><code class="cmd-help">{commands.pick.long}</code></dt>
         <dd>Picks the beeper at the current position</dd>
-        <dt><code class="cmd-help">drop</code></dt>
+        <dt><code class="cmd-help">{commands.drop.long}</code></dt>
         <dd>Places a beeper at the current position</dd>
     </dl>
     <h3>labels</h3>
@@ -124,7 +128,7 @@
     </p>
     <dl>
         <dt>
-            <code>jumpBy</code>
+            <code class="cmd-help">{commands.jumpBy.long}</code>
             <code>&lt;n&gt;</code>
         </dt>
         <dd>
@@ -139,7 +143,7 @@
             </p>
         </dd>
         <dt>
-            <code>jumpTo</code>
+            <code class="cmd-help">{commands.jumpTo.long}</code>
             <code>@&lt;label&gt;</code>
         </dt>
         <dd>
@@ -169,24 +173,24 @@
     </div>
     <dl>
         <dt>
-            <code class="cmd-help">checkBeeper</code>
+            <code class="cmd-help">{commands.checkBeeper.long}</code>
         </dt>
         <dd>Checks if the robot is standing ontop of a Beeper</dd>
         <dt>
-            <code class="cmd-help">checkBeeperAhead</code>
+            <code class="cmd-help">{commands.checkBeeperAhead.long}</code>
         </dt>
         <dd>Checks if a beeper is directly in front of the robot.</dd>
 
         <dt>
-            <code class="cmd-help">checkWallAhead</code>
+            <code class="cmd-help">{commands.checkWallAhead.long}</code>
         </dt>
         <dd>Checks if a wall is directly in front of the robot.</dd>
         <dt>
-            <code class="cmd-help">checkWallLeft</code>
+            <code class="cmd-help">{commands.checkWallLeft.long}</code>
         </dt>
         <dd>Check if a wall is directly to the left of the robot.</dd>
         <dt>
-            <code class="cmd-help">checkWallRight</code>
+            <code class="cmd-help">{commands.checkWallRight.long}</code>
         </dt>
         <dd>Check if a wall is directly to the right of the robot.</dd>
     </dl>
@@ -199,7 +203,7 @@
     </p>
     <dl>
         <dt>
-            <code>ifYesJumpBy</code>
+            <code class="cmd-help">{commands.ifYesJumpBy.long}</code>
             <code>&lt;n&gt;</code>
         </dt>
         <dd>
@@ -208,31 +212,31 @@
             Otherwise this command is ignored.
         </dd>
         <dt>
-            <code>ifNotJumpBy</code>
+            <code class="cmd-help">{commands.ifNotJumpBy.long}</code>
             <code>&lt;n&gt;</code>
         </dt>
         <dd>
-            Similar to <code>jumpBy</code> but only if the answer to the
-            previous <em>check</em> command was <strong>negative</strong>.
-            Otherwise this command is ignored.
+            Similar to <code class="cmd-help">{commands.jumpBy.long}</code> but
+            only if the answer to the previous <em>check</em> command was
+            <strong>negative</strong>. Otherwise this command is ignored.
         </dd>
         <dt>
-            <code>ifYesJumpTo</code>
+            <code class="cmd-help">{commands.ifYesJumpTo.long}</code>
             <code>@&lt;label&gt;</code>
         </dt>
         <dd>
-            Similar to <code>jumpTo</code> but only if the answer to the
-            previous <em>check</em> command was <strong>positive</strong>.
-            Otherwise this command is ignored.
+            Similar to <code class="cmd-help">{commands.jumpTo.long}</code> but
+            only if the answer to the previous <em>check</em> command was
+            <strong>positive</strong>. Otherwise this command is ignored.
         </dd>
         <dt>
             <code>ifNotJumpTo</code>
             <code>@&lt;label&gt;</code>
         </dt>
         <dd>
-            Similar to <code>jumpTo</code> but only if the answer to the
-            previous <em>check</em> command was <strong>negative</strong>.
-            Otherwise this command is ignored.
+            Similar to <code class="cmd-help">{commands.jumpTo.long}</code> but
+            only if the answer to the previous <em>check</em> command was
+            <strong>negative</strong>. Otherwise this command is ignored.
         </dd>
     </dl>
     <h3>Bookmark Stack</h3>
@@ -249,18 +253,18 @@
     </p>
     <dl>
         <dt>
-            <code class="cmd-help">bookmark</code>
+            <code class="cmd-help">{commands.bookmark.long}</code>
         </dt>
         <dd>Saves the current line number on top of the stack of bookmarks.</dd>
         <dt>
-            <code class="cmd-help">return</code>
+            <code class="cmd-help">{commands.return.long}</code>
         </dt>
         <dd>
             Takes the topmost bookmark from the stack and jump to the line below
             its line number.
         </dd>
         <dt>
-            <code>bookmarkAndJump</code>
+            <code class="cmd-help">{commands.bookmarkAndJump.long}</code>
             <code>@&lt;label&gt;</code>
         </dt>
         <dd>
