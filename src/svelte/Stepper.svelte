@@ -18,13 +18,6 @@
     const isTurbo = $derived(read(R.equals(maxSpeed), autoplaySpeed));
 </script>
 
-<div class="button-row-head">
-    {#if goal.value}
-        Preview the goal
-    {:else}
-        Run your program
-    {/if}
-</div>
 <div class={{ "button-row": true, gold: goal.value }}>
     <button class="flow-button" type="button" onclick={() => resetExecution()}
         >Reset
@@ -93,12 +86,6 @@
         display: flex;
         gap: 5px;
         padding: 2px;
-    }
-    .button-row-head {
-        margin-left: 2em;
-        margin-right: 1ex;
-        opacity: 0.7;
-        align-self: center;
     }
     .flow-button {
         border-radius: 8px;

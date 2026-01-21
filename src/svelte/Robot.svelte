@@ -1041,7 +1041,6 @@
         <h1>
             <img src="favicon.svg" alt="[Icon]" />
             Caroline The Robot
-            <span>(<abbr title="Work in Progress">WIP</abbr>)</span>
         </h1>
         <div class="button-row">
             <label>
@@ -1159,14 +1158,30 @@
                                     >Run</button
                                 >
                             </div>
-                            {#if commandErrorCount.value > 0}
-                                <div class="error-summary">
+
+                            <div class={"button-row-head"}>
+                                <div>
+                                    {#if goal.value}
+                                        Preview the goal
+                                    {:else if running.value}
+                                        Run your program
+                                    {:else}
+                                        Edit your program
+                                    {/if}
+                                </div>
+
+                                <div
+                                    class={{
+                                        "error-summary": true,
+                                        hidden: commandErrorCount.value < 1,
+                                    }}
+                                >
                                     {commandErrorCount.value}
-                                    {commandErrorCount.value > 1
+                                    {commandErrorCount.value != 1
                                         ? "Errors"
                                         : "Error"}
                                 </div>
-                            {/if}
+                            </div>
                             {#if running.value}
                                 <Stepper
                                     {maxSpeed}
@@ -1194,12 +1209,19 @@
                         ></Editor>
                         <details bind:open={showGoalText.value}>
                             <summary>Goal </summary>
-                            <div>
+                            <p>
+                                <strong
+                                    >Caroline is a Robot with an ambitious goal!</strong
+                                >
+                                She wants to change the world and shape it as she
+                                desires by moving the green crystals around.
+                            </p>
+                            <p>
                                 Help Caroline to achieve her goal. Play the goal
                                 recording to see what to do. Then switch to the
                                 edit mode, write down the commands to reproduce
                                 the same movement.
-                            </div>
+                            </p>
                         </details>
 
                         <details bind:open={showHelp.value}>
@@ -1363,14 +1385,6 @@
         align-items: stretch;
     }
 
-    .error-summary {
-        align-self: stretch;
-        display: flex;
-        align-items: center;
-        color: #ffbbbb;
-        font-weight: bold;
-        margin-right: auto;
-    }
     .container {
         position: absolute;
         top: 0;
@@ -1416,8 +1430,8 @@
         margin-top: 2px;
         user-select: text;
     }
-    details > div {
-        padding: 1em;
+    details::details-content {
+        padding: 0 1em;
         background-color: #fff;
         color: #000;
         font-family: monospace;
@@ -1437,5 +1451,28 @@
         border: none;
         height: 1px;
         background-color: #eee;
+    }
+    .button-row-head {
+        margin-right: auto;
+        padding: 0 1ex;
+        justify-self: end;
+        opacity: 0.7;
+        min-height: 3.2em;
+        box-sizing: border-box;
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .error-summary {
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        color: #ffbbbb;
+        font-weight: bold;
+        margin-right: auto;
+    }
+    .hidden {
+        display: none;
     }
 </style>

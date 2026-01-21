@@ -26,9 +26,12 @@
     };
 
     const percentListLens = L.normalize((l) => {
-        const norm = 100 / (R.sum(l) || 1);
+        const sum = R.sum(l);
+        const rounded = R.map((x) => (x < sum / l.length / 10 ? 0 : x), l);
 
-        return R.map(R.multiply(norm), l);
+        const norm = 100 / (R.sum(rounded) || 1);
+
+        return R.map(R.multiply(norm), rounded);
     });
 
     const summingLens = (i, forceSum = null) =>
@@ -121,7 +124,10 @@
             ></div>
         {/if}
 
-        <div class={["split-content"]} style:--split-size={size.value}>
+        <div
+            class={["split-content", size.value === 0 && "collapsed"]}
+            style:--split-size={size.value}
+        >
             {@render children?.(i, content.content)}
         </div>
     {/each}
@@ -199,5 +205,8 @@
         align-items: stretch;
         justify-items: stretch;
         justify-content: stretch;
+    }
+    .collapsed {
+        display: none;
     }
 </style>
