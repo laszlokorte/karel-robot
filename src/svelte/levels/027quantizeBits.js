@@ -45,7 +45,18 @@ export const solution = [
   {
     indentSpaces: "",
     op: commands.ifYesJumpBy.long,
-    arg: "3",
+    arg: "5",
+    spaces: "",
+  },
+  {
+    indentSpaces: "",
+    op: commands.checkWallAhead.long,
+    spaces: "",
+  },
+  {
+    indentSpaces: "",
+    op: commands.ifYesJumpTo.long,
+    arg: "@done",
     spaces: "",
   },
   {
