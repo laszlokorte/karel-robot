@@ -48,7 +48,7 @@
     </button>
 </div>
 
-<label class="slider">
+<label class={{ slider: true, gold: goal.value }}>
     <div>
         Playback Speed:
         {#if isTurbo.value}
@@ -77,10 +77,16 @@
         white-space: nowrap;
     }
 
+    .gold.slider input {
+        --accent-color: #a70;
+        --accent-color-light: #fec;
+    }
+
     .slider input {
-        margin: 0;
-        padding: 0;
+        margin: -0.5ex 0;
+        padding: 0.5ex 0;
         --accent-color: #399;
+        --accent-color-light: #eff;
     }
     .button-row {
         display: flex;
