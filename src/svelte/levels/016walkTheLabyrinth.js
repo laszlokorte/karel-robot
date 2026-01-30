@@ -1,6 +1,7 @@
 import commands from "../commands";
 export const world = () => {
-  const size = 19;
+  // Inspired by https://github.com/fredoverflow/karel/blob/master/src/main/kotlin/logic/LabyrinthGenerator.kt
+  const size = 13 + Math.round(Math.random() * 4) * 2;
   const CHARTED = "#".charCodeAt(0);
   const WALL = "_".charCodeAt(0);
   const FREE = " ".charCodeAt(0);
@@ -8,35 +9,44 @@ export const world = () => {
   const ZERO = "0".charCodeAt(0);
 
   const libTemplate = new TextEncoder().encode(
-    `# # # # # # # # # # # #
-_______________________
-#_2_3_3_3_3_3_3_3_3_2_#
-_______________________
-#_3_4_4_4_4_4_4_4_4_3_#
-_______________________
-#_3_4_4_4_4_4_4_4_4_3_#
-_______________________
-#_3_4_4_4_4_4_4_4_4_3_#
-_______________________
-#_3_4_4_4_4_4_4_4_4_3_#
-_______________________
-#_3_4_4_4_4_4_4_4_4_3_#
-_______________________
-#_3_4_4_4_4_4_4_4_4_3_#
-_______________________
-#_3_4_4_4_4_4_4_4_4_3_#
-_______________________
-#_3_4_4_4_4_4_4_4_4_3_#
-_______________________
-#_2_3_3_3_3_3_3_3_3_2_#
-_______________________
-# # # # # # # # # # # #`,
+    Array(size + 2 * 2)
+      .fill("")
+      .map((_, i, rows) =>
+        Array(rows.length)
+          .fill(i == 0 || i == rows.length - 1 ? " " : "_")
+          .map((c, j, cols) =>
+            i == 0 || i == rows.length - 1
+              ? j % 2 == 1
+                ? c
+                : "#"
+              : j == 0 || j == cols.length - 1
+                ? i % 2 == 1
+                  ? c
+                  : "#"
+                : j % 2 == 1
+                  ? c
+                  : i % 2 == 1
+                    ? c
+                    : Math.min(
+                        Math.round(i / 2),
+                        2,
+                        Math.round((rows.length - 1 - i) / 2),
+                      ) +
+                      Math.min(
+                        Math.round(j / 2),
+                        2,
+                        Math.round((cols.length - 1 - j) / 2),
+                      ),
+          )
+          .join(""),
+      )
+      .join("\n"),
   );
 
   const EAST = 1;
-  const NORTH = -24;
+  const NORTH = -(size + 5);
   const WEST = -1;
-  const SOUTH = 24;
+  const SOUTH = size + 5;
 
   const NEIGHBOUR_X = 2 * EAST;
   const NEIGHBOUR_Y = 2 * SOUTH;
@@ -57,33 +67,33 @@ _______________________
   };
 
   const permutationsOfDirections = [
-    0x01e8ff18, // EAST, NORTH, WEST, SOUTH,
-    0x01e818ff, // EAST, NORTH, SOUTH, WEST,
-    0x01ffe818, // EAST, WEST, NORTH, SOUTH,
-    0x01ff18e8, // EAST, WEST, SOUTH, NORTH,
-    0x0118e8ff, // EAST, SOUTH, NORTH, WEST,
-    0x0118ffe8, // EAST, SOUTH, WEST, NORTH,
+    [EAST, NORTH, WEST, SOUTH],
+    [EAST, NORTH, SOUTH, WEST],
+    [EAST, WEST, NORTH, SOUTH],
+    [EAST, WEST, SOUTH, NORTH],
+    [EAST, SOUTH, NORTH, WEST],
+    [EAST, SOUTH, WEST, NORTH],
 
-    0xe801ff18, // NORTH, EAST, WEST, SOUTH,
-    0xe80118ff, // NORTH, EAST, SOUTH, WEST,
-    0xe8ff0118, // NORTH, WEST, EAST, SOUTH,
-    0xe8ff1801, // NORTH, WEST, SOUTH, EAST,
-    0xe81801ff, // NORTH, SOUTH, EAST, WEST,
-    0xe818ff01, // NORTH, SOUTH, WEST, EAST,
+    [NORTH, EAST, WEST, SOUTH],
+    [NORTH, EAST, SOUTH, WEST],
+    [NORTH, WEST, EAST, SOUTH],
+    [NORTH, WEST, SOUTH, EAST],
+    [NORTH, SOUTH, EAST, WEST],
+    [NORTH, SOUTH, WEST, EAST],
 
-    0xff01e818, // WEST, EAST, NORTH, SOUTH,
-    0xff0118e8, // WEST, EAST, SOUTH, NORTH,
-    0xffe80118, // WEST, NORTH, EAST, SOUTH,
-    0xffe81801, // WEST, NORTH, SOUTH, EAST,
-    0xff1801e8, // WEST, SOUTH, EAST, NORTH,
-    0xff18e801, // WEST, SOUTH, NORTH, EAST,
+    [WEST, EAST, NORTH, SOUTH],
+    [WEST, EAST, SOUTH, NORTH],
+    [WEST, NORTH, EAST, SOUTH],
+    [WEST, NORTH, SOUTH, EAST],
+    [WEST, SOUTH, EAST, NORTH],
+    [WEST, SOUTH, NORTH, EAST],
 
-    0x1801e8ff, // SOUTH, EAST, NORTH, WEST,
-    0x1801ffe8, // SOUTH, EAST, WEST, NORTH,
-    0x18e801ff, // SOUTH, NORTH, EAST, WEST,
-    0x18e8ff01, // SOUTH, NORTH, WEST, EAST,
-    0x18ff01e8, // SOUTH, WEST, EAST, NORTH,
-    0x18ffe801, // SOUTH, WEST, NORTH, EAST,
+    [SOUTH, EAST, NORTH, WEST],
+    [SOUTH, EAST, WEST, NORTH],
+    [SOUTH, NORTH, EAST, WEST],
+    [SOUTH, NORTH, WEST, EAST],
+    [SOUTH, WEST, EAST, NORTH],
+    [SOUTH, WEST, NORTH, EAST],
   ];
 
   function* directions() {
@@ -92,10 +102,7 @@ _______________________
         Math.floor(Math.random() * permutationsOfDirections.length)
       ];
 
-    yield directions >> 24;
-    yield (directions << 8) >> 24;
-    yield (directions << 16) >> 24;
-    yield (directions << 24) >> 24;
+    yield* directions;
   }
 
   const BACKTRACK = 0;
@@ -115,26 +122,30 @@ _______________________
       {
         do {
           this.#labyrinth = libTemplate.slice();
-          this.#backtrackBudget = 100 * 100;
-          destination = this.destinationOpen(ORIGIN, EAST, 99);
+          this.#backtrackBudget = Math.pow(Math.ceil(size / 2), 4);
+          destination = this.destinationOpen(
+            ORIGIN,
+            EAST,
+            Math.pow(Math.ceil(size / 2), 2) - 1,
+          );
         } while (destination == BACKTRACK_BUDGET_EXHAUSTED);
       }
       const walls = Array(size * size);
 
-      for (let y = 0; y < 20; y++) {
-        for (let x = 0; x < 20; x++) {
+      for (let y = 0; y <= size; y++) {
+        for (let x = 0; x <= size; x++) {
           const gx = x + 2; // Offset wegen Rand
           const gy = y + 2;
-          const p = gx + 24 * gy;
+          const p = gx + (size + 5) * gy;
 
           walls[x + size * y] = this.#labyrinth[p] == WALL;
         }
       }
 
-      const dy = Math.floor(destination / 24) - 2;
-      const dx = (destination % 24) - 2;
-      const oy = Math.floor(ORIGIN / 24) - 1;
-      const ox = (ORIGIN % 24) - 1;
+      const dy = Math.floor(destination / (size + 5)) - 2;
+      const dx = (destination % (size + 5)) - 2;
+      const oy = Math.floor(ORIGIN / (size + 5)) - 1;
+      const ox = (ORIGIN % (size + 5)) - 1;
 
       return { walls: walls, dx, dy, ox, oy };
     }
@@ -246,8 +257,6 @@ _______________________
           }
         }
       } else if (potentialDeadEnds == 1) {
-        // We must eliminate the potential dead end by picking it,
-        // because we already found our destination earlier
         for (let dir of directions()) {
           const neighbour = position + 2 * dir;
           if (this.#labyrinth[neighbour] == ONE) {
