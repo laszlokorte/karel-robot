@@ -1,5 +1,7 @@
 import commands from "../commands";
-export const world = () => {
+import { mulberry32 } from "../mulberry";
+export const world = (seed) => {
+  const rnd = mulberry32(seed);
   const size = 10;
 
   return {
@@ -13,7 +15,7 @@ export const world = () => {
     },
     walls: Array(size)
       .fill(false)
-      .flatMap((x, row) => {
+      .flatMap((_x, _row) => {
         return Array(size)
           .fill(false)
           .map((x, i) => (i == 0 ? true : x));
@@ -23,7 +25,7 @@ export const world = () => {
       .flatMap((x, row) => {
         return Array(size)
           .fill(false)
-          .map((x, i) => (i < 2 ? false : row <= 1 ? Math.random() > 0.5 : x));
+          .map((x, i) => (i < 2 ? false : row <= 1 ? rnd() > 0.5 : x));
       }),
     digits: Array(size * size).fill(true),
   };

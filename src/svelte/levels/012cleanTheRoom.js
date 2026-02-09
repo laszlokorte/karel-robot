@@ -1,18 +1,23 @@
 import commands from "../commands";
-export const world = () => ({
-  size: {
-    y: 10,
-    x: 10,
-  },
-  start: {
-    y: 9,
-    x: 0,
-  },
-  walls: Array(10 * 10).fill(false),
-  crystals: Array(10 * 10)
-    .fill(false)
-    .map((x) => (Math.random() > 0.4 ? x : !x)),
-});
+import { mulberry32 } from "../mulberry";
+
+export const world = (seed) => {
+  const rnd = mulberry32(seed);
+  return {
+    size: {
+      y: 10,
+      x: 10,
+    },
+    start: {
+      y: 9,
+      x: 0,
+    },
+    walls: Array(10 * 10).fill(false),
+    crystals: Array(10 * 10)
+      .fill(false)
+      .map((x, i) => (rnd() > 0.5 ? x : !x)),
+  };
+};
 
 export const solution = [
   {

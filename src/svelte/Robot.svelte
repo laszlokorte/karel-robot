@@ -32,12 +32,14 @@
             halted: false,
             error: null,
             level: {
+                seed: 0,
                 size: { x: 10, y: 10 },
                 start: { x: 5, y: 5 },
                 walls: Array(10 * 10).fill(false),
                 crystals: Array(10 * 10).fill(false),
             },
             original: {
+                seed: 0,
                 size: { x: 10, y: 10 },
                 start: { x: 5, y: 5 },
                 walls: Array(10 * 10).fill(false),
@@ -239,7 +241,9 @@
                 L.whereEq({ id: levelKey }),
                 "level",
                 L.valueOr({
-                    gen: () => ({
+                    seed: 1,
+                    gen: (seed) => ({
+                        seed: seed,
                         size: { x: 10, y: 10 },
                         start: { x: 5, y: 5 },
                         walls: Array(10 * 10).fill(false),
@@ -249,10 +253,12 @@
                 }),
                 L.lens(
                     (gen) => ({
-                        ...gen(),
                         gen: gen,
+                        seed: (gen.seed || 0) + 1,
+                        ...gen((gen.seed || 0) + 1),
                     }),
-                    (x) => () => ({
+                    (x) => (seed) => ({
+                        seed: seed,
                         size: x.size,
                         start: x.start,
                         walls: x.walls,
@@ -367,7 +373,9 @@
         }
         const cmds = commandsToRun.value;
         update((w) => {
-            const lvl = randomize ? currentLevel.value.gen() : w.original;
+            const lvl = randomize
+                ? currentLevel.value.gen(w.original.seed + 1)
+                : w.original;
 
             return {
                 ...w,
@@ -380,8 +388,12 @@
                     next: init ? 0 : -1,
                     commands: cmds,
                 },
-                original: lvl,
+                original: {
+                    seed: randomize ? w.level.seed + 1 : w.level.seed,
+                    ...lvl,
+                },
                 level: {
+                    seed: randomize ? w.level.seed + 1 : w.level.seed,
                     size: lvl.size,
                     crystals: lvl.crystals,
                     digits: lvl.digits,
@@ -1043,7 +1055,7 @@
             Caroline The Robot
         </h1>
         <div class="button-row">
-            <label>
+            <label title="Seed: {currentLevel.value.seed}">
                 Level: <select
                     bind:value={levelKey.value}
                     onchange={() => reloadLevel(true, true, true)}

@@ -1,5 +1,8 @@
 import commands from "../commands";
-function generateMaze(size = 20) {
+
+import { mulberry32 } from "../mulberry";
+export const generateMaze = (size, seed) => {
+  const rnd = mulberry32(seed);
   if (size % 2 !== 0) {
     throw new Error("size must be even");
   }
@@ -23,7 +26,7 @@ function generateMaze(size = 20) {
 
   function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(rnd() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
@@ -53,13 +56,13 @@ function generateMaze(size = 20) {
   const crystals = Array(size * size).fill(false);
   crystals[idx(end.x, end.y)] = true;
   return { ...maze, crystals };
-}
+};
 
-export const world = () => {
+export const world = (seed) => {
   const size = 20;
 
   return {
-    ...generateMaze(size),
+    ...generateMaze(size, seed),
   };
 };
 

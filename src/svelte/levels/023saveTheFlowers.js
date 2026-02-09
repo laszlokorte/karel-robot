@@ -1,15 +1,17 @@
 import commands from "../commands";
-export const world = () => {
+import { mulberry32 } from "../mulberry";
+export const world = (seed) => {
+  const rnd = mulberry32(seed);
   const size = 10;
 
   const heights = [
     ...Array(4)
       .fill(false)
-      .map((x) => Math.ceil(Math.random() * 2)),
+      .map((x) => Math.ceil(rnd() * 2)),
     0,
     ...Array(3)
       .fill(false)
-      .map((x) => -Math.floor(Math.random() * 2) - 1),
+      .map((x) => -Math.floor(rnd() * 2) - 1),
   ]
     .reduce((acc, v) => [v + acc[0], ...acc], [1])
     .reverse();

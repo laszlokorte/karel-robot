@@ -1,14 +1,16 @@
 import commands from "../commands";
-export const world = () => {
+import { mulberry32 } from "../mulberry";
+export const world = (seed) => {
+  const rnd = mulberry32(seed);
   const size = 20;
   const walls = Array(size * size).fill(false);
 
   const start = {
-    x: 2 + Math.floor(Math.random() * 15),
-    y: 2 + Math.floor(Math.random() * 15),
+    x: 2 + Math.floor(rnd() * 15),
+    y: 2 + Math.floor(rnd() * 15),
   };
   for (let r = 0; r < size * size; r += 2) {
-    if (Math.random() > 0.2) {
+    if (rnd() > 0.2) {
       continue;
     }
     const x1 = Math.floor(r / size);
@@ -19,8 +21,8 @@ export const world = () => {
     if (walls[x1 + y1 * size]) {
       continue;
     }
-    const vert = Math.round(Math.random());
-    const dir = Math.round(Math.random());
+    const vert = Math.round(rnd());
+    const dir = Math.round(rnd());
     const hor = 1 - vert;
 
     walls[x1 - hor + (y1 - vert) * size] = true;

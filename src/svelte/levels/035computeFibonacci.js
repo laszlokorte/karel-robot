@@ -13,7 +13,7 @@ export const world = () => {
     },
     walls: Array(size)
       .fill(false)
-      .flatMap((x, row) => {
+      .flatMap((_x, _row) => {
         return Array(size)
           .fill(false)
           .map((v, col) => (col > 0 ? v : true));

@@ -1,10 +1,12 @@
 import commands from "../commands";
-export const world = () => {
+import { mulberry32 } from "../mulberry";
+export const world = (seed) => {
+  const rnd = mulberry32(seed);
   const size = 10;
 
   const heights = Array(size)
     .fill(size)
-    .map((x) => Math.round(Math.random() * x));
+    .map((x) => Math.round(rnd() * x));
 
   return {
     size: {

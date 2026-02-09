@@ -1,7 +1,9 @@
 import commands from "../commands";
-export const world = () => {
+import { mulberry32 } from "../mulberry";
+export const world = (seed) => {
+  const rnd = mulberry32(seed * 13);
   // Inspired by https://github.com/fredoverflow/karel/blob/master/src/main/kotlin/logic/LabyrinthGenerator.kt
-  const size = 13 + Math.round(Math.random() * 4) * 2;
+  const size = 13 + Math.round(rnd() * 4) * 2;
   const CHARTED = "#".charCodeAt(0);
   const WALL = "_".charCodeAt(0);
   const FREE = " ".charCodeAt(0);
@@ -99,7 +101,7 @@ export const world = () => {
   function* directions() {
     const directions =
       permutationsOfDirections[
-        Math.floor(Math.random() * permutationsOfDirections.length)
+        Math.floor(rnd() * permutationsOfDirections.length)
       ];
 
     yield* directions;

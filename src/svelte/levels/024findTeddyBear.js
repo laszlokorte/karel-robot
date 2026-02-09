@@ -1,17 +1,19 @@
 import commands from "../commands";
-export const world = () => {
+import { mulberry32 } from "../mulberry";
+export const world = (seed) => {
+  const rnd = mulberry32(seed);
   const size = 10;
 
-  const side = Math.round(Math.random() * 3);
-  const pos = Math.round(Math.random() * 9);
+  const side = Math.round(rnd() * 3);
+  const pos = Math.round(rnd() * 9);
   return {
     size: {
       y: size,
       x: size,
     },
     start: {
-      y: Math.round(Math.random() * 9),
-      x: Math.round(Math.random() * 9),
+      y: Math.round(rnd() * 9),
+      x: Math.round(rnd() * 9),
     },
     walls: Array(size)
       .fill(false)
