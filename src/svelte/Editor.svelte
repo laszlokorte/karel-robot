@@ -19,6 +19,8 @@
         executionError = atom(null),
     } = $props();
 
+    let textarea = $state();
+
     const executionErrorMessage = $derived(view("message", executionError));
     const executionErrorPosition = $derived(view("location", executionError));
     const executionErrorKind = $derived(view("kind", executionError));
@@ -51,6 +53,7 @@
                         array.length == 0 ||
                         array[array.length - 1].empty == undefined ||
                         array[array.length - 1].empty != "" ||
+                        array[array.length - 1].label ||
                         array[array.length - 1].comment
                             ? array
                             : array.slice(0, -1),
@@ -65,6 +68,27 @@
             commands,
         ),
     );
+    function typeInTextarea(newText, el = document.activeElement) {
+        el.focus();
+        const [start, end] = [el.selectionStart, el.selectionEnd];
+        const isLineStart = start < el.value.length;
+        document.execCommand(
+            "insertText",
+            false,
+            (isLineStart ? "\n" : "") + newText,
+        );
+
+        el.dispatchEvent(new InputEvent("change"));
+    }
+    function makeSuggestion(e) {
+        e.preventDefault();
+        typeInTextarea(
+            e.currentTarget
+                .getAttribute("data-suggestion")
+                .replace("label", "label"),
+            textarea,
+        );
+    }
 </script>
 
 <label
@@ -246,6 +270,7 @@
         <textarea
             cols="0"
             rows="0"
+            bind:this={textarea}
             use:bindValue={text}
             autocomplete="off"
             autocorrect="off"
@@ -261,7 +286,43 @@
     </div>
 </label>
 
+<fieldset class="suggestions" class:hidden={running.value}>
+    <legend class="suggestions-head">Suggesions</legend>
+    {#each ["moveForward", "turnLeft", "turnRight", "turnAround", "pick", "drop", "halt", "# comment", "jumpBy 0", "jumpTo @label", "label:", "bookmark", "return", "checkBeeper", "checkBeeperAhead", "checkWallAhead", "ifYesJumpBy 0", "ifNotJumpBy 0", "ifYesJumpTo @label"] as sug}
+        <button
+            class="suggestion"
+            data-suggestion={sug}
+            onmousedown={makeSuggestion}>{sug}</button
+        >
+    {/each}
+</fieldset>
+
 <style>
+    .suggestions-head {
+        position: static;
+        display: block;
+        font-size: smaller;
+        appearance: none;
+        color: #aaa;
+    }
+    .suggestions {
+        color: #fff;
+        font-family: monospace;
+        display: flex;
+        flex-wrap: wrap;
+        border: none;
+        gap: 2px;
+    }
+    .suggestion {
+        font-family: inherit;
+        background-color: #0007;
+    }
+    .suggestion:hover {
+        background-color: #0004;
+    }
+    .suggestion:active {
+        background-color: #0008;
+    }
     .overlay {
         display: grid;
         grid-template-columns: 1fr;

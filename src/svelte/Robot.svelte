@@ -1328,9 +1328,6 @@
         margin: 0;
         border: 1px solid #fff5;
     }
-    abbr {
-        cursor: help;
-    }
 
     .button-row {
         display: flex;
